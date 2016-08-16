@@ -12,20 +12,20 @@
         <div class="side_menu">
           <h2 class="tit01">MENU</h2>
           <ul class="menu_list">
-            <li class="m01"><a href="History.do"><strong>DAS 내역 관리</strong></a></li>
+            <li class="m01"><a href="{{pathFor 'history'}}"><strong>DAS 내역 관리</strong></a></li>
             <li class="m02"><a href="#"><strong>DAS 통계 관리</strong></a>
               <ul class="sub_list">
-                <li class="first"><a href="StatTotalView.do">종합 통계</a></li>
-                <li><a href="StatAccumView.do">서비스별 누적 통계</a></li>
-                <li><a href="StatUpfileView.do">용량 통계</a></li>
+                <li class="first"><a href="{{pathFor 'statTotalView'}}">종합 통계</a></li>
+                <li><a href="{{pathFor 'statAccumView'}}">서비스별 누적 통계</a></li>
+                <li><a href="{{pathFor 'statCapaView'}}">용량 통계</a></li>
               </ul>
             </li>
             <li class="m03 ">
               <a href="#"><strong>서비스 정보 관리</strong></a>
 
               <ul class="sub_list">
-                <li class="first"><a href="SvcInfoReg.do">서비스 정보 등록</a></li>
-                <li><a href="SvcInfoList.do">서비스 정보 조회</a></li>
+                <li class="first"><a href="{{pathFor 'serviceInfoWriting'}}">서비스 정보 등록</a></li>
+                <li><a href="{{pathFor 'serviceInfoFind'}}">서비스 정보 조회</a></li>
               </ul>
 
 
@@ -34,15 +34,15 @@
               <a href="#"><strong>사용자 정보 관리</strong></a>
 
               <ul class="sub_list">
-                <li class="first"><a href="UserList.do">사용자 정보 조회</a></li>
-                <li><a href="userReg.do">사용자 정보 등록</a></li>
+                <li><a href="{{pathFor 'userDetailWriting'}}">사용자 정보 등록</a></li>
+                <li class="first"><a href="{{pathFor 'userList'}}">사용자 정보 조회</a></li>
               </ul>
 
 
             </li>
             <li class="m05 ">
 
-              <a href="License.do"><strong>라이선스 관리</strong></a>
+              <a href="{{pathFor 'license'}}"><strong>라이선스 관리</strong></a>
 
 
             </li>
@@ -75,7 +75,7 @@
                   <li class="t03"><a href="#" >주별 현황</a></li>
                   <li class="t04"><a href="#" >월별 현황</a></li>
                 </ul>
-                <a href="StatAccumView.do" class="btn_more">더 보기</a>
+                <a href="{{pathFor 'statAccumView'}}" class="btn_more">더 보기</a>
               </div>
 
               <div class="tab_con">
@@ -97,7 +97,7 @@
           <div class="chart02">
             <div class="inner">
               <h3 class="tit02">TOTAL 용량 통계</h3>
-              <a href="StatUpfileView.do" class="btn_more">더 보기</a>
+              <a href="{{pathFor 'statCapaView'}}" class="btn_more">더 보기</a>
               <div style="height:240px;" id="donut_chart_div" data-highcharts-chart="1"><div class="highcharts-container" id="highcharts-4" style="position: relative; overflow: hidden; width: 288px; height: 240px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="288" height="240"><desc>Created with Highcharts 4.0.1</desc><defs><clipPath id="highcharts-5"><rect x="0" y="0" width="288" height="239"></rect></clipPath></defs><rect x="0" y="0" width="288" height="240" strokeWidth="0" fill="#ebebeb" class=" highcharts-background"></rect><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(0,0) scale(1 1)" style=""><path fill="#41d1f2" d="M 143.97769778419539 10.000002271181899 A 109.5 109.5 0 0 1 185.30595822497656 220.91039303304416 L 159.01348983884992 156.35966797000145 A 39.8 39.8 0 0 0 143.99189380649293 79.7000008255072 Z" stroke="#FFFFFF" stroke-width="0.00001" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#41a1f2" d="M 185.20452719586785 220.9516482791925 A 109.5 109.5 0 1 1 143.84790669678117 10.000105627324388 L 143.94471859846476 79.70003839239736 A 39.8 39.8 0 1 0 158.9766226702789 156.3746630275056 Z" stroke="#FFFFFF" stroke-width="0.00001" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers" visibility="visible" zIndex="0.1" transform="translate(0,0) scale(1 1)"></g></g><g class="highcharts-data-labels highcharts-tracker" visibility="visible" zIndex="6" transform="translate(0,0) scale(1 1)" opacity="1" style=""><g zIndex="1" style="cursor:default;" transform="translate(170,96)"><text x="3" zIndex="1" style="font-size:11px;color:#3e4857;fill:#3e4857;" y="15"><tspan>처리 현황 </tspan><tspan style="font-weight:bold" dx="0">43.9 %</tspan></text></g><g zIndex="1" style="cursor:default;" transform="translate(33,123)"><text x="3" zIndex="1" style="font-size:11px;color:#3e4857;fill:#3e4857;" y="15"><tspan>대기 현황 </tspan><tspan style="font-weight:bold" dx="0">56.1 %</tspan></text></g></g><g class="highcharts-legend" zIndex="7"><g zIndex="1"><g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" transform="translate(1, 1)"></path><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" transform="translate(1, 1)"></path><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21"></text></g></svg></div></div>
               <div class="txt_box">
                 <p>처리 현황</p>
@@ -123,7 +123,21 @@
 
               <div class="agent_list">
                 <div class="inner nano">
-                  <ul class="nano-content" id="agent_content" tabindex="0"><li><a href="#" class="plus show"><span class="off_agent">서비스_DEL</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent1 </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">서비스_EMPTY</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent2 </span></a></li><li><a href="#"><span class="off_agent">Agent3 </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">123123</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">111 </span></a></li><li><a href="#"><span class="off_agent">comp_agent </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">test</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li><li><a href="#"><span class="off_agent">asdfasd </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">tes</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">SOFT</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent1 </span></a></li></ul></li></ul>
+                  <ul class="nano-content" id="agent_content" tabindex="0">
+                    <li>
+                      <a href="#" class="plus show">
+                        <span class="off_agent">서비스_DEL</span>
+                        <em class="count">(0/1)</em>
+                      </a>
+                      <ul class="sub_list ">
+                        <li>
+                          <a href="#">
+                            <span class="off_agent">Agent1 </span>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><a href="#" class="plus show"><span class="off_agent">서비스_EMPTY</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent2 </span></a></li><li><a href="#"><span class="off_agent">Agent3 </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">123123</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">111 </span></a></li><li><a href="#"><span class="off_agent">comp_agent </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">test</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li><li><a href="#"><span class="off_agent">asdfasd </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">tes</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">SOFT</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent1 </span></a></li></ul></li></ul>
                   <div class="nano-pane" style="display: block; opacity: 1; visibility: visible;"><div class="nano-slider" style="height: 202px; transform: translate(0px, 0px);"></div></div></div>
               </div>
             </div>
@@ -135,7 +149,7 @@
             <div class="inner">
               <div class="txt_box">
                 <h3 class="tit02"><span>서비스별 처리 현황</span></h3>
-                <a href="History.do" class="btn_more">더 보기</a>
+                <a href="{{pathFor 'history'}}" class="btn_more">더 보기</a>
               </div>
               <div class="error_list nano">
                 <div class="inner nano-content" style="overflow-y:scroll;width:100%;height:100%;" tabindex="0">
@@ -157,7 +171,7 @@
                       <th scope="col" class="txt_red">오류</th>
                     </tr>
                     </thead>
-                    <tbody id="error_body"><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10001');" class="link01">서비스_DEL</a></td><td>96</td><td>48</td><td>38</td><td class="txt_red">10</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10002');" class="link01">서비스_EMPTY</a></td><td>4</td><td>4</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10003');" class="link01">서비스_COPY</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10004');" class="link01">123123</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10005');" class="link01">test</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10006');" class="link01">tes</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="javascript:submit_das_history_info('UPSVC10007');" class="link01">SOFT</a></td><td>13</td><td>12</td><td>1</td><td class="txt_red">0</td></tr></tbody>
+                    <tbody id="error_body"><tr><td class="tl"><a href="#" class="link01">서비스_DEL</a></td><td>96</td><td>48</td><td>38</td><td class="txt_red">10</td></tr><tr><td class="tl"><a href="#" class="link01">서비스_EMPTY</a></td><td>4</td><td>4</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">서비스_COPY</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">123123</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">test</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">tes</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">SOFT</a></td><td>13</td><td>12</td><td>1</td><td class="txt_red">0</td></tr></tbody>
                   </table>
                 </div>
                 <div class="nano-pane" style="display: block; opacity: 1; visibility: visible;"><div class="nano-slider" style="height: 80px; transform: translate(0px, 0px);"></div></div></div>

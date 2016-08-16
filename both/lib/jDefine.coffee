@@ -1,0 +1,11 @@
+@jDefine =
+  timeFormat: 'YYYY-MM-DD HH:mm:ss'
+  timeFormatMDHM: 'MM-DD HH:mm'
+  timeFormatMD: 'MM-DD'
+  timeFormatYM: 'YYYY-MM'
+  timeFormatYMD: 'YYYY-MM-DD'
+  timeFormatYMDdot: 'YYYY.MM.DD'
+  timeFormatHMS: 'HH:mm:ss'
+  timeFormatH: 'HH'
+  timeFormatM: 'mm'
+  timeFormatHM: 'HH:mm'

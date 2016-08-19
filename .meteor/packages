@@ -22,3 +22,4 @@ less
 coffeescript
 iron:router
 mrt:moment
+http

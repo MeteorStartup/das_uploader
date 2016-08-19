@@ -57,7 +57,7 @@
         rslt =
           createdAt: new Date()
           AGENT_NAME: ''        #관리자가 입력하는 별칭
-          AGENT_URL: ''     #http://localhost:3000 에이전트 URL
+          AGENT_URL: ''     #http://localhost:3000 에이전트 URL, PK!!
           파일삭제기능: true    #해당 서비스가 파일소멸시점에 도달하면 본 기능이 true인 agent에 대해서 삭제 명령을 날림
 #          파일소멸절대경로: ''   #해당 정보는 기존 서버의 떨군 파일에 존재. 어떤 에이전트(서버)가 파일 서버 인지는 파일삭제기능이 true 인놈들에게 날림.
           소멸정보전송기능: true  #본 옵션이 true인 agent는 해당 소멸정보절대경로를 참조해서 파일을 polling, dms로 전송

@@ -1,4 +1,5 @@
 Meteor.startup ->
+  cl 'methods'
   Meteor.methods
     'getAgentSetting': (AGENT_URL) ->
       cl 'getAgentSetting'
@@ -9,7 +10,6 @@ Meteor.startup ->
       return agent
 
     'insertDAS': (strDasInfo, agentUrl) ->
-  #_.extend 해서 서비스명 필드를 추가해서 넣어줘야함.
       dasInfo = dataSchema 'DASInfo'
       arrDasInfo =  strDasInfo.split '\n'
       arrDasInfo.forEach (line) ->
@@ -45,7 +45,7 @@ Meteor.startup ->
         dasInfo.AGENT_URL_FROM_AGENT = agentUrl
         dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
       catch e
-#        에러 발생 시 status를 미리 결정 짓고 더 이상 처리 하지 않는다
+#        서비스/에이전트 확인 에러 발생 시 status를 미리 결정 짓고 더 이상 처리 하지 않는다
         cl msg = '#### Service or Agent not found ####'
         dasInfo.STATUS = "#{msg}: #{e.message}"
 
@@ -61,4 +61,5 @@ Meteor.startup ->
         sizeStatus.SERVICE_ID = dasInfo.SERVICE_ID
         sizeStatus.업로드용량 = dasInfo.UP_FSIZE
         CollectionSizeInfos.insert sizeStatus
+      return 'success'
 

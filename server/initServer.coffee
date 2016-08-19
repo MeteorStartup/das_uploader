@@ -15,17 +15,3 @@ unless CollectionServices.findOne()
   agent.소멸정보절대경로 = '/Users/jwjin/data'
   CollectionAgents.insert agent
 
-Meteor.methods
-  'getAgentSetting': (Agent_URL) ->
-    cl 'getAgentSetting'
-    agent = CollectionAgents.findOne('Agent_URL': Agent_URL)
-    service = CollectionServices.findOne(_id: agent.서비스정보_id)
-    return obj =
-      agent: agent
-      service: service
-
-  'insertDAS': (dasInfo) ->
-    #_.extend 해서 서비스명 필드를 추가해서 넣어줘야함.
-    CollectionDasInfos.insert dasInfo
-
-

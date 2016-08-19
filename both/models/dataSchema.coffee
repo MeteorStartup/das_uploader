@@ -8,6 +8,7 @@
   switch _objName
     when 'DASInfo'
       rslt =
+        createdAt: new Date()
         Agent명: ''    #agent의 별칭
         Agent_URL: ''   #agent의 URL
         서비스_ID: ''    #파일에서 꺼내진 서비스 ID
@@ -18,18 +19,20 @@
         DEL_FILE_LIST: []   #'/data/images/1.jpg'
         DEL_DB_URL: ''    #DB삭제 URL
         DEL_DB_QRT: ''    #DB삭제 QUERY
-        UP_FSIZE: 3038920   #num type
+        UP_FSIZE: 0   #num type
         DEL_DATE: new Date() #'2016-08-01' 지우는 날짜는 00:00분으로
-        KEEP_PERIOD: 10   #date Number type 일수
+        KEEP_PERIOD: 1   #date Number type 일수
         STATUS: 'success'   # success or err_msg / delete error, sql error
     when '용량통계'     #@CollectionSizeInfos 에 업로드 시점 & 처리 시점에 추가
       rslt =
+        createdAt: new Date()
         서비스_ID: ''
         업로드용량: 0      #byte Number 이므로 용량이 커지면 Mbyte Gbyte 등으로 변환
         처리용량: 0
 #        잔여용량: 0    #업로드용량 - 처리용량
     when '서비스정보'
       rslt =
+        createdAt: new Date()
         서비스_ID: ''      #기존 서버에 의해 생성되는 유니크한 ID
         서비스명: ''        #관리자가 입력하는 서비스 구분 별칭
         서비스소개: ''       #서비스 소개
@@ -49,6 +52,7 @@
 
     when 'Agent정보'
         rslt =
+          createdAt: new Date()
           Agent명: ''        #관리자가 입력하는 별칭
           Agent_URL: ''     #http://localhost:3000 에이전트 URL
           파일삭제기능: false    #해당 서비스가 파일소멸시점에 도달하면 본 기능이 true인 agent에 대해서 삭제 명령을 날림

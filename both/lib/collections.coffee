@@ -2,5 +2,5 @@
 @CollectionServices = new Meteor.Collection 'services'
 @CollectionAgents = new Meteor.Collection 'agents'
 @CollectionDasInfos = new Meteor.Collection 'dasInfos'
-@CollectionDasLogs = new Meteor.Collection 'dasLogs'
+#@CollectionDasLogs = new Meteor.Collection 'dasLogs'
 @CollectionSizeInfos = new Meteor.Collection 'sizeInfos'

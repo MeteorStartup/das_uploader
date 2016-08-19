@@ -16,6 +16,14 @@
 @Date.prototype.clone = -> return new Date @getTime()
 
 @jUtils =
+  formatBytes: (bytes, decimals) ->
+#    usage: formatBytes(139328839)
+    if(bytes == 0) then return '0 Byte'
+    k = 1000
+    dm = decimals + 1 || 3
+    sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
   getStringYMDFromDate: (_date) ->
     return moment(_date).format(jDefine.timeFormatYMD)
   getStringMDHMFromDate: (_date) ->

@@ -54,7 +54,7 @@ Meteor.startup ->
 #     용량 통계 추가
       sizeInfo = CollectionSizeInfos.findOne SERVICE_ID: dasInfo.SERVICE_ID
       if sizeInfo?
-        cl sizeInfo.업로드용량 += dasInfo.UP_FSIZE
+        sizeInfo.업로드용량 += dasInfo.UP_FSIZE
         CollectionSizeInfos.update _id: sizeInfo._id, sizeInfo
       else
         sizeStatus = dataSchema '용량통계'

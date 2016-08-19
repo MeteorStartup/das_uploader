@@ -28,7 +28,7 @@
       rslt =
         createdAt: new Date()
         SERVICE_ID: ''
-        업로드용량: 0      #byte Number 이므로 용량이 커지면 Mbyte Gbyte 등으로 변환
+        업로드용량: 0      #byte Number 이므로 용량이 커지면 Mbyte Gbyte 등으로 변환. 업로드용량이 bytes단위라서 엄청 커지는 바람에 지수로 표현까지 될테니까 jUtils.formatBytes를 쓰면 단위까지 알아서 나옴. cl jUtils.formatBytes sizeInfo.업로드용량
         처리용량: 0
 #        잔여용량: 0    #업로드용량 - 처리용량
     when 'Service'

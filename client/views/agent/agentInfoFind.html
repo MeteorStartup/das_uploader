@@ -30,8 +30,8 @@
               <thead>
               <tr>
                 <th scope="col"><strong>NO</strong></th>
-                <th scope="col"><strong>Agent명</strong></th>
-                <th scope="col"><strong>Agent_URL</strong></th>
+                <th scope="col"><strong>AGENT_NAME</strong></th>
+                <th scope="col"><strong>AGENT_URL</strong></th>
                 <th scope="col"><strong>소멸정보절대경로</strong></th>
                 <th scope="col"><strong>소멸정보전송기능</strong></th>
                 <th scope="col"><strong>파일삭제기능</strong></th>
@@ -42,8 +42,8 @@
               {{#each agents}}
               <tr>
                 <td>{{incremented @index}}</td>
-                <td><a class="link01 txt_over txt_white" href="{{pathFor 'agentInfoEditing' _id=_id}}">{{Agent명}}</a></td>
-                <td>{{Agent_URL}}</td>
+                <td><a class="link01 txt_over txt_white" href="{{pathFor 'agentInfoEditing' _id=_id}}">{{AGENT_NAME}}</a></td>
+                <td>{{AGENT_URL}}</td>
                 <td>{{소멸정보절대경로}}</td>
                 <td>{{소멸정보전송기능}}</td>
                 <td>{{파일삭제기능}}</td>

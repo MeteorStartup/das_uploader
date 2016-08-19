@@ -1,6 +1,9 @@
 agent = new ReactiveVar()
 
-Router.route 'agentInfoWriting'
+Router.route 'agentInfoWriting',
+  onRun: ->
+    agent.set [{}]
+    @next()
 Router.route 'agentInfoEditing',
   path: '/agentInfoEditing/:_id'
   template: 'agentInfoWriting'
@@ -21,15 +24,21 @@ Template.agentInfoWriting.helpers
 
 Template.agentInfoWriting.events
   'click [name=btnSave]': (e, tmpl) ->
-    Agent명 = $('[name=Agent명]').val()
-    Agent_URL = $('[name=Agent_URL]').val()
+    AGENT_NAME = $('[name=AGENT_NAME]').val()
+    AGENT_URL = $('[name=AGENT_URL]').val()
     소멸정보절대경로 = $('[name=소멸정보절대경로]').val()
     소멸정보전송기능 = $('[name=소멸정보전송기능]').is(':checked')
     파일삭제기능 = $('[name=파일삭제기능]').is(':checked')
 
-    obj = dataSchema 'Agent정보',
-      Agent명: Agent명
-      Agent_URL: Agent_URL
+    #validation
+    if AGENT_NAME.length <= 0 then alert 'AGENT_NAME 필수입력입니다.'; $('[name=AGENT_NAME]').focus();return;
+    if AGENT_URL.length <= 0 then alert 'AGENT_URL 필수입력입니다.'; $('[name=AGENT_URL]').focus();return;
+    if 소멸정보전송기능
+      if 소멸정보절대경로.length <= 0 then alert '소멸정보전송기능을 사용하려면 절대경로는 필수입력입니다.'; $('[name=소멸정보절대경로]').focus();return;
+
+    obj = dataSchema 'Agent',
+      AGENT_NAME: AGENT_NAME
+      AGENT_URL: AGENT_URL
       소멸정보절대경로: 소멸정보절대경로
       소멸정보전송기능: 소멸정보전송기능
       파일삭제기능: 파일삭제기능

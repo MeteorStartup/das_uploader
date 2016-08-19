@@ -12,7 +12,7 @@ Template.agentInfoFind.helpers
   agents: -> agents?.get()
   소멸정보전송기능: -> if @소멸정보전송기능 then '사용' else '미사용'
   파일삭제기능: -> if @파일삭제기능 then '사용' else '미사용'
-  incremented: (index) -> return index + 1
+#  incremented: (index) -> return index + 1
 
 Template.agentInfoFind.events
   'click [name=btnAgentDel]': (e, tmpl) ->

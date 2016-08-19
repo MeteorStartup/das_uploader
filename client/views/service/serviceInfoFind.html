@@ -34,13 +34,15 @@
               </tr>
               </thead>
               <tbody id="svc_list">
+              {{#each services}}
               <tr>
-                <td>7</td>
-                <td><a class="link01 txt_over txt_white" href="{{pathFor 'serviceInfoDetail'}}">SOFT</a></td>
-                <td>UPSVC10007</td>
-                <td>0</td>
-                <td>사용</td>
+                <td>{{incremented @index}}</td>
+                <td><a class="link01 txt_over txt_white" href="{{pathFor 'serviceInfoEditing' _id=_id}}">{{SERVICE_NAME}}</a></td>
+                <td>{{SERVICE_ID}}</td>
+                <td>{{AGENTS_count}}</td>
+                <td>{{상태}}</td>
               </tr>
+              {{/each}}
               </tbody>
             </table>
           </div>

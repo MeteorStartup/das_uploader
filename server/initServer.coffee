@@ -4,12 +4,6 @@ fiber = require 'fibers'
 #  admin 등 기본 셋팅이 들어가야 한다
 
 Meteor.startup ->
-  HTTP.call 'POST', 'http://localhost:3000/test', merong: 'haha', (err, rslt) ->
-    cl err or rslt.content
-
-
-
-
   #  reset 시 테스트 환경을 위한 데이터
   unless CollectionServices.findOne()
     agent = dataSchema 'Agent'

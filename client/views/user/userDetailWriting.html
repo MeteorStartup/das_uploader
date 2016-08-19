@@ -5,12 +5,6 @@
       <div class="inner_box">
         <div class="section">
           <form name="user_insert_form" id="user_insert_form" method="POST">
-            <input type="hidden" name="pswd_ect" value="0">
-            <input type="hidden" name="phone_no" id="phone_no">
-            <input type="hidden" name="ml_add" id="ml_add">
-            <input type="hidden" name="pswd" id="pswd">
-            <input type="hidden" name="temp_pswd_yn" id="temp_pswd_yn" value="Y">
-
             <div class="tform01 srch_form">
               <strong class="txt_list"><span>사용자 정보 등록</span></strong>
               <table>
@@ -22,16 +16,15 @@
                 <tr>
                   <th scope="row" class="bul_txt01 pre"><span>이        름</span></th>
                   <td>
-                    <input type="text" class="ip_txt" style="width:116px" name="mgr_nm" id="mgr_nm" onkeyup="javascript:Ko_En_valid(this, 20);">
+                    <input type="text" class="ip_txt" style="width:116px" name="mgr_nm" id="mgr_nm">
                   </td>
                 </tr>
                 <tr>
                   <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>아   이   디</span></th>
                   <td style="background-color: rgb(255, 255, 255);">
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:116px" name="mgr_id" id="mgr_id" onkeyup="javascript:En_No_valid(this, 20);">
-                      <a href="javascript:id_overlap_check();" class="btns btn_inner90 ml10"><span>중복 확인</span></a>
-                      <input type="hidden" name="h_mgr_id" id="h_mgr_id">
+                      <input type="text" class="ip_txt" style="width:116px" name="mgr_id" id="mgr_id">
+                      <a href="#" class="btns btn_inner90 ml10" name="btnIdCheck"><span>중복 확인</span></a>
                     </div>
                   </td>
                 </tr>
@@ -39,8 +32,8 @@
                   <th scope="row" class="bul_txt01 pre"><span>비 밀 번 호</span></th>
                   <td>
                     <div class="form_list">
-                      <input type="password" class="ip_txt" style="width:116px" id="tmp_pswd" readonly="readonly">
-                      <a href="javascript:send_tmp_pwd();" class="btns btn_inner120 ml10"><span>임시 비밀번호 발급</span></a>
+                      <input type="password" class="ip_txt" style="width:116px" id="tmp_pswd">
+                      <a href="#" class="btns btn_inner120 ml10"><span>임시 비밀번호 발급</span></a>
                     </div>
                   </td>
                 </tr>
@@ -48,46 +41,46 @@
                   <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>이   메   일</span></th>
                   <td style="background-color: rgb(255, 255, 255);">
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:116px " id="email1" onkeyup="javascript:En_No_valid(this, 12);">
-                      <span class="side_txt">@</span>
-                      <input type="text" class="ip_txt" style="width:116px " id="email2" onkeyup="En_dot_valid(this, 100);">
-                      <div class="select ml20">
-                        <span>선택하세요.</span>
-                        <ul>
-                          <li data-val="">선택하세요</li>
-                          <li data-val="naver.com">naver.com</li>
-                          <li data-val="nate.com">nate.com</li>
-                          <li data-val="dreamwiz.com">dreamwiz.com</li>
-                          <li data-val="yahoo.co.kr">yahoo.co.kr</li>
-                          <li data-val="empal.com">empal.com</li>
-                          <li data-val="untel.co.kr">untel.co.kr</li>
-                          <li data-val="gmail.com">gmail.com</li>
-                          <li data-val="korea.com">korea.com</li>
-                          <li data-val="chol.com">chol.com</li>
-                          <li data-val="paran.com">paran.com</li>
-                          <li data-val="freechal.com">freechal.com</li>
-                          <li data-val="hanmail.com">hanmail.com</li>
-                          <li data-val="hotmail.com">hotmail.com</li>
-                          <li data-val="self">직접입력</li>
-                        </ul>
-                        <select onchange="change_email(this)" id="select_email">
-                          <option value="">선택하세요</option>
-                          <option value="naver.com">naver.com</option>
-                          <option value="nate.com">nate.com</option>
-                          <option value="dreamwiz.com">dreamwiz.com</option>
-                          <option value="yahoo.co.kr">yahoo.co.kr</option>
-                          <option value="empal.com">empal.com</option>
-                          <option value="untel.co.kr">untel.co.kr</option>
-                          <option value="gmail.com">gmail.com</option>
-                          <option value="korea.com">korea.com</option>
-                          <option value="chol.com">chol.com</option>
-                          <option value="paran.com">paran.com</option>
-                          <option value="freechal.com">freechal.com</option>
-                          <option value="hanmail.com">hanmail.com</option>
-                          <option value="hotmail.com">hotmail.com</option>
-                          <option value="self">직접입력</option>
-                        </select>
-                      </div>
+                      <input type="text" class="ip_txt" style="width:232px " id="email1">
+                      <!--<span class="side_txt">@</span>-->
+                      <!--<input type="text" class="ip_txt" style="width:116px " id="email2">-->
+                      <!--<div class="select ml20">-->
+                        <!--<span>선택하세요.</span>-->
+                        <!--<ul>-->
+                          <!--<li data-val="">선택하세요</li>-->
+                          <!--<li data-val="naver.com">naver.com</li>-->
+                          <!--<li data-val="nate.com">nate.com</li>-->
+                          <!--<li data-val="dreamwiz.com">dreamwiz.com</li>-->
+                          <!--<li data-val="yahoo.co.kr">yahoo.co.kr</li>-->
+                          <!--<li data-val="empal.com">empal.com</li>-->
+                          <!--<li data-val="untel.co.kr">untel.co.kr</li>-->
+                          <!--<li data-val="gmail.com">gmail.com</li>-->
+                          <!--<li data-val="korea.com">korea.com</li>-->
+                          <!--<li data-val="chol.com">chol.com</li>-->
+                          <!--<li data-val="paran.com">paran.com</li>-->
+                          <!--<li data-val="freechal.com">freechal.com</li>-->
+                          <!--<li data-val="hanmail.com">hanmail.com</li>-->
+                          <!--<li data-val="hotmail.com">hotmail.com</li>-->
+                          <!--<li data-val="self">직접입력</li>-->
+                        <!--</ul>-->
+                        <!--<select onchange="change_email(this)" id="select_email">-->
+                          <!--<option value="">선택하세요</option>-->
+                          <!--<option value="naver.com">naver.com</option>-->
+                          <!--<option value="nate.com">nate.com</option>-->
+                          <!--<option value="dreamwiz.com">dreamwiz.com</option>-->
+                          <!--<option value="yahoo.co.kr">yahoo.co.kr</option>-->
+                          <!--<option value="empal.com">empal.com</option>-->
+                          <!--<option value="untel.co.kr">untel.co.kr</option>-->
+                          <!--<option value="gmail.com">gmail.com</option>-->
+                          <!--<option value="korea.com">korea.com</option>-->
+                          <!--<option value="chol.com">chol.com</option>-->
+                          <!--<option value="paran.com">paran.com</option>-->
+                          <!--<option value="freechal.com">freechal.com</option>-->
+                          <!--<option value="hanmail.com">hanmail.com</option>-->
+                          <!--<option value="hotmail.com">hotmail.com</option>-->
+                          <!--<option value="self">직접입력</option>-->
+                        <!--</select>-->
+                      <!--</div>-->
                     </div>
                   </td>
                 </tr>
@@ -95,44 +88,22 @@
                   <th scope="row" class="bul_txt01 pre"><span>휴   대   폰</span></th>
                   <td>
                     <div class="form_list">
-                      <div class="select">
-                        <span>010</span>
-                        <ul>
-                          <li data-val="010">010</li>
-                          <li data-val="011">011</li>
-                          <li data-val="016">016</li>
-                          <li data-val="017">017</li>
-                          <li data-val="018">018</li>
-                          <li data-val="019">019</li>
-                        </ul>
-                        <select id="cell_phone1">
-                          <option value="010">010</option>
-                          <option value="011">011</option>
-                          <option value="016">016</option>
-                          <option value="017">017</option>
-                          <option value="018">018</option>
-                          <option value="019">019</option>
-                        </select>
-                      </div>
-                      <span class="side_txt">-</span>
-                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone2" maxlength="4" onkeyup="javascript:num_check(this);">
-                      <span class="side_txt">-</span>
-                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="4" onkeyup="javascript:num_check(this);">
+                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="4">
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>사 용 권 한</span></th>
                   <td style="background-color: rgb(255, 255, 255);">
-                    <label class="radio radio_on"><input type="radio" name="use_perm" value="2" checked="checked">일반 사용자</label>
-                    <label class="radio ml20"><input type="radio" name="use_perm" value="1">슈퍼 어드민</label>
+                    <label class="radio radio_on"><input type="radio" name="use_perm" value="일반" checked="checked">일반 사용자</label>
+                    <label class="radio ml20"><input type="radio" name="use_perm" value="관리자">슈퍼 어드민</label>
                   </td>
                 </tr>
                 <tr>
                   <th scope="row" class="bul_txt01 pre"><span>상        태</span></th>
                   <td>
-                    <label class="radio radio_on"><input type="radio" name="use_yn" value="Y" checked="checked">사용</label>
-                    <label class="radio ml20"><input type="radio" name="use_yn" value="N">사용안함</label>
+                    <label class="radio radio_on"><input type="radio" name="use_yn" value="사용" checked="checked">사용</label>
+                    <label class="radio ml20"><input type="radio" name="use_yn" value="사용안함">사용안함</label>
                   </td>
                 </tr>
                 </tbody>
@@ -142,8 +113,8 @@
         </div>
 
         <div class="btn_area tc mt60">
-          <a href="javascript:submit_check();" class="btns btn_large_ok"><span>확인</span></a>
-          <a href="javascript:history.back();" class="btns btn_large_cncl ml10"><span>취소</span></a>
+          <a href="#" class="btns btn_large_ok" name="btnSave"><span>확인</span></a>
+          <a href="#" class="btns btn_large_cncl ml10" name="btnCancle"><span>취소</span></a>
         </div>
       </div>
 

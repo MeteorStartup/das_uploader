@@ -7,50 +7,10 @@
           <div class="tform01 srch_form">
             <strong class="txt_srch">
               <span>서비스 정보 조회</span>
-              <a href="SvcInfoReg.do" class="btns btn_inner90 right">
+              <a href="{{pathFor 'serviceInfoWriting'}}" class="btns btn_inner90 right">
                 <span class="m0">신규 등록</span>
               </a>
             </strong>
-            <table>
-              <colgroup>
-                <col style="width:13%">
-                <col style="width:*">
-              </colgroup>
-              <tbody>
-              <tr class="first">
-                <th scope="row" class="bul_txt01"><span>조회 조건</span></th>
-                <td>
-                  <!-- select -->
-                  <div class="select left">
-                    <span>전체</span>
-                    <ul>
-                      <li data-val="A">전체</li>
-                      <li data-val="N">서비스명</li>
-                      <li data-val="I">서비스ID</li>
-                    </ul>
-                    <select id="svc_search_dv" selected="selected">
-                      <option value="A">전체</option>
-                      <option value="N">서비스명</option>
-                      <option value="I">서비스ID</option>
-                    </select>
-                  </div>
-                  <!-- //select -->
-                  <input type="text" class="ip_txt left ml10" id="svc_search_txt" placeholder="검색어를 입력하세요." onkeypress="javascript:enterThread(event);">
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="bul_txt01" style="background-color: rgb(255, 255, 255);"><span>상태</span></th>
-                <td style="background-color: rgb(255, 255, 255);">
-                  <label class="radio radio_on"><input type="radio" name="svc_use_yn" value="A" checked="checked">전체</label><!-- 20150409추가됨 -->
-                  <label class="radio ml20"><input type="radio" name="svc_use_yn" value="Y">사용</label>
-                  <label class="radio ml20"><input type="radio" name="svc_use_yn" value="N">사용 안함</label>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="btn_area tc mt10">
-            <a href="javascript:make_svc_list('1');" class="btns btn_large_ok"><span>조회</span></a>
           </div>
         </div>
 
@@ -74,20 +34,18 @@
               </tr>
               </thead>
               <tbody id="svc_list">
+              {{#each services}}
               <tr>
-                <td>7</td>
-                <td><a class="link01 txt_over txt_white" href="{{pathFor 'serviceInfoDetail'}}">SOFT</a></td>
-                <td>UPSVC10007</td>
-                <td>0</td>
-                <td>사용</td>
+                <td>{{incremented @index}}</td>
+                <td><a class="link01 txt_over txt_white" href="{{pathFor 'serviceInfoEditing' _id=_id}}">{{SERVICE_NAME}}</a></td>
+                <td>{{SERVICE_ID}}</td>
+                <td>{{AGENTS_count}}</td>
+                <td>{{상태}}</td>
               </tr>
-              <tr><td style="background-color: rgb(255, 255, 255);">6</td><td style="background-color: rgb(255, 255, 255);"><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10006');">tes</a></td><td style="background-color: rgb(255, 255, 255);">UPSVC10006</td><td style="background-color: rgb(255, 255, 255);">1</td><td style="background-color: rgb(255, 255, 255);">사용</td></tr><tr><td>5</td><td><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10005');">test</a></td><td>UPSVC10005</td><td>2</td><td>사용</td></tr><tr><td style="background-color: rgb(255, 255, 255);">4</td><td style="background-color: rgb(255, 255, 255);"><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10004');">123123</a></td><td style="background-color: rgb(255, 255, 255);">UPSVC10004</td><td style="background-color: rgb(255, 255, 255);">2</td><td style="background-color: rgb(255, 255, 255);">사용</td></tr><tr><td>3</td><td><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10003');">서비스_COPY</a></td><td>UPSVC10003</td><td>0</td><td>사용</td></tr><tr><td style="background-color: rgb(255, 255, 255);">2</td><td style="background-color: rgb(255, 255, 255);"><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10001');">서비스_DEL</a></td><td style="background-color: rgb(255, 255, 255);">UPSVC10001</td><td style="background-color: rgb(255, 255, 255);">1</td><td style="background-color: rgb(255, 255, 255);">사용</td></tr><tr><td>1</td><td><a class="link01 txt_over txt_white" href="javascript:submit_svcInfo_detail_info('UPSVC10002');">서비스_EMPTY</a></td><td>UPSVC10002</td><td>2</td><td>사용</td></tr></tbody>
+              {{/each}}
+              </tbody>
             </table>
           </div>
-
-          <!-- paging -->
-          <div class="paging" id="svc_page_body"><a href="javascript:make_svc_list(1);" class="btn_first">처음 페이지</a><a href="javascript:make_svc_list(1);" class="btn_prev">이전 페이지</a><a href="javascript:make_svc_list(1);" class="on">1</a><a href="javascript:make_svc_list(1);" class="btn_next">다음 페이지</a><a href="javascript:make_svc_list(1);" class="btn_last">마지막 페이지</a></div>
-          <!-- //paging -->
 
         </div>
       </div>

@@ -21,36 +21,36 @@
                 <th scope="row" class="bul_txt01 pre"><span>조회  조건</span></th>
                 <td>
                   <!-- select -->
-                  <div class="select">
-                    <span>전체</span>
-                    <ul>
-                      <li data-val="A">전체</li>
-                      <li data-val="N">이름</li>
-                      <li data-val="I">아이디</li>
-                    </ul>
-                    <select id="mgr_search_dv" selected="selected">
-                      <option value="A">전체</option>
-                      <option value="N">이름</option>
-                      <option value="I">아이디</option>
-                    </select>
-                  </div>
+                  <!--<div class="select">-->
+                    <!--<span>전체</span>-->
+                    <!--<ul>-->
+                      <!--<li data-val="A">전체</li>-->
+                      <!--<li data-val="N">이름</li>-->
+                      <!--<li data-val="I">아이디</li>-->
+                    <!--</ul>-->
+                    <!--<select id="mgr_search_dv" selected="selected">-->
+                      <!--<option value="A">전체</option>-->
+                      <!--<option value="N">이름</option>-->
+                      <!--<option value="I">아이디</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
                   <!-- //select -->
-                  <input type="text" id="mgr_search_txt" class="ip_txt ml10" placeholder="검색어를 입력하세요." onkeypress="javascript:enterThread(event);">
+                  <input type="text" id="mgr_search_txt" class="ip_txt" placeholder="이름/아이디" style="width: 100px;">
                 </td>
               </tr>
               <tr>
                 <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>상        태</span></th>
                 <td style="background-color: rgb(255, 255, 255);">
                   <label class="radio radio_on"><input type="radio" name="mgr_use_yn" value="" checked="checked">전체</label>
-                  <label class="radio ml20"><input type="radio" name="mgr_use_yn" value="Y">사용</label>
-                  <label class="radio ml20"><input type="radio" name="mgr_use_yn" value="N">사용 안함</label>
+                  <label class="radio ml20"><input type="radio" name="mgr_use_yn" value="사용">사용</label>
+                  <label class="radio ml20"><input type="radio" name="mgr_use_yn" value="사용안함">사용 안함</label>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
           <div class="btn_area tc mt10">
-            <a href="javascript:make_user_list('1');" class="btns btn_large_ok"><span>조회</span></a>
+            <a href="#" class="btns btn_large_ok" name="btn_search"><span>조회</span></a>
           </div>
         </div>
 
@@ -73,7 +73,17 @@
                 <th scope="col"><strong class="pre">상        태</strong></th>
               </tr>
               </thead>
-              <tbody id="user_list"><tr><td>5</td><td><a class="link01 pre" href="{{pathFor 'userDetail'}}">깅뮨철</a></td><td><a class="link01" href="{{pathFor 'userDetail'}}">tigggi1234</a></td><td>2015-10-05</td><td>사용</td></tr><tr><td style="background-color: rgb(43, 55, 73);">4</td><td style="background-color: rgb(43, 55, 73);"><a class="link01 pre" href="{{pathFor 'userDetail'}}">김윤철</a></td><td style="background-color: rgb(43, 55, 73);"><a class="link01" href="{{pathFor 'userDetail'}}">kane8787</a></td><td style="background-color: rgb(43, 55, 73);">2015-10-03</td><td style="background-color: rgb(43, 55, 73);">사용</td></tr><tr><td>3</td><td><a class="link01 pre" href="javascript:submit_user_detail_info('tigggi1');">김윤철</a></td><td><a class="link01" href="javascript:submit_user_detail_info('tigggi1');">tigggi1</a></td><td>2015-10-03</td><td>사용 안함</td></tr><tr><td style="background-color: rgb(43, 55, 73);">2</td><td style="background-color: rgb(43, 55, 73);"><a class="link01 pre" href="javascript:submit_user_detail_info('admin');">관리자</a></td><td style="background-color: rgb(43, 55, 73);"><a class="link01" href="javascript:submit_user_detail_info('admin');">admin</a></td><td style="background-color: rgb(43, 55, 73);">2015-02-23</td><td style="background-color: rgb(43, 55, 73);">사용</td></tr><tr><td>1</td><td><a class="link01 pre" href="javascript:submit_user_detail_info('tigggi');">김윤철</a></td><td><a class="link01" href="javascript:submit_user_detail_info('tigggi');">tigggi</a></td><td>2015-02-23</td><td>사용</td></tr></tbody>
+              <tbody id="user_list">
+              {{#each users}}
+              <tr>
+                <td>{{incremented @index}}</td>
+                <td><a class="link01 pre" href="{{pathFor 'userDetail' _id=_id}}">{{profile.이름}}</a></td>
+                <td><a class="link01" href="{{pathFor 'userDetail' _id=_id}}">{{username}}</a></td>
+                <td>{{등록일}}</td>
+                <td>{{profile.상태}}</td>
+              </tr>
+              {{/each}}
+              </tbody>
             </table>
           </div>
 

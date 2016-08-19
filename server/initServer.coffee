@@ -18,7 +18,7 @@ Meteor.startup ->
     svcInfo.AGENT정보.push agent_id
     CollectionServices.insert svcInfo
 
-
-
+  unless Meteor.users.findOne()
+    cl 'hi'
 
 

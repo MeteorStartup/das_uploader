@@ -15,6 +15,10 @@ unless CollectionServices.findOne()
   agent.소멸정보절대경로 = '/Users/jwjin/data'
   CollectionAgents.insert agent
 
+unless Meteor.users.findOne()
+  cl 'hi'
+
+
 Meteor.methods
   'getAgentSetting': (Agent_URL) ->
     cl 'getAgentSetting'

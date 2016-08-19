@@ -5,7 +5,7 @@ Meteor.startup ->
       agent = CollectionAgents.findOne('AGENT_URL': AGENT_URL)
       return agent
 
-    'insertDAS': (strDasInfo) ->
+    'insertDAS': (strDasInfo, agentUrl) ->
   #_.extend 해서 서비스명 필드를 추가해서 넣어줘야함.
       dasInfo = dataSchema 'DASInfo'
       arrDasInfo =  strDasInfo.split '\n'
@@ -33,8 +33,12 @@ Meteor.startup ->
 
         if key isnt '' and val isnt ''
           dasInfo[key] = val
-
-      dasInfo.SERVICE_NAME = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID).SERVICE_NAME or ''
+      service = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID)
+      agent = CollectionAgents.findOne(AGENT_URL: agentUrl)
+      dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
+      dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
+      dasInfo.AGENT_URL = agent.AGENT_URL
+      dasInfo.AGENT_URL_FROM_AGENT = agentUrl
 
       cl dasInfo
       CollectionDasInfos.insert dasInfo

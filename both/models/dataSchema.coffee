@@ -11,6 +11,7 @@
         createdAt: new Date()
         AGENT_NAME: ''    #agent의 별칭
         AGENT_URL: ''   #agent의 URL
+        AGENT_URL_FROM_AGENT: ''  #AGENT_URL은 agent 콜렉션에서 꺼내서 넣은거고, 이건 agent가 보낸 URL로 그냥 로그용
         SERVICE_ID: ''    #파일에서 꺼내진 서비스 ID
         SERVICE_NAME: ''      #Agent에서 보내는게 아니고 dms methods에서 삽입
         BOARD_ID: ''    #파일에서 꺼내진 게시판 ID (현재 불필요)

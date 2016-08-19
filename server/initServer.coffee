@@ -1,4 +1,5 @@
 cl = console.log
+fiber = require 'fibers'
 #  admin 등 기본 셋팅이 들어가야 한다
 
 Meteor.startup ->
@@ -25,6 +26,23 @@ Meteor.startup ->
     svcInfo.AGENT정보.push agent_id
     CollectionServices.insert svcInfo
 
+
+#  run checking process
+  runDMS = ->
+    now = new Date();
+    mils = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()+3, 0) - now
+    if (mils < 0)
+      mils += 1000*60*60*24
+    setTimeout ->
+      runDMS()
+      fiber ->
+        CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
+
+
+      .run()
+    , mils
+
+  runDMS()
 
 ##      dasInfo Test Script      ###
 #  date = new Date()

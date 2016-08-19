@@ -2,7 +2,10 @@ Meteor.startup ->
   Meteor.methods
     'getAgentSetting': (AGENT_URL) ->
       cl 'getAgentSetting'
-      agent = CollectionAgents.findOne('AGENT_URL': AGENT_URL)
+      try
+        agent = CollectionAgents.findOne('AGENT_URL': AGENT_URL)
+      catch e
+        return throw new Meteor.Error 'agent not found'
       return agent
 
     'insertDAS': (strDasInfo, agentUrl) ->
@@ -33,12 +36,29 @@ Meteor.startup ->
 
         if key isnt '' and val isnt ''
           dasInfo[key] = val
-      service = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID)
-      agent = CollectionAgents.findOne(AGENT_URL: agentUrl)
-      dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
-      dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
-      dasInfo.AGENT_URL = agent.AGENT_URL
-      dasInfo.AGENT_URL_FROM_AGENT = agentUrl
-      dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)));
-      cl dasInfo
+      try
+        service = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID)
+        agent = CollectionAgents.findOne(AGENT_URL: agentUrl)
+        dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
+        dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
+        dasInfo.AGENT_URL = agent.AGENT_URL
+        dasInfo.AGENT_URL_FROM_AGENT = agentUrl
+        dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
+      catch e
+#        에러 발생 시 status를 미리 결정 짓고 더 이상 처리 하지 않는다
+        cl msg = '#### Service or Agent not found ####'
+        dasInfo.STATUS = "#{msg}: #{e.message}"
+
       CollectionDasInfos.insert dasInfo
+
+#     용량 통계 추가
+      sizeInfo = CollectionSizeInfos.findOne SERVICE_ID: dasInfo.SERVICE_ID
+      if sizeInfo?
+        cl sizeInfo.업로드용량 += dasInfo.UP_FSIZE
+        CollectionSizeInfos.update _id: sizeInfo._id, sizeInfo
+      else
+        sizeStatus = dataSchema '용량통계'
+        sizeStatus.SERVICE_ID = dasInfo.SERVICE_ID
+        sizeStatus.업로드용량 = dasInfo.UP_FSIZE
+        CollectionSizeInfos.insert sizeStatus
+

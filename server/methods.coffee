@@ -39,6 +39,6 @@ Meteor.startup ->
       dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
       dasInfo.AGENT_URL = agent.AGENT_URL
       dasInfo.AGENT_URL_FROM_AGENT = agentUrl
-
+      dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)));
       cl dasInfo
       CollectionDasInfos.insert dasInfo

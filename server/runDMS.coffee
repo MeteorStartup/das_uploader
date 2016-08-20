@@ -69,18 +69,19 @@ Meteor.startup ->
 #            password: 'Thflskf0'
 #            database: 'test'
           mysqlDB.connect()
-          arr_queries = dasInfo.DEL_DB_QRY.split(';')
-          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
+#          arr_queries = dasInfo.DEL_DB_QRY.split(';')
+#          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
   #        arr_queries = [
   #          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
   #          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
   #        ]
-          arr_queries.forEach (query) ->
+          dasInfo.DEL_DB_QRY.forEach (query) ->
             mysqlDB.query query, (err, rows, fields) ->
               if err
                 cl 'delete mysql db'
                 cl dasInfo.STATUS = err.toString()
                 dasInfo.STATUS = err
+              else cl 'success!!!!!!!!!'
           mysqlDB.end()
 
         catch err

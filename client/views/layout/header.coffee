@@ -14,6 +14,5 @@ Template.header.helpers
 Template.header.events
   "click [name=runDMS]": (e, tmpl) ->
     e.preventDefault()
-    alert 'run'
     Meteor.call 'runDMS', (err, rslt) ->
-      alert err or rslt
+      alert err or '실시간 처리 완료'

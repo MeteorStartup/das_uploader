@@ -62,11 +62,11 @@ Meteor.startup ->
   #로드되는 시점에 agent가 내려가 있다면 접속을 계속 시도하느라 uploader의 로드가 중단 되기 때문에
   #async하게 돌려놓고 우선 서버를 구동
   #근데 startup인데 왜 methods도 로드가 안된상황에서 실행이 되지?
-  setTimeout ->
-    fibers ->
-      runDMS()
-    .run()
-  , 1000
+#  setTimeout ->
+#    fibers ->
+#      runDMS()
+#    .run()
+#  , 1000
 
 #  loopDMS = ->
 #    now = new Date();

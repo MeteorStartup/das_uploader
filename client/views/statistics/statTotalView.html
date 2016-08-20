@@ -52,7 +52,7 @@
             </table>
           </div>
           <div class="btn_area tc mt10">
-            <a href="#" class="btns btn_large_ok"><span>조회</span></a>
+            <a href="#" class="btns btn_large_ok" name="btn_search" disabled="{{disabled}}"><span>조회</span></a>
           </div>
         </div>
         <div class="txt_srch1">
@@ -66,9 +66,9 @@
 
 
           <ul>
-            <li class="first on"><a href="#">업로드 건수</a></li>
-            <li class=""><a href="#">처리 건수</a></li>
-            <li class=""><a href="#">오류 건수</a></li>
+            <li class="first on" id="seriesUp"><a href="#">업로드 건수</a></li>
+            <li class="" id="seriesDel"><a href="#">처리 건수</a></li>
+            <li class="" id="seriesErr"><a href="#">오류 건수</a></li>
           </ul>
         </div>
 
@@ -141,13 +141,22 @@
               </colgroup>
               <thead>
               <tr>
-                <th scope="col"><strong id="select_term_dv">월</strong></th>
+                <th scope="col"><strong id="select_term_dv">실시간(시간별)</strong></th>
                 <th scope="col"><strong>업로드 건수</strong></th>
                 <th scope="col"><strong>처리 건수</strong></th>
                 <th scope="col"><strong>오류 건수</strong></th>
               </tr>
               </thead>
-              <tbody id="stat_total_detail_list"><tr><td class="txt_white">03월</td><td>10</td><td>9</td><td class="txt_result">0</td></tr><tr><td class="txt_white" style="background-color: rgb(255, 255, 255);">04월</td><td style="background-color: rgb(255, 255, 255);">2</td><td style="background-color: rgb(255, 255, 255);">2</td><td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td></tr><tr><td class="txt_white">05월</td><td>17</td><td>16</td><td class="txt_result">0</td></tr><tr><td class="txt_white" style="background-color: rgb(255, 255, 255);">06월</td><td style="background-color: rgb(255, 255, 255);">1</td><td style="background-color: rgb(255, 255, 255);">0</td><td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td></tr><tr><td class="txt_white">07월</td><td>0</td><td>0</td><td class="txt_result">0</td></tr><tr><td class="txt_white" style="background-color: rgb(255, 255, 255);">08월</td><td style="background-color: rgb(255, 255, 255);">0</td><td style="background-color: rgb(255, 255, 255);">0</td><td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td></tr><tr><td>총계</td><td>30</td><td>27</td><td>0</td></tr></tbody>
+              <tbody id="stat_total_detail_list">
+              {{#each statTotalInfos}}
+              <tr>
+                <td class="txt_white">{{cate}}</td>
+                <td>{{up}}</td>
+                <td>{{del}}</td>
+                <td class="txt_result">{{err}}</td>
+              </tr>
+              {{/each}}
+              </tbody>
             </table>
           </div>
 

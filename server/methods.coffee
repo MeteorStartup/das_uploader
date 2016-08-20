@@ -209,3 +209,82 @@ Meteor.methods
     _.extend profile, _obj
     Meteor.users.update _id: @userId,
       $set: profile: profile
+
+#  series:[
+#    {
+#      name: '서비스명'
+#      data: [
+#        1
+#        2
+#        3
+#      ]
+#    }
+#  ]
+#  result = {
+#    categories: []
+#    series: []
+#  }
+  getRealTimeStats: (_today, _serviceId) ->
+    result = {}
+    categories = jDefine.dayTimeDiv
+    seriesUp = []
+    seriesDel = []
+    seriesErr = []
+    serviceIds = []
+
+    ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
+    if _serviceId is 'all'
+      CollectionServices.find().forEach (service) ->
+        serviceIds.push service.SERVICE_ID
+    else serviceIds.push CollectionServices.findOne(_id: _serviceId).SERVICE_ID
+
+#    cl serviceIds
+
+    point1 = (new Date()).getTime()
+
+    serviceIds.forEach (serviceId) ->
+      dataUp = []
+      dataDel = []
+      dataErr = []
+      tempObjUp = {}
+      tempObjDel = {}
+      tempObjErr = {}
+      categories.forEach (cate) ->
+        dataUp.push CollectionDasInfos.find({
+          SERVICE_ID: serviceId
+          REQ_DATE:
+            $gte: new Date("#{_today} #{cate}:00:00"),
+            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+        }).count()
+        dataDel.push CollectionDasInfos.find({
+          SERVICE_ID: serviceId
+          REQ_DATE:
+            $gte: new Date("#{_today} #{cate}:00:00"),
+            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+          STATUS: 'success'
+        }).count()
+        dataErr.push CollectionDasInfos.find({
+          SERVICE_ID: serviceId
+          REQ_DATE:
+            $gte: new Date("#{_today} #{cate}:00:00"),
+            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+          STATUS: $nin: ['wait', 'success']
+        }).count()
+      tempObjUp['name'] = tempObjDel['name'] = tempObjErr['name'] = CollectionServices.findOne(SERVICE_ID: serviceId).SERVICE_NAME
+#      tempObj['data'] = dataUp
+      tempObjUp['data'] = dataUp
+      tempObjDel['data'] = dataDel
+      tempObjErr['data'] = dataErr
+      seriesUp.push tempObjUp
+      seriesDel.push tempObjDel
+      seriesErr.push tempObjErr
+
+    point2 = (new Date()).getTime()
+    cl point2 - point1
+#    cl series
+    result['categories'] = categories
+    result['seriesUp'] = seriesUp
+    result['seriesDel'] = seriesDel
+    result['seriesErr'] = seriesErr
+    cl JSON.stringify result
+    return result

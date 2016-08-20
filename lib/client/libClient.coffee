@@ -37,10 +37,15 @@
 
   calForPercent: (_arr) ->
     total = 0
+    temps = []
     arr = _.clone(_arr);
     arr.forEach (_obj) ->
       total += _obj.y
+#    cl total
     arr.forEach (_obj) ->
-      _obj['y'] = parseInt(((_obj.y/total)*100).toFixed(2))
-    return arr
+      obj = {}
+      obj['name'] = _obj.name
+      obj['y'] = parseInt(((_obj.y/total)*100).toFixed(2))
+      temps.push obj
+    return temps
 

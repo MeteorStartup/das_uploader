@@ -59,10 +59,10 @@ Meteor.startup ->
       if dasInfo.STATUS is 'success'
         try
           mysqlDB = mysql.createConnection
-            host: 'localhost'
-            user: 'root'
-            password: 'Thflskf0'
-            database: 'test'
+#            host: 'localhost'
+#            user: 'root'
+#            password: 'Thflskf0'
+#            database: 'test'
           mysqlDB.connect()
           arr_queries = dasInfo.DEL_DB_QRY.split(';')
           arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false

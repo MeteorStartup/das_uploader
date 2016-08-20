@@ -39,7 +39,7 @@ Template.history.onRendered ->
   $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
   $('#date01').val(todayObj.start)
   $('#date02').val(todayObj.end)
-
+  $('[name=btnSearch]').trigger('click')
 Template.history.helpers
   services: -> servicesRv?.get()
   lists: -> if listRv.get()? then listRv.get()
@@ -88,7 +88,7 @@ Template.history.events
     skipRv.set skipRv.get() + 10
     condition = conditionRv.get()
     condition.options['skip'] =  skipRv.get()
-    cl condition
+#    cl condition
     conditionRv.set condition
 
 

@@ -23,11 +23,12 @@
                 <th scope="row" class="bul_txt01 pre"><span>서   비   스</span></th>
                 <td>
                   <!-- select -->
-                  <div class="select">
-                    <span>전체</span>
-                    <ul id="upsvc_list_ul"><li data-val="">전체</li><li data-val="UPSVC10001">서비스_DEL</li><li data-val="UPSVC10002">서비스_EMPTY</li><li data-val="UPSVC10003">서비스_COPY</li><li data-val="UPSVC10004">123123</li><li data-val="UPSVC10005">test</li><li data-val="UPSVC10006">tes</li><li data-val="UPSVC10007">SOFT</li></ul>
-                    <select id="upsvc_list_select" selected="selected"><option value="">전체</option><option value="UPSVC10001">서비스_DEL</option><option value="UPSVC10002">서비스_EMPTY</option><option value="UPSVC10003">서비스_COPY</option><option value="UPSVC10004">123123</option><option value="UPSVC10005">test</option><option value="UPSVC10006">tes</option><option value="UPSVC10007">SOFT</option></select>
-                  </div>
+                  <select name="selectedService" style="width: 200px;">
+                    <option value="all">전체</option>
+                    {{#each services}}
+                      <option value="{{_id}}">{{SERVICE_NAME}}</option>
+                    {{/each}}
+                  </select>
                   <!-- //select -->
                 </td>
               </tr>
@@ -40,10 +41,10 @@
 												<span class="ip"><input id="date02" type="text" ></span>
 											</span>
                   <div class="btn_box form_left">
-                    <a href="#" class="btns btn_inner"><span>실시간</span></a>
+                    <a href="#" class="btns btn_inner on"><span>실시간</span></a>
                     <a href="#" class="btns btn_inner"><span>일별</span></a>
                     <a href="#" class="btns btn_inner"><span>주간</span></a>
-                    <a href="#" class="btns btn_inner on"><span>월간</span></a>
+                    <a href="#" class="btns btn_inner"><span>월간</span></a>
                   </div>
                 </td>
               </tr>
@@ -51,7 +52,7 @@
             </table>
           </div>
           <div class="btn_area tc mt10">
-            <a href="javascript:make_chart();" class="btns btn_large_ok"><span>조회</span></a>
+            <a href="#" class="btns btn_large_ok"><span>조회</span></a>
           </div>
         </div>
         <div class="txt_srch1">

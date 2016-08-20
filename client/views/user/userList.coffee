@@ -12,7 +12,6 @@ Template.userList.onCreated ->
     Meteor.call 'getUserLists', condition.get(), (err, rslt) ->
       if err then alert err
       else
-#        cl rslt
         users.set rslt
 
 Template.userList.helpers

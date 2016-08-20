@@ -1,19 +1,27 @@
+servicesRv = new ReactiveVar()
+
 Router.route 'statTotalView'
 
+Template.statTotalView.onCreated ->
+#  cl $.datepicker.formatDate('yy-mm-dd', new Date());
+  Meteor.call 'getServiceLists', (err, rslt) ->
+    if err then alert err
+    else
+      servicesRv.set rslt
+
 Template.statTotalView.onRendered ->
+  todayObj = libClient.getRealtimeDate()
   $('#date01').datepicker({dateFormat: 'yy-mm-dd'})
   $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
-#    appendText: '(yy-mm-dd)'
-#    dateFormat: 'yy-mm-dd'
-#    altField: '#datepicker-4'
-#    altFormat: 'DD, d MM, yy'
+  $('#date01').val(todayObj.start)
+  $('#date02').val(todayObj.end)
   $('#line-chart-1').highcharts
-    title:
-      text: 'Monthly Average Temperature'
-      x: -20
-    subtitle:
-      text: 'Source: WorldClimate.com'
-      x: -20
+#    title:
+#      text: 'Monthly Average Temperature'
+#      x: -20
+#    subtitle:
+#      text: 'Source: WorldClimate.com'
+#      x: -20
     xAxis: categories: [
       'Jan'
       'Feb'
@@ -164,3 +172,20 @@ Template.statTotalView.onRendered ->
       } ]
       credits:
         enabled: false
+
+Template.statTotalView.helpers
+  services: -> servicesRv?.get()
+
+Template.statTotalView.events
+  'click .tab li': (e, tmpl) ->
+    $('.tab li').removeClass('on')
+    cl $(e.target).parent().addClass('on')
+
+  'click .btn_box .btn_inner': (e, tmpl) ->
+    if $(e.target).text() in ['일별', '주간']
+      e.preventDefault()
+      alert '준비중입니다.'
+      return
+    $('.btn_inner').removeClass('on')
+    if (target=$(e.target)).hasClass('btn_inner') or (target=target.parent()).hasClass('btn_inner')
+      target.addClass('on')

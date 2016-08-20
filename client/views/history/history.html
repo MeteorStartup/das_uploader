@@ -17,11 +17,12 @@
                 <th scope="row" class="bul_txt01 pre"><span>서   비   스</span></th>
                 <td>
                   <!-- select -->
-                  <div class="select" id="upsvc_list">
-                    <span>전체</span>
-                    <ul id="upsvc_list_ul"><li data-val="">전체</li><li data-val="UPSVC10001">서비스_DEL</li><li data-val="UPSVC10002">서비스_EMPTY</li><li data-val="UPSVC10003">서비스_COPY</li><li data-val="UPSVC10004">123123</li><li data-val="UPSVC10005">test</li><li data-val="UPSVC10006">tes</li><li data-val="UPSVC10007">SOFT</li></ul>
-                    <select id="upsvc_list_select" selected="selected"><option value="">전체</option><option value="UPSVC10001">서비스_DEL</option><option value="UPSVC10002">서비스_EMPTY</option><option value="UPSVC10003">서비스_COPY</option><option value="UPSVC10004">123123</option><option value="UPSVC10005">test</option><option value="UPSVC10006">tes</option><option value="UPSVC10007">SOFT</option></select>
-                  </div>
+                  <select name="serviceSelect">
+                    <option value="all">전체</option>
+                    {{#each services}}
+                    <option value="{{_id}}">{{SERVICE_NAME}}</option>
+                    {{/each}}
+                  </select>
                   <!-- //select -->
                 </td>
               </tr>

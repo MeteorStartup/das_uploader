@@ -1,10 +1,16 @@
+servicesRv = new ReactiveVar()
 Router.route 'history'
+
+Template.history.onCreated ->
+  Meteor.call 'getServiceLists', (err, rslt) ->
+    if err then alert err
+    else
+      servicesRv.set rslt
 
 Template.history.onRendered ->
 
 
+Template.history.helpers
+  services: -> servicesRv?.get()
+
 Template.history.events
-  'click .radio': (e, tmpl) ->
-    if ((target = $(e.target)).hasClass('radio')) or ((target = $(e.target).parent()).hasClass('radio'))
-      $('.radio').removeClass 'radio_on'
-      target.addClass 'radio_on'

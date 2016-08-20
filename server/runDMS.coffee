@@ -40,6 +40,7 @@ Meteor.startup ->
                 data:
                   DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
                   DEL_OPTION: service.파일처리옵션
+                  BACKUP_PATH: service.백업파일경로
               , (err, rslt) ->
                 if err
                   cl err.toString()

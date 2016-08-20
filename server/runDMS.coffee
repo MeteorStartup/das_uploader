@@ -2,21 +2,6 @@ future = require 'fibers/future'
 fibers = require 'fibers'
 mysql = require 'mysql'
 Meteor.startup ->
-  #  run checking process
-#  mysqlDB = mysql.createConnection
-#    host: 'localhost'
-#    user: 'root'
-#    password: 'Thflskf0'
-#    database: 'test'
-#  mysqlDB.connect()
-#  queries = [
-#    'SET @num = (SELECT count(*) from TEST_TABLE)'
-#    'delete from TEST_TABLE WHERE idTest_TABLE=@num'
-#  ]
-#  queries.forEach (query) ->
-#    mysqlDB.query query, (err, rows, fields) ->
-#      cl err or rows
-#  mysqlDB.end()
 
 #로드되는 시점에 agent가 내려가 있다면 접속을 계속 시도하느라 uploader의 로드가 중단 되기 때문에
 #async하게 돌려놓고 우선 서버를 구동
@@ -25,88 +10,89 @@ Meteor.startup ->
     fibers ->
       runDMS()
     .run()
-  , 1000 * 60
+  , 1000 * 10
 
 
   runDMS = ->
     CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
-#      delete files
-      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
+      unless service
+        dasInfo.STATUS = 'service not found'
+        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+
       agents = CollectionAgents.find _id: $in: service.AGENT정보
-      agents.forEach (agent) ->
-        if agent.파일삭제기능
-          try
-            fut = new future()
-            HTTP.post "#{agent.AGENT_URL}/removeFiles",
-              data:
-                DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
-            , (err, rslt) ->
-              if err
-                cl dasInfo.STATUS = err.toString()
-                fibers ->
-                  CollectionError.insert
-                    createdAt: new Date()
-                    err: err
-                .run()
-              fut.return()
-            fut.wait()
+      if agents.count() is 0
+        dasInfo.STATUS = 'agent not found'
+        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
-          catch err
-            cl dasInfo.STATUS = err.toString()
-            fibers ->
-              CollectionError.insert
-                createdAt: new Date()
-                err: err
-            .run()
-#      delete query
-      try
-        mysqlDB = mysql.createConnection
-          host: 'localhost'
-          user: 'root'
-          password: 'Thflskf0'
-          database: 'test'
-        mysqlDB.connect()
-        arr_queries = dasInfo.DEL_DB_QRY.split(';')
-        arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
-#        arr_queries = [
-#          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
-#          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
-#        ]
-        arr_queries.forEach (query) ->
-          mysqlDB.query query, (err, rows, fields) ->
-            if err
-              cl 'delete mysql db'
+      ## delete files
+      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success
+
+      if dasInfo.STATUS is 'success'
+        agents.forEach (agent) ->
+          if agent.파일삭제기능
+            try
+              fut = new future()
+              HTTP.post "#{agent.AGENT_URL}/removeFiles",
+                data:
+                  DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
+              , (err, rslt) ->
+                if err
+                  cl dasInfo.STATUS = err.toString()
+                  dasInfo.STATUS = err
+#                else
+#                  fibers ->
+#                    dasInfo.STATUS = 'success'
+#                    CollectionDasInfos.update _id: dasInfo._id, dasInfo
+#                  .run()
+                fut.return()
+              fut.wait()
+
+            catch err
               cl dasInfo.STATUS = err.toString()
-              fibers ->
-                CollectionError.insert
-                  createdAt: new Date()
-                  err: err
-              .run()
-        mysqlDB.end()
+              dasInfo.STATUS = err
+##      delete query
+      if dasInfo.STATUS is 'success'
+        try
+          mysqlDB = mysql.createConnection
+            host: 'localhost'
+            user: 'root'
+            password: 'Thflskf0'
+            database: 'test'
+          mysqlDB.connect()
+          arr_queries = dasInfo.DEL_DB_QRY.split(';')
+          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
+  #        arr_queries = [
+  #          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
+  #          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
+  #        ]
+          arr_queries.forEach (query) ->
+            mysqlDB.query query, (err, rows, fields) ->
+              if err
+                cl 'delete mysql db'
+                cl dasInfo.STATUS = err.toString()
+                dasInfo.STATUS = err
+          mysqlDB.end()
 
-      catch err
-        cl dasInfo.STATUS = err.toString()
-        fibers ->
-          CollectionError.insert
-            createdAt: new Date()
-            err: err
-        .run()
+        catch err
+          cl dasInfo.STATUS = err.toString()
+          dasInfo.STATUS = err
 
 ##      delete url
-#      if dasInfo.DEL_DB_URL? and dasInfo.DEL_DB_URL.length > 0
-#        fut = new future()
-#        HTTP.get dasInfo.DEL_DB_URL, (err, rslt) ->
-#          if err
-##            이녀석은 async다. 나중에 처리하자.
-##            timeout 이 너무 길어져서 다 기다릴 수가 없다
-#            cl 'delete url'
-#            cl dasInfo.STATUS = err.toString()
-##            fibers ->
-##              CollectionError.insert err
-##            .run()
-##          fut.return()
-##        fut.wait()
+#      if dasInfo.STATUS is 'success'
+#        if dasInfo.DEL_DB_URL? and dasInfo.DEL_DB_URL.length > 0
+#          fut = new future()
+#          HTTP.get dasInfo.DEL_DB_URL, (err, rslt) ->
+#            if err
+#  #            이녀석은 async다. 나중에 처리하자.
+#  #            timeout 이 너무 길어져서 다 기다릴 수가 없다
+#              cl 'delete url'
+#              cl dasInfo.STATUS = err.toString()
+#  #            fibers ->
+#  #              CollectionError.insert err
+#  #            .run()
+#  #          fut.return()
+#  #        fut.wait()
 
       #      최종 dasInfo update
       CollectionDasInfos.update _id: dasInfo._id, dasInfo

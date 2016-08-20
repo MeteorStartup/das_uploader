@@ -25,6 +25,7 @@
         DEL_DATE: new Date() #'2016-08-01' 지우는 날짜는 00:00분으로
         KEEP_PERIOD: 1   #date Number type 일수
         STATUS: 'wait'   # wait / success / err_msg => delete error, sql error
+        origin: {}      #original file data for debug
     when '용량통계'     #@CollectionSizeInfos 에 업로드 시점 & 처리 시점에 추가
       rslt =
         createdAt: new Date()
@@ -63,6 +64,7 @@
 #          파일소멸절대경로: ''   #해당 정보는 기존 서버의 떨군 파일에 존재. 어떤 에이전트(서버)가 파일 서버 인지는 파일삭제기능이 true 인놈들에게 날림.
           소멸정보전송기능: true  #본 옵션이 true인 agent는 해당 소멸정보절대경로를 참조해서 파일을 polling, dms로 전송
           소멸정보절대경로: ''    #ex> /home/das/das_agent_files (맨끝 '/' 삭제)
+          STATUS: true      #커넥션 상태
 
     when 'profile'
       rslt =

@@ -13,12 +13,15 @@ Meteor.startup ->
   , 1000 * 60 * 60
 
 
-  runDMS = ->
+  @runDMS = ->
+    cl 'runDMS'
     CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
       unless service
         dasInfo.STATUS = 'service not found'
         return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+
+      if service.상태 is false then return  #해당 서비스의 처리 않함 상태
 
       agents = CollectionAgents.find _id: $in: service.AGENT정보
       if agents.count() is 0
@@ -36,6 +39,8 @@ Meteor.startup ->
               HTTP.post "#{agent.AGENT_URL}/removeFiles",
                 data:
                   DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
+                  DEL_OPTION: service.파일처리옵션
+                  BACKUP_PATH: service.백업파일경로
               , (err, rslt) ->
                 if err
                   cl err.toString()
@@ -58,27 +63,30 @@ Meteor.startup ->
 ##      delete query
       if dasInfo.STATUS is 'success'
         try
-          mysqlDB = mysql.createConnection
+          mysqlDB = mysql.createConnection service.DB정보.DB접속URL
 #            host: 'localhost'
 #            user: 'root'
 #            password: 'Thflskf0'
 #            database: 'test'
           mysqlDB.connect()
-          arr_queries = dasInfo.DEL_DB_QRY.split(';')
-          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
+#          arr_queries = dasInfo.DEL_DB_QRY.split(';')
+#          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
   #        arr_queries = [
   #          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
   #          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
   #        ]
-          arr_queries.forEach (query) ->
+          dasInfo.DEL_DB_QRY.forEach (query) ->
             mysqlDB.query query, (err, rows, fields) ->
               if err
                 cl 'delete mysql db'
                 cl dasInfo.STATUS = err.toString()
                 dasInfo.STATUS = err
+              else cl 'success!!!!!!!!!'
           mysqlDB.end()
 
         catch err
+          cl 'here'
+          cl err
           cl dasInfo.STATUS = err.toString()
           dasInfo.STATUS = err
 

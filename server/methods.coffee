@@ -13,6 +13,7 @@ Meteor.startup ->
       return agent
     'insertDAS': (data) ->
       dasInfo = dataSchema 'DASInfo'
+      dasInfo.origin = data.dasInfo
       arrDasInfo =  data.dasInfo.split '\n'
 #      cl arrDasInfo
       arrDasInfo.forEach (line) ->
@@ -22,6 +23,12 @@ Meteor.startup ->
         val = line.substring pos + 1
 
         switch key
+          when 'DEL_DB_QRY'
+            arr_qry = val.split ';'
+            arr_qry = arr_qry.filter (str) -> (str.length > 0)
+            arr_qry.forEach (qry, i) ->
+              arr_qry[i] = qry.trim()
+            val = arr_qry
           when 'UP_FSIZE'
             val = val-0
           when 'REQ_DATE', 'DEL_DATE'
@@ -68,6 +75,8 @@ Meteor.startup ->
       return 'success'
 
 Meteor.methods
+  'runDMS': ->
+    runDMS()
   'dbConnectionTest': (_dbObj) ->
     cl _dbObj
     mysqlDB = mysql.createConnection _dbObj.DB접속URL,
@@ -83,6 +92,7 @@ Meteor.methods
       cl err or rows
     mysqlDB.end()
     return fut.wait()
+
 
 
   'insertAgentInfo': (_agent) ->

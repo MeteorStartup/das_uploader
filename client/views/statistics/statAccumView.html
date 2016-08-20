@@ -18,11 +18,12 @@
                 <th scope="row" class="bul_txt01 pre"><span>서   비   스</span></th>
                 <td>
                   <!-- select -->
-                  <div class="select">
-                    <span>전체</span>
-                    <ul id="upsvc_list_ul"><li data-val="">전체</li><li data-val="UPSVC10001">서비스_DEL</li><li data-val="UPSVC10002">서비스_EMPTY</li><li data-val="UPSVC10003">서비스_COPY</li><li data-val="UPSVC10004">123123</li><li data-val="UPSVC10005">test</li><li data-val="UPSVC10006">tes</li><li data-val="UPSVC10007">SOFT</li></ul>
-                    <select id="upsvc_list_select" onchange="javascript:make_stat_accum_list('1');" selected="selected"><option value="">전체</option><option value="UPSVC10001">서비스_DEL</option><option value="UPSVC10002">서비스_EMPTY</option><option value="UPSVC10003">서비스_COPY</option><option value="UPSVC10004">123123</option><option value="UPSVC10005">test</option><option value="UPSVC10006">tes</option><option value="UPSVC10007">SOFT</option></select>
-                  </div>
+                  <select name="SERVICE_ID">
+                    <option value="all">전체</option>
+                    {{#each services}}
+                      <option value="{{SERVICE_ID}}">{{SERVICE_NAME}}</option>
+                    {{/each}}
+                  </select>
                   <!-- //select -->
                 </td>
               </tr>
@@ -55,39 +56,20 @@
               </tr>
               </thead>
               <tbody id="stat_accum_list">
-              <tr>
-                <td class="txt_white pre" ><a href="{{pathFor 'statAccumDetail'}}">서비스_DEL</a></td>
-                <td>96</td>
-                <td>48</td>
-                <td>38</td>
-                <td class="txt_result">10</td>
+              {{#each lists}}
+              <tr id="{{SERVICE_ID}}">
+                <td class="txt_white pre" >{{SERVICE_NAME}}</td>
+                <td>{{upCnt}}</td>
+                <td>{{delCnt}}</td>
+                <td>{{waitCnt}}</td>
+                <td class="txt_result">{{errCnt}}</td>
               </tr>
-              <tr>
-                <td class="txt_white pre" style="background-color: rgb(255, 255, 255);"><a href="{{pathFor 'statAccumDetail'}}">SOFT</a></td>
-                <td style="background-color: rgb(255, 255, 255);">13</td>
-                <td style="background-color: rgb(255, 255, 255);">12</td>
-                <td style="background-color: rgb(255, 255, 255);">1</td>
-                <td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td>
-              </tr>
-              <tr>
-                <td class="txt_white pre" ><a href="{{pathFor 'statAccumDetail'}}">서비스_EMPTY</a></td>
-                <td>4</td>
-                <td>4</td>
-                <td>0</td>
-                <td class="txt_result">0</td>
-              </tr>
-              <tr>
-                <td class="txt_white pre" style="background-color: rgb(255, 255, 255);"><a href="{{pathFor 'statAccumDetail'}}">test</a></td>
-                <td style="background-color: rgb(255, 255, 255);">0</td>
-                <td style="background-color: rgb(255, 255, 255);">0</td>
-                <td style="background-color: rgb(255, 255, 255);">0</td>
-                <td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td>
-              </tr>
-              <tr><td class="txt_white pre" ><a href="{{pathFor 'statAccumDetail'}}">서비스_COPY</a></td><td>0</td><td>0</td><td>0</td><td class="txt_result">0</td></tr><tr><td class="txt_white pre" style="background-color: rgb(255, 255, 255);"><a href="{{pathFor 'statAccumDetail'}}">tes</a></td><td style="background-color: rgb(255, 255, 255);">0</td><td style="background-color: rgb(255, 255, 255);">0</td><td style="background-color: rgb(255, 255, 255);">0</td><td class="txt_result" style="background-color: rgb(255, 255, 255);">0</td></tr><tr><td class="txt_white pre" ><a href="{{pathFor 'statAccumDetail'}}">123123</a></td><td>0</td><td>0</td><td>0</td><td class="txt_result">0</td></tr></tbody>
+              {{/each}}
+              </tbody>
             </table>
           </div>
 
-          <div class="paging" id="stat_accum_page_body"><a href="javascript:make_stat_accum_list(1);" class="btn_first">처음 페이지</a><a href="javascript:make_stat_accum_list(1);" class="btn_prev">이전 페이지</a><a href="{{pathFor 'statAccumDetail'}}" class="on">1</a><a href="javascript:make_stat_accum_list(1);" class="btn_next">다음 페이지</a><a href="javascript:make_stat_accum_list(1);" class="btn_last">마지막 페이지</a></div>
+          <!--<div class="paging" id="stat_accum_page_body"><a href="javascript:make_stat_accum_list(1);" class="btn_first">처음 페이지</a><a href="javascript:make_stat_accum_list(1);" class="btn_prev">이전 페이지</a><a href="{{pathFor 'statAccumDetail'}}" class="on">1</a><a href="javascript:make_stat_accum_list(1);" class="btn_next">다음 페이지</a><a href="javascript:make_stat_accum_list(1);" class="btn_last">마지막 페이지</a></div>-->
         </div>
 
       </div>

@@ -272,6 +272,9 @@ Meteor.methods
         yVal += CollectionDasInfos.find({
           SERVICE_ID: serviceId
           KEEP_PERIOD: cate.period
+          REQ_DATE:
+            $gte: new Date(_start)
+            $lt: new Date(_end).addDates(1)
         }).count()
       tempObj['name'] = cate.name
       tempObj['y'] = yVal
@@ -310,6 +313,9 @@ Meteor.methods
         yVal += CollectionDasInfos.find({
           SERVICE_ID: serviceId
           STATUS: cate.STATUS
+          REQ_DATE:
+            $gte: new Date(_start)
+            $lt: new Date(_end).addDates(1)
         }).count()
       tempObj['name'] = cate.name
       tempObj['y'] = yVal
@@ -325,3 +331,55 @@ Meteor.methods
     if (_id = _condition.where.SERVICE_ID)?
       _condition.where['SERVICE_ID'] = CollectionServices.findOne(_id: _id).SERVICE_ID
     CollectionDasInfos.find(_condition.where, _condition.options).fetch()
+
+#  result = [
+#    {
+#      SERVICE_ID: ''
+#      SERVICE_NAME: ''
+#      upCnt: num
+#      delCnt: num
+#      waitCnt: num
+#      errCnt: num
+#    }
+#    ...
+#  ]
+  getAccumStats: ->
+    result = []
+    services = CollectionServices.find()
+    services.forEach (service) ->
+      obj = {}
+      obj['SERVICE_ID'] = service.SERVICE_ID
+      obj['SERVICE_NAME'] = service.SERVICE_NAME
+      obj['upCnt'] = CollectionDasInfos.find({SERVICE_ID:service.SERVICE_ID}).count()
+      obj['delCnt'] = CollectionDasInfos.find({SERVICE_ID:service.SERVICE_ID, STATUS: 'success'}).count()
+      obj['waitCnt'] = CollectionDasInfos.find({SERVICE_ID:service.SERVICE_ID, STATUS: 'wait'}).count()
+      obj['errCnt'] = CollectionDasInfos.find({SERVICE_ID:service.SERVICE_ID, STATUS: $nin: ['wait', 'success']}).count()
+      result.push obj
+#    cl result
+    return result
+
+
+#  result = [
+#    {
+#      SERVICE_ID: ''
+#      SERVICE_NAME: ''
+#      upCnt: num
+#      delCnt: num
+#      waitCnt: num
+#    }
+#    ...
+#  ]
+  getCapaStats: ->
+    result = []
+    services = CollectionServices.find()
+    services.forEach (service) ->
+      obj = {}
+      sizeInfo = CollectionSizeInfos.findOne({SERVICE_ID: service.SERVICE_ID})
+      obj['SERVICE_ID'] = service.SERVICE_ID
+      obj['SERVICE_NAME'] = service.SERVICE_NAME
+      obj['upCnt'] = sizeInfo.업로드용량
+      obj['delCnt'] = sizeInfo.처리용량
+      obj['waitCnt'] = sizeInfo.업로드용량 - sizeInfo.처리용량
+      result.push obj
+    cl result
+    return result

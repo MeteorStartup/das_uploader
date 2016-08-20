@@ -6,6 +6,8 @@ Template.userDetailWriting.onCreated ->
   idCheckFlag.set false
 
 Template.userDetailWriting.events
+  'click [name=btnCancle]': (e, tmpl) ->
+    history.back()
   'click [name=btnIdCheck]': (e, tmpl) ->
     e.preventDefault()
     id = $('[name=mgr_id]').val()

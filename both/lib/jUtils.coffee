@@ -24,6 +24,36 @@
     sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
     i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+
+  mydiff: (date1, date2, interval) ->
+    #usage: mydiff('date1', 'date2', 'days')
+    second = 1000
+    minute = second * 60
+    hour = minute * 60
+    day = hour * 24
+    week = day * 7
+    date1 = new Date(date1)
+    date2 = new Date(date2)
+    timediff = date2 - date1
+    if isNaN(timediff)
+      return NaN
+    switch interval
+      when 'years'
+        return date2.getFullYear() - date1.getFullYear()
+      when 'months'
+        return date2.getFullYear() * 12 + date2.getMonth() - (date1.getFullYear() * 12 + date1.getMonth())
+      when 'weeks'
+        return Math.floor(timediff / week)
+      when 'days'
+        return Math.floor(timediff / day)
+      when 'hours'
+        return Math.floor(timediff / hour)
+      when 'minutes'
+        return Math.floor(timediff / minute)
+      when 'seconds'
+        return Math.floor(timediff / second)
+      else
+        return undefined
   getStringYMDFromDate: (_date) ->
     return moment(_date).format(jDefine.timeFormatYMD)
   getStringMDHMFromDate: (_date) ->

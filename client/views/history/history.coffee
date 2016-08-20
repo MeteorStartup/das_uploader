@@ -45,7 +45,7 @@ Template.history.helpers
   lists: -> if listRv.get()? then listRv.get()
   업로드일시: -> jUtils.getStringYMDHMFromDate(@REQ_DATE)
   소멸시한: -> jUtils.getStringYMDHMFromDate(@DEL_DATE)
-#  처리일시: -> jUtils.getStringYMDHMFromDate(@processedAt)
+  처리일시: -> jUtils.getStringYMDHMFromDate(@processedAt)
   STATUS: ->
     switch @STATUS
       when 'success' then return '성공'
@@ -58,6 +58,21 @@ Template.history.helpers
 
 
 Template.history.events
+  'change #date01': (e, tmpl) ->
+#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
+    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+      alert '3달 이내만 조회가 가능합니다.'
+      $('#date01').val(
+        jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
+      )
+  'change #date02': (e, tmpl) ->
+#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
+    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+      alert '3달 이내만 조회가 가능합니다.'
+      $('#date02').val(
+        jUtils.getStringYMDFromDate(new Date("#{$('#date01').val()}").addDates(90))
+      )
+
   'click .btn_prev': (e, tmpl) ->
     e.preventDefault()
     unless skipRv.get() is 0

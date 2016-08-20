@@ -25,6 +25,7 @@ Template.statTotalView.onRendered ->
     cl 'run autorun'
 #    cl lineStatDatas.get()
     $('#line-chart-1').highcharts
+      colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
       title:
         text: ''
   #      x: -20
@@ -59,6 +60,7 @@ Template.statTotalView.onRendered ->
   @autorun ->
     # Build the chart
     $('#pie-chart-1').highcharts
+      colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
       chart:
         backgroundColor: 'transparent'
 #        plotBackgroundColor: "#d2dfe9"
@@ -85,6 +87,7 @@ Template.statTotalView.onRendered ->
   @autorun ->
     # Build the chart
     $('#pie-chart-2').highcharts
+      colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
       chart:
         backgroundColor: 'transparent'
 #        plotBackgroundColor: "#d2dfe9"
@@ -109,6 +112,9 @@ Template.statTotalView.onRendered ->
       credits:
         enabled: false
 
+  Meteor.setTimeout ->
+    $('[name=btn_search]').trigger('click')
+  ,100
 
 Template.statTotalView.helpers
   services: -> servicesRv?.get()
@@ -131,9 +137,27 @@ Template.statTotalView.helpers
         total += obj.y
       return total
     else return 0
-
-
+  percentage: ->
+    total = 0
+    delPerErrDatas.get().forEach (obj) ->
+      total += obj.y
+    return ((@y/total)*100).toFixed(2)
 Template.statTotalView.events
+  'change #date01': (e, tmpl) ->
+#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
+    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+      alert '3달 이내만 조회가 가능합니다.'
+      $('#date01').val(
+        jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
+      )
+  'change #date02': (e, tmpl) ->
+#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
+    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+      alert '3달 이내만 조회가 가능합니다.'
+      $('#date02').val(
+        jUtils.getStringYMDFromDate(new Date("#{$('#date01').val()}").addDates(90))
+      )
+
   'click .tab li': (e, tmpl) ->
     $('.tab li').removeClass('on')
     (target=$(e.target).parent()).addClass('on')

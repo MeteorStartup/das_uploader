@@ -1,8 +1,9 @@
-servicesRv = new ReactiveVar()
-searchFlag = new ReactiveVar()
-lineStatDatas = new ReactiveVar()
-pieStatDatas = new ReactiveVar()
-tabId = new ReactiveVar()
+servicesRv = new ReactiveVar()  #select용 서비스
+searchFlag = new ReactiveVar()  #버튼중복클릭금지 flag
+lineStatDatas = new ReactiveVar() #꺽은선그래프 datas
+pieStatDatas = new ReactiveVar()  #기간별 pieGraph datas
+delPerErrDatas = new ReactiveVar()  #처리대오류 Graph datas
+tabId = new ReactiveVar() #꺽은선그래프 탭명
 
 Router.route 'statTotalView'
 
@@ -52,11 +53,10 @@ Template.statTotalView.onRendered ->
             lineStatDatas.get()?.seriesDel
           when 'seriesErr'
             lineStatDatas.get()?.seriesErr
-
       credits:
         enabled: false
 
-
+  @autorun ->
     # Build the chart
     $('#pie-chart-1').highcharts
       chart:
@@ -72,61 +72,67 @@ Template.statTotalView.onRendered ->
       plotOptions: pie:
         allowPointSelect: true
         cursor: 'pointer'
-        dataLabels: enabled: false
+        dataLabels:
+          enabled: false
 #        showInLegend: true
       series: [ {
         name: 'Brands'
         colorByPoint: true
-        data: [
-          {
-            name: 'Microsoft Internet Explorer'
-            y: 56.33
-          }
-          {
-            name: 'Chrome'
-            y: 24.03
-            sliced: true
-            selected: true
-          }
-          {
-            name: 'Firefox'
-            y: 10.38
-          }
-          {
-            name: 'Safari'
-            y: 4.77
-          }
-          {
-            name: 'Opera'
-            y: 0.91
-          }
-          {
-            name: 'Proprietary or Undetectable'
-            y: 0.2
-          }
-        ]
+        data: do -> if pieStatDatas.get()? then libClient.calForPercent pieStatDatas.get()
       } ]
       credits:
         enabled: false
+  @autorun ->
+    # Build the chart
+    $('#pie-chart-2').highcharts
+      chart:
+        backgroundColor: 'transparent'
+#        plotBackgroundColor: "#d2dfe9"
+        plotBorderWidth: 0
+        borderWidth: 0
+        plotShadow: false
+        type: 'pie'
+#      title: text: 'Browser market shares January, 2015 to May, 2015'
+      title: text: null
+      tooltip: pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      plotOptions: pie:
+        allowPointSelect: true
+        cursor: 'pointer'
+        dataLabels:
+          enabled: false
+#        showInLegend: true
+      series: [ {
+        name: 'Brands'
+        colorByPoint: true
+        data: do -> if delPerErrDatas.get()? then libClient.calForPercent delPerErrDatas.get()
+      } ]
+      credits:
+        enabled: false
+
 
 Template.statTotalView.helpers
   services: -> servicesRv?.get()
   disabled: ->
     if searchFlag.get() then return 'disabled'
     else return ''
-
   statTotalInfos: ->
     if lineStatDatas.get()?
       libClient.getTableTotalStats lineStatDatas.get()
-#    lineStatDatas.get()?.categories
-#  categories: (index) ->
-#    lineStatDatas.get()?.categories[index]
-#  seriesUp: (index) ->
-#    lineStatDatas.get()?.seriesUp[1].data[index]
-#  seriesDel: (index) ->
-#    lineStatDatas.get()?.seriesDel[1].data[index]
-#  seriesErr: (index) ->
-#    lineStatDatas.get()?.seriesErr[1].data[index]
+  periodStats: ->
+    if pieStatDatas.get()?
+      pieStatDatas.get()
+  delPerErrStats: ->
+    if delPerErrDatas.get()?
+      delPerErrDatas.get()
+  합계: ->
+    if pieStatDatas.get()?
+      total = 0
+      pieStatDatas.get().forEach (obj) ->
+        total += obj.y
+      return total
+    else return 0
+
+
 Template.statTotalView.events
   'click .tab li': (e, tmpl) ->
     $('.tab li').removeClass('on')
@@ -143,16 +149,28 @@ Template.statTotalView.events
       target.addClass('on')
 
   'click [name=btn_search]': (e, tmpl) ->
-    cl today = $('#date01').val()
-    cl serviceId = $('[name=selectedService]').val()
+    startDay = $('#date01').val()
+    endDay = $('#date01').val()
+    serviceId = $('[name=selectedService]').val()
     unless searchFlag.get()
       searchFlag.set true
-      Meteor.call 'getRealTimeStats', today, serviceId, (err, rslt) ->
+      Meteor.call 'getRealTimeStats', startDay, serviceId, (err, rslt) ->
         if err
           alert err
           searchFlag.set false
         else
           lineStatDatas.set rslt
           searchFlag.set false
+      Meteor.call 'getPeriodStats', startDay, endDay, serviceId, (err, rslt) ->
+        if err
+          alert err
+        else
+          pieStatDatas.set rslt
+      Meteor.call 'getDelPerErrStats', startDay, endDay, serviceId, (err, rslt) ->
+        if err
+          alert err
+        else
+          delPerErrDatas.set rslt
+
     else
       alert '통계데이터 생성중입니다. 잠시만 기다려주세요.'

@@ -34,3 +34,13 @@
       result.push tempObj
 #    cl result
     return result
+
+  calForPercent: (_arr) ->
+    total = 0
+    arr = _.clone(_arr);
+    arr.forEach (_obj) ->
+      total += _obj.y
+    arr.forEach (_obj) ->
+      _obj['y'] = parseInt(((_obj.y/total)*100).toFixed(2))
+    return arr
+

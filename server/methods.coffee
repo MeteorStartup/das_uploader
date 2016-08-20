@@ -288,3 +288,77 @@ Meteor.methods
     result['seriesErr'] = seriesErr
     cl JSON.stringify result
     return result
+
+#  result = [
+#    {
+#      name: ''
+#      y: number
+#    }
+#    ...
+#  ]
+  getPeriodStats: (_start, _end, _serviceId) ->
+    serviceIds = []
+
+    ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
+    if _serviceId is 'all'
+      CollectionServices.find().forEach (service) ->
+        serviceIds.push service.SERVICE_ID
+    else serviceIds.push CollectionServices.findOne(_id: _serviceId).SERVICE_ID
+
+    categories = jDefine.periodCateForPie
+
+    p1 = new Date().getTime()
+
+    results = []
+    categories.forEach (cate) ->
+      tempObj = {}
+      yVal = 0
+      serviceIds.forEach (serviceId) ->
+        yVal += CollectionDasInfos.find({
+          SERVICE_ID: serviceId
+          KEEP_PERIOD: cate.period
+        }).count()
+      tempObj['name'] = cate.name
+      tempObj['y'] = yVal
+      results.push tempObj
+    cl results
+    cl (new Date().getTime()) - p1
+    return results
+
+  getDelPerErrStats: (_start, _end, _serviceId) ->
+    serviceIds = []
+    ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
+    if _serviceId is 'all'
+      CollectionServices.find().forEach (service) ->
+        serviceIds.push service.SERVICE_ID
+    else serviceIds.push CollectionServices.findOne(_id: _serviceId).SERVICE_ID
+
+    p1 = new Date().getTime()
+
+    categories = [
+      {
+        name: '처리'
+        STATUS: 'success'
+      }
+      {
+        name: '오류'
+        STATUS: $nin: ['success', 'wait']
+      }
+    ]
+
+    results = []
+
+    categories.forEach (cate) ->
+      tempObj = {}
+      yVal = 0
+      serviceIds.forEach (serviceId) ->
+        yVal += CollectionDasInfos.find({
+          SERVICE_ID: serviceId
+          STATUS: cate.STATUS
+        }).count()
+      tempObj['name'] = cate.name
+      tempObj['y'] = yVal
+      results.push tempObj
+    cl results
+    cl (new Date().getTime()) - p1
+    return results

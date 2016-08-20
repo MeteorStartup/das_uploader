@@ -82,25 +82,15 @@
             <div class="tit">설정 기간 분포도</div>
             <div class="list">
               <ul>
+                {{#each periodStats}}
                 <li>
-                  <strong class="ico01"><span>■</span>한달 미만</strong>
-                  <span class="num" id="stat_lifetime_under_one_month">30 건</span>
+                  <strong class="ico01" id="{{name}}"><span>■</span>{{name}}</strong>
+                  <span class="num" id="stat_lifetime_under_one_month">{{y}} 건</span>
                 </li>
-                <li>
-                  <strong class="ico02"><span>■</span>6개월 미만</strong>
-                  <span class="num" id="stat_lifetime_under_six_month">0 건</span>
-                </li>
-                <li>
-                  <strong class="ico03"><span>■</span>12개월 미만</strong>
-                  <span class="num" id="stat_lifetime_under_one_year">0 건</span>
-                </li>
-                <li>
-                  <strong class="ico04"><span>■</span>1년 이상</strong>
-                  <span class="num" id="stat_lifetime_over_one_year">0 건</span>
-                </li>
+                {{/each}}
                 <li class="last">
                   <strong class="ico05"><span>■</span>합계</strong>
-                  <span class="num" id="stat_lifetime_tot_cnt">30 건</span>
+                  <span class="num" id="stat_lifetime_tot_cnt">{{합계}} 건</span>
                 </li>
               </ul>
             </div>
@@ -112,21 +102,17 @@
             <div class="tit">처리율 통계</div>
             <div class="list">
               <ul>
-                <li>
-                  <strong class="ico01"><span>■</span>처리 현황</strong>
-                  <div class="both">
-                    <p class="per" id="stat_proc_rate">100.0 %</p><span class="num" id="stat_proc_cnt">27 건</span>
-                  </div>
-                </li>
-                <li class="last">
-                  <strong class="ico03"><span>■</span>오류 현황</strong>
-                  <div class="both">
-                    <p class="per" id="stat_err_rate">0.0 %</p><span class="num" id="stat_err_cnt">0 건</span>
-                  </div>
-                </li>
+                {{#each delPerErrStats}}
+                  <li>
+                    <strong class="ico01" id="{{name}}"><span>■</span>{{name}} 현황</strong>
+                    <div class="both">
+                      <p class="per" id="stat_proc_rate">0 %</p><span class="num" id="stat_proc_cnt">{{y}} 건</span>
+                    </div>
+                  </li>
+                {{/each}}
               </ul>
             </div>
-            <div class="chart" id="proc_rate_chart_div" data-highcharts-chart="17"><div class="highcharts-container" id="highcharts-46" style="position: relative; overflow: hidden; width: 200px; height: 200px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="200" height="200"><desc>Created with Highcharts 4.0.1</desc><defs><clipPath id="highcharts-47"><rect x="0" y="0" width="200" height="199"></rect></clipPath></defs><rect x="0" y="0" width="200" height="200" strokeWidth="0" fill="#d2dfe9" class=" highcharts-background"></rect><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(0,0) scale(1 1)" style=""><path fill="#41d1f2" d="M 99.98177124826928 10.000001856354146 A 89.5 89.5 0 1 1 99.8756862955426 10.000086334662399 L 100 99.5 A 0 0 0 1 0 100 99.5 Z" stroke="#FFFFFF" stroke-width="0.00001" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#41a1f2" d="M 99.96518625644815 10.000006770931762 A 89.5 89.5 0 0 1 99.8756862955426 10.000086334662399 L 100 99.5 A 0 0 0 0 0 100 99.5 Z" stroke="#FFFFFF" stroke-width="0.00001" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers" visibility="visible" zIndex="0.1" transform="translate(0,0) scale(1 1)"></g></g><g class="highcharts-data-labels highcharts-tracker" visibility="visible" zIndex="6" transform="translate(0,0) scale(1 1)" opacity="1" style=""><g zIndex="1" style="cursor:default;" transform="translate(77,89)"><text x="3" zIndex="1" style="font-size:11px;color:#3e4857;fill:#3e4857;" y="15"><tspan style="font-weight:bold">100.0 %</tspan></text></g></g><g class="highcharts-legend" zIndex="7"><g zIndex="1"><g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" transform="translate(1, 1)"></path><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="3" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" transform="translate(1, 1)"></path><path fill="none" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="1" isShadow="true" stroke="black" stroke-opacity="0.15" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3 0 L 13 0 C 16 0 16 0 16 3 L 16 13 C 16 16 16 16 13 16 L 3 16 C 0 16 0 16 0 13 L 0 3 C 0 0 0 0 3 0" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="21"></text></g></svg></div></div>
+            <div class="pie-chart" id="pie-chart-2"></div>
           </div>
         </div>
 

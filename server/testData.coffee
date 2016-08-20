@@ -7,8 +7,8 @@
 #  obj =
 #    "AGENT_NAME" : "dasAgent#{do -> if rand < 0.3 then 1 else if rand < 0.5 then 2 else 3}"
 #    "AGENT_URL" : "http://localhost:#{do -> if rand < 0.3 then 3000 else if rand < 0.5 then 3100 else 3200}"
-#    "SERVICE_ID" : "SVC0000#{do -> if i > 5000 then 2 else 1}"
-#    "SERVICE_NAME" : "das서비스#{do -> if i > 5000 then 2 else 1}"
+#    "SERVICE_ID" : "SVC0000#{do -> if i % 2 is 0 then 2 else 1}"
+#    "SERVICE_NAME" : "das서비스#{do -> if i % 2 is 0 then 2 else 1}"
 #    "BOARD_ID" : "BRD#{do -> if rand < 0.3 then '00001' else if rand < 0.5 then '00002' else '00003'}"
 #    "CUR_IP" : "10.0.0.24"
 #    "DEL_FILE_LIST" : [
@@ -31,4 +31,8 @@
 #  CollectionDasInfos.insert obj
 #
 #
-#
+#CollectionSizeInfos.insert
+#  createdAt: new Date()
+#  SERVICE_ID: ''
+#  업로드용량: 200139399
+#  처리용량: 342883

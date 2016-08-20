@@ -10,3 +10,10 @@ Template.header.events
 
 Template.header.helpers
   userName: -> Meteor.user().profile.이름
+
+Template.header.events
+  "click [name=runDMS]": (e, tmpl) ->
+    e.preventDefault()
+    alert 'run'
+    Meteor.call 'runDMS', (err, rslt) ->
+      alert err or rslt

@@ -13,6 +13,7 @@ Meteor.startup ->
       return agent
     'insertDAS': (data) ->
       dasInfo = dataSchema 'DASInfo'
+      dasInfo.origin = data.dasInfo
       arrDasInfo =  data.dasInfo.split '\n'
 #      cl arrDasInfo
       arrDasInfo.forEach (line) ->
@@ -68,6 +69,8 @@ Meteor.startup ->
       return 'success'
 
 Meteor.methods
+  'runDMS': ->
+    runDMS()
   'dbConnectionTest': (_dbObj) ->
     cl _dbObj
     mysqlDB = mysql.createConnection _dbObj.DB접속URL,
@@ -83,6 +86,7 @@ Meteor.methods
       cl err or rows
     mysqlDB.end()
     return fut.wait()
+
 
 
   'insertAgentInfo': (_agent) ->

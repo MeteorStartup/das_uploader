@@ -13,12 +13,15 @@ Meteor.startup ->
   , 1000 * 60 * 60
 
 
-  runDMS = ->
+  @runDMS = ->
+    cl 'runDMS'
     CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
       unless service
         dasInfo.STATUS = 'service not found'
         return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+
+      if service.상태 is false then return  #해당 서비스의 처리 않함 상태
 
       agents = CollectionAgents.find _id: $in: service.AGENT정보
       if agents.count() is 0
@@ -36,6 +39,7 @@ Meteor.startup ->
               HTTP.post "#{agent.AGENT_URL}/removeFiles",
                 data:
                   DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
+                  DEL_OPTION: service.파일처리옵션
               , (err, rslt) ->
                 if err
                   cl err.toString()
@@ -58,7 +62,7 @@ Meteor.startup ->
 ##      delete query
       if dasInfo.STATUS is 'success'
         try
-          mysqlDB = mysql.createConnection
+          mysqlDB = mysql.createConnection service.DB정보.DB접속URL
 #            host: 'localhost'
 #            user: 'root'
 #            password: 'Thflskf0'
@@ -79,6 +83,8 @@ Meteor.startup ->
           mysqlDB.end()
 
         catch err
+          cl 'here'
+          cl err
           cl dasInfo.STATUS = err.toString()
           dasInfo.STATUS = err
 

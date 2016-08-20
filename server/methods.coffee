@@ -5,12 +5,13 @@ Meteor.startup ->
       cl 'getAgentSetting'
       try
         agent = CollectionAgents.findOne('AGENT_URL': data.AGENT_URL)
-      catch e
-        return throw new Meteor.Error 'agent not found'
+      catch err
+        return throw new Meteor.Error err
       return agent
     'insertDAS': (data) ->
       dasInfo = dataSchema 'DASInfo'
       arrDasInfo =  data.dasInfo.split '\n'
+#      cl arrDasInfo
       arrDasInfo.forEach (line) ->
 #      add field to object
         pos = line.indexOf '='
@@ -32,6 +33,7 @@ Meteor.startup ->
             val = new Date(year, month, date, hour, minute, second, mil)
           when 'DEL_FILE_LIST'
             val = val.split(',')
+            val.forEach (path, i) -> return val[i] = path.trim()
 
         if key isnt '' and val isnt ''
           dasInfo[key] = val
@@ -43,10 +45,10 @@ Meteor.startup ->
         dasInfo.AGENT_URL = agent.AGENT_URL
         dasInfo.AGENT_URL_FROM_AGENT = data.AGENT_URL
         dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
-      catch e
+      catch err
 #        서비스/에이전트 확인 에러 발생 시 status를 미리 결정 짓고 더 이상 처리 하지 않는다
-        cl msg = '#### Service or Agent not found ####'
-        dasInfo.STATUS = "#{msg}: #{e.message}"
+        cl err
+        dasInfo.STATUS = err
 
       CollectionDasInfos.insert dasInfo
 

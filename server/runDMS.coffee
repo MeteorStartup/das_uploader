@@ -10,7 +10,7 @@ Meteor.startup ->
     fibers ->
       runDMS()
     .run()
-  , 1000 * 10
+  , 1000 * 5
 
 
   runDMS = ->
@@ -39,12 +39,15 @@ Meteor.startup ->
               , (err, rslt) ->
                 if err
                   cl dasInfo.STATUS = err.toString()
+#                  Error: connect ECONNREFUSED is the key for agent conn error
                   dasInfo.STATUS = err
 #                else
 #                  fibers ->
 #                    dasInfo.STATUS = 'success'
 #                    CollectionDasInfos.update _id: dasInfo._id, dasInfo
 #                  .run()
+                else
+                  unless rslt.content is 'success' then dasInfo.STATUS = rslt
                 fut.return()
               fut.wait()
 

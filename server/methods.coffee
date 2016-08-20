@@ -364,3 +364,11 @@ Meteor.methods
     cl results
     cl (new Date().getTime()) - p1
     return results
+
+
+  getDasHistory: (_condition) ->
+    #_condition.where.SERVICE_ID 는 _id 이므로 dasInfo 에 있는 SERVICE_ID 로 교체
+    cl _condition
+    if (_id = _condition.where.SERVICE_ID)?
+      _condition.where['SERVICE_ID'] = CollectionServices.findOne(_id: _id).SERVICE_ID
+    CollectionDasInfos.find(_condition.where, _condition.options).fetch()

@@ -40,6 +40,8 @@
     return moment(_date).format(jDefine.timeFormatHM)
   getStringYMDHMSFromDate: (_date) ->
     return moment(_date).format(jDefine.timeFormat)
+  getStringYMDHMFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatYMDHM)
   getDateFromString: (_date) ->
     return moment(_date, jDefine.timeFormat).toDate()
 

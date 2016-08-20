@@ -1,5 +1,6 @@
 @jDefine =
   timeFormat: 'YYYY-MM-DD HH:mm:ss'
+  timeFormatYMDHM: 'YYYY-MM-DD HH:mm'
   timeFormatMDHM: 'MM-DD HH:mm'
   timeFormatMD: 'MM-DD'
   timeFormatYM: 'YYYY-MM'

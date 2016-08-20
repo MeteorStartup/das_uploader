@@ -4,3 +4,4 @@
 @CollectionDasInfos = new Meteor.Collection 'dasInfos'
 #@CollectionDasLogs = new Meteor.Collection 'dasLogs'
 @CollectionSizeInfos = new Meteor.Collection 'sizeInfos'
+@CollectionError = new Meteor.Collection 'error'      #에러를 무조건 쌓고 향후 분석해야

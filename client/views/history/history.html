@@ -17,7 +17,7 @@
                 <th scope="row" class="bul_txt01 pre"><span>서   비   스</span></th>
                 <td>
                   <!-- select -->
-                  <select name="serviceSelect">
+                  <select name="SERVICE_ID">
                     <option value="all">전체</option>
                     {{#each services}}
                     <option value="{{_id}}">{{SERVICE_NAME}}</option>
@@ -31,11 +31,11 @@
                 <td style="background-color: rgb(255, 255, 255);">
 											<span class="ip_date left">
 												<span class="ip">
-                          <input id="date01" type="text" class="hasDatepicker">
+                          <input id="date01" type="text">
                         </span>
 												<span class="dash">~</span>
 												<span class="ip">
-                          <input id="date02" type="text" class="hasDatepicker">
+                          <input id="date02" type="text">
                         </span>
 											</span>
                   <!-- 											<div class="left"> -->
@@ -43,28 +43,28 @@
                   <!-- 												<span class="dash">~</span> -->
                   <!-- 												<span><input id="date02" type="text" class="ip_txt" style="width:80px; background-color:#3e4857;" readonly/></span> -->
                   <!-- 											</div> -->
-                  <div class="btn_box form_left">
-                    <a href="#" class="btns btn_inner"><span>조회일</span></a>
-                    <a href="#" class="btns btn_inner on"><span>1주일</span></a>
-                    <a href="#" class="btns btn_inner"><span>1개월</span></a>
-                    <!-- 												<a href="#" class="btns btn_inner" ><span>기타</span></a> -->
-                  </div>
+                  <!--<div class="btn_box form_left">-->
+                    <!--<a href="#" class="btns btn_inner" id="daily"><span>조회일</span></a>-->
+                    <!--<a href="#" class="btns btn_inner" id="weekly"><span>1주일</span></a>-->
+                    <!--<a href="#" class="btns btn_inner" id="monthly"><span>1개월</span></a>-->
+                    <!--&lt;!&ndash; 												<a href="#" class="btns btn_inner" ><span>기타</span></a> &ndash;&gt;-->
+                  <!--</div>-->
                 </td>
               </tr>
               <tr>
                 <th scope="row" class="bul_txt01 pre"><span>처 리 결 과</span></th>
                 <td>
-                  <label class="radio radio_on"><input type="radio" name="SEARCH_PROC_DV" value="" checked="">전체</label>
-                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="W">대기</label>
-                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="S">성공</label>
-                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="F">실패</label>
+                  <label class="radio radio_on"><input type="radio" name="SEARCH_PROC_DV" value="all" checked="checked">전체</label>
+                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="wait">대기</label>
+                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="success">성공</label>
+                  <label class="radio ml20"><input type="radio" name="SEARCH_PROC_DV" value="fail">실패</label>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
           <div class="btn_area tc mt10">
-            <a href="javascript:make_upreq_list('1');" class="btns btn_large_ok"><span>조회</span></a>
+            <a href="#" class="btns btn_large_ok" name="btnSearch"><span>조회</span></a>
           </div>
         </div>
 
@@ -93,12 +93,28 @@
                 <!-- 										<th scope="col"><strong>수동 삭제</strong></th> -->
               </tr>
               </thead>
-              <tbody id="upreq_list"><tr><td>30</td><td>2016-06-08 16:55</td><td class="txt_over"><p class="pre">서비스_DEL</p></td><td>Agent1</td><td>2016-06-09 12:10</td><td>2016-06-09 12:10</td><td><strong class="result">성공</strong></td></tr><tr><td style="background-color: rgb(255, 255, 255);">29</td><td style="background-color: rgb(255, 255, 255);">2016-05-18 13:40</td><td class="txt_over" style="background-color: rgb(255, 255, 255);"><p class="pre">SOFT</p></td><td style="background-color: rgb(255, 255, 255);">undefined</td><td style="background-color: rgb(255, 255, 255);">2016-05-18 13:42</td><td style="background-color: rgb(255, 255, 255);">2016-05-18 13:42</td><td style="background-color: rgb(255, 255, 255);"><strong class="result">성공</strong></td></tr><tr><td>28</td><td>2016-05-17 15:29</td><td class="txt_over"><p class="pre">SOFT</p></td><td>undefined</td><td>2016-05-17 15:31</td><td>2016-05-17 15:31</td><td><strong class="result">성공</strong></td></tr><tr><td style="background-color: rgb(255, 255, 255);">27</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 15:03</td><td class="txt_over" style="background-color: rgb(255, 255, 255);"><p class="pre">SOFT</p></td><td style="background-color: rgb(255, 255, 255);">undefined</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 15:10</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 15:10</td><td style="background-color: rgb(255, 255, 255);"><strong class="result">성공</strong></td></tr><tr><td>26</td><td>2016-05-17 14:19</td><td class="txt_over"><p class="pre">SOFT</p></td><td>undefined</td><td>2016-05-17 14:23</td><td>2016-05-17 14:23</td><td><strong class="result">성공</strong></td></tr><tr><td style="background-color: rgb(255, 255, 255);">25</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 12:13</td><td class="txt_over" style="background-color: rgb(255, 255, 255);"><p class="pre">SOFT</p></td><td style="background-color: rgb(255, 255, 255);">undefined</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 12:15</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 12:15</td><td style="background-color: rgb(255, 255, 255);"><strong class="result">성공</strong></td></tr><tr><td>24</td><td>2016-05-17 11:49</td><td class="txt_over"><p class="pre">SOFT</p></td><td>undefined</td><td>2016-05-17 11:51</td><td>2016-05-17 11:51</td><td><strong class="result">성공</strong></td></tr><tr><td style="background-color: rgb(255, 255, 255);">23</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:19</td><td class="txt_over" style="background-color: rgb(255, 255, 255);"><p class="pre">서비스_DEL</p></td><td style="background-color: rgb(255, 255, 255);">Agent1</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:21</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:22</td><td style="background-color: rgb(255, 255, 255);"><strong class="result">성공</strong></td></tr><tr><td>22</td><td>2016-05-17 11:08</td><td class="txt_over"><p class="pre">SOFT</p></td><td>undefined</td><td>2016-05-17 11:10</td><td>2016-05-17 11:43</td><td><strong class="result">성공</strong></td></tr><tr><td style="background-color: rgb(255, 255, 255);">21</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:08</td><td class="txt_over" style="background-color: rgb(255, 255, 255);"><p class="pre">SOFT</p></td><td style="background-color: rgb(255, 255, 255);">undefined</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:10</td><td style="background-color: rgb(255, 255, 255);">2016-05-17 11:43</td><td style="background-color: rgb(255, 255, 255);"><strong class="result">성공</strong></td></tr></tbody>
+              <tbody id="upreq_list">
+              {{#each lists}}
+              <tr>
+                <td>{{게시물번호 @index}}</td>
+                <td>{{업로드일시}}</td>
+                <td class="txt_over"><p class="pre">{{SERVICE_NAME}}</p></td>
+                <td>{{AGENT_NAME}}</td>
+                <td>{{소멸시한}}</td>
+                <td>{{처리일시}}</td>
+                <td><strong class="result">{{STATUS}}</strong></td>
+              </tr>
+              {{/each}}
+              </tbody>
             </table>
           </div>
 
           <!-- paging -->
-          <div class="paging" id="history_page_body"><a href="javascript:make_upreq_list(1);" class="btn_first">처음 페이지</a><a href="javascript:make_upreq_list(1);" class="btn_prev">이전 페이지</a><a href="javascript:make_upreq_list(1);" class="on">1</a><a href="javascript:make_upreq_list(2);">2</a><a href="javascript:make_upreq_list(3);">3</a><a href="javascript:make_upreq_list(2);" class="btn_next">다음 페이지</a><a href="javascript:make_upreq_list(3);" class="btn_last">마지막 페이지</a></div>
+          <div class="paging" id="history_page_body">
+            <a href="#" class="btn_prev">이전 페이지</a>
+            <a href="#" class="on">{{현재페이지}}</a>
+            <a href="#" class="btn_next">다음 페이지</a>
+          </div>
           <!-- //paging -->
 
         </div>

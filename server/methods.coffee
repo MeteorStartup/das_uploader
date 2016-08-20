@@ -117,7 +117,7 @@ Meteor.methods
     CollectionServices.find({},{sort:'SERVICE_NAME':1}).fetch()
 
   getUserLists: (condition) ->
-    cl condition
+#    cl condition
     if condition.search? and condition.search.length >0
       _.extend condition.where,
         $or: [
@@ -199,7 +199,7 @@ Meteor.methods
 
 #    cl serviceIds
 
-    point1 = (new Date()).getTime()
+#    point1 = (new Date()).getTime()
 
     serviceIds.forEach (serviceId) ->
       dataUp = []
@@ -238,14 +238,14 @@ Meteor.methods
       seriesDel.push tempObjDel
       seriesErr.push tempObjErr
 
-    point2 = (new Date()).getTime()
-    cl point2 - point1
+#    point2 = (new Date()).getTime()
+#    cl point2 - point1
 #    cl series
     result['categories'] = categories
     result['seriesUp'] = seriesUp
     result['seriesDel'] = seriesDel
     result['seriesErr'] = seriesErr
-    cl JSON.stringify result
+#    cl JSON.stringify result
     return result
 
 #  result = [
@@ -280,8 +280,8 @@ Meteor.methods
       tempObj['name'] = cate.name
       tempObj['y'] = yVal
       results.push tempObj
-    cl results
-    cl (new Date().getTime()) - p1
+#    cl results
+#    cl (new Date().getTime()) - p1
     return results
 
   getDelPerErrStats: (_start, _end, _serviceId) ->
@@ -318,6 +318,14 @@ Meteor.methods
       tempObj['name'] = cate.name
       tempObj['y'] = yVal
       results.push tempObj
-    cl results
-    cl (new Date().getTime()) - p1
+#    cl results
+#    cl (new Date().getTime()) - p1
     return results
+
+
+  getDasHistory: (_condition) ->
+    #_condition.where.SERVICE_ID 는 _id 이므로 dasInfo 에 있는 SERVICE_ID 로 교체
+#    cl _condition
+    if (_id = _condition.where.SERVICE_ID)?
+      _condition.where['SERVICE_ID'] = CollectionServices.findOne(_id: _id).SERVICE_ID
+    CollectionDasInfos.find(_condition.where, _condition.options).fetch()

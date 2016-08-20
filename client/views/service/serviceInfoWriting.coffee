@@ -46,6 +46,15 @@ Template.serviceInfoWriting.helpers
   service: -> service.get()
 
 Template.serviceInfoWriting.events
+  'click [name=dbTest]': (e, tmpl) ->
+    dbObj =
+      DB접속URL: $('[name=DB접속URL]').val()
+      DBMS종류: $(':radio[name="DBMS종류"]:checked').val()
+      DB_ID: $('[name=DB_ID]').val()
+      DB_PW: $('[name=DB_PW]').val()
+    Meteor.call 'dbConnectionTest', dbObj, (err, rslt) ->
+      alert err or rslt
+
   'click .btn_large_cncl': (e, tmpl) ->
     e.preventDefault()
     Router.go 'serviceInfoFind'

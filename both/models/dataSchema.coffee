@@ -9,6 +9,7 @@
     when 'DASInfo'
       rslt =
         createdAt: new Date()
+        processedAt: new Date()   #삭제 처리 시간
         AGENT_NAME: ''    #agent의 별칭
         AGENT_URL: ''   #agent의 URL
         AGENT_URL_FROM_AGENT: ''  #AGENT_URL은 agent 콜렉션에서 꺼내서 넣은거고, 이건 agent가 보낸 URL로 그냥 로그용

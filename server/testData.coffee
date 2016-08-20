@@ -20,6 +20,7 @@
 #    "UP_FSIZE" : (Math.random() * 1000000) + 1
 #    "AGENT_URL_FROM_AGENT" : "http://localhost:3000"
 #  obj.createdAt = date.addMinutes(Math.round (rand*30)+1)
+#  obj.processedAt = date.clone().addDates Math.round (rand*100)+1
 #  obj.REQ_DATE = date.clone()
 #  obj.DEL_DATE = date.clone().addDates Math.round (rand*100)+1
 #  obj.KEEP_PERIOD = Math.round(Math.abs((obj.DEL_DATE.getTime() - obj.REQ_DATE.getTime())/(24*60*60*1000)));

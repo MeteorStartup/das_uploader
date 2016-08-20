@@ -2,14 +2,13 @@
   <div id="header">
     <div class="inner">
       <h1 class="logo"><a href="/"><img src="/images/logo.png" alt="DAS Manegement System"></a></h1>
+      {{#if currentUser}}
       <ul>
-
-
-        <li class="u_name pre">관리자님 환영합니다.</li>
+        <li class="u_name pre">{{userName}}님 환영합니다.</li>
         <li class="u_info"><a href="{{pathFor 'userProfileEdit'}}">정보수정</a></li>
         <li class="u_log on"><a href="#" name="btn_logout">로그아웃</a></li>
-
       </ul>
+      {{/if}}
     </div>
 
   </div>

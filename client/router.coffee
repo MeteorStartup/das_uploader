@@ -8,3 +8,6 @@ Router.route '/',
 Router.onBeforeAction ->
   $(window).scrollTop 0
   @next()
+
+#Router.onBeforeAction ->
+#  if @userId?

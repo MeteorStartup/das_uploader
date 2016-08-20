@@ -201,3 +201,11 @@ Meteor.methods
 
   removeUserById: (_id) ->
     Meteor.users.remove _id: _id
+
+  userProfileUpdate: (_pass, _obj) ->
+    if _pass.length > 0
+      Accounts.setPassword(@userId, _pass, {logout: false})
+    profile = Meteor.user().profile
+    _.extend profile, _obj
+    Meteor.users.update _id: @userId,
+      $set: profile: profile

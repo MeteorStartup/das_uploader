@@ -11,6 +11,7 @@
             <input type="hidden" name="pswd" id="pswd">
             <input type="hidden" name="temp_pswd_yn" id="temp_pswd_yn" value="">
 
+            {{#with userInfo}}
             <div class="tform01 srch_form">
               <strong class="txt_list"><span>사용자 정보 수정</span></strong>
               <table>
@@ -21,11 +22,11 @@
                 <tbody>
                 <tr>
                   <th scope="row" class="bul_txt01 pre"><span>이        름</span></th>
-                  <td>관리자</td>
+                  <td>{{profile.이름}}</td>
                 </tr>
                 <tr>
                   <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>아   이   디</span></th>
-                  <td style="background-color: rgb(255, 255, 255);">admin</td>
+                  <td style="background-color: rgb(255, 255, 255);">{{username}}</td>
                 </tr>
 
 
@@ -52,46 +53,7 @@
                   <th scope="row" class="bul_txt01 pre"><span>이   메   일</span></th>
                   <td>
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:116px " id="email1" onkeyup="javascript:En_No_valid(this, 12);">
-                      <span class="side_txt">@</span>
-                      <input type="text" class="ip_txt" style="width:116px " id="email2" onkeyup="En_dot_valid(this, 100);">
-                      <div class="select ml20">
-                        <span>선택하세요.</span>
-                        <ul>
-                          <li data-val="">선택하세요</li>
-                          <li data-val="naver.com">naver.com</li>
-                          <li data-val="nate.com">nate.com</li>
-                          <li data-val="dreamwiz.com">dreamwiz.com</li>
-                          <li data-val="yahoo.co.kr">yahoo.co.kr</li>
-                          <li data-val="empal.com">empal.com</li>
-                          <li data-val="untel.co.kr">untel.co.kr</li>
-                          <li data-val="gmail.com">gmail.com</li>
-                          <li data-val="korea.com">korea.com</li>
-                          <li data-val="chol.com">chol.com</li>
-                          <li data-val="paran.com">paran.com</li>
-                          <li data-val="freechal.com">freechal.com</li>
-                          <li data-val="hanmail.com">hanmail.com</li>
-                          <li data-val="hotmail.com">hotmail.com</li>
-                          <li data-val="self">직접입력</li>
-                        </ul>
-                        <select onchange="change_email(this)" id="select_email">
-                          <option value="">선택하세요</option>
-                          <option value="naver.com">naver.com</option>
-                          <option value="nate.com">nate.com</option>
-                          <option value="dreamwiz.com">dreamwiz.com</option>
-                          <option value="yahoo.co.kr">yahoo.co.kr</option>
-                          <option value="empal.com">empal.com</option>
-                          <option value="untel.co.kr">untel.co.kr</option>
-                          <option value="gmail.com">gmail.com</option>
-                          <option value="korea.com">korea.com</option>
-                          <option value="chol.com">chol.com</option>
-                          <option value="paran.com">paran.com</option>
-                          <option value="freechal.com">freechal.com</option>
-                          <option value="hanmail.com">hanmail.com</option>
-                          <option value="hotmail.com">hotmail.com</option>
-                          <option value="self">직접입력</option>
-                        </select>
-                      </div>
+                      <input type="text" class="ip_txt" style="width:232px " id="email1" value="{{profile.이메일}}">
                     </div>
                   </td>
                 </tr>
@@ -99,29 +61,7 @@
                   <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>휴   대   폰</span></th>
                   <td style="background-color: rgb(255, 255, 255);">
                     <div class="form_list">
-                      <div class="select">
-                        <span>010</span>
-                        <ul>
-                          <li data-val="010">010</li>
-                          <li data-val="011">011</li>
-                          <li data-val="016">016</li>
-                          <li data-val="017">017</li>
-                          <li data-val="018">018</li>
-                          <li data-val="019">019</li>
-                        </ul>
-                        <select id="cell_phone1" selected="selected">
-                          <option value="010">010</option>
-                          <option value="011">011</option>
-                          <option value="016">016</option>
-                          <option value="017">017</option>
-                          <option value="018">018</option>
-                          <option value="019">019</option>
-                        </select>
-                      </div>
-                      <span class="side_txt">-</span>
-                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone2" maxlength="4" onkeyup="javascript:num_check(this);" value="">
-                      <span class="side_txt">-</span>
-                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="4" onkeyup="javascript:num_check(this);">
+                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="11" value="{{profile.휴대폰}}">
                     </div>
                   </td>
                 </tr>
@@ -129,14 +69,13 @@
                 </tbody>
               </table>
             </div>
+            {{/with}}
           </form>
         </div>
 
         <div class="btn_area tc mt60">
-          <a href="javascript:submit_check();" class="btns btn_large_ok"><span>확인</span></a>
-
-          <a href="javascript:history.back();" class="btns btn_large_cncl ml10"><span>취소</span></a>
-
+          <a href="#" class="btns btn_large_ok" id="btn_save"><span>확인</span></a>
+          <a href="#" class="btns btn_large_cncl ml10" id="btn_cancle"><span>취소</span></a>
         </div>
       </div>
 

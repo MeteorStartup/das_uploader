@@ -7,3 +7,6 @@ Template.header.events
         else
           alert '로그아웃 되었습니다.'
           Router.go 'login'
+
+Template.header.helpers
+  userName: -> Meteor.user().profile.이름

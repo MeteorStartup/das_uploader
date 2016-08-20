@@ -10,7 +10,7 @@ Meteor.startup ->
     fibers ->
       runDMS()
     .run()
-  , 1000 * 5
+  , 1000 * 60 * 60
 
 
   runDMS = ->
@@ -38,6 +38,7 @@ Meteor.startup ->
                   DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
               , (err, rslt) ->
                 if err
+                  cl err.toString()
                   cl dasInfo.STATUS = err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error
                   dasInfo.STATUS = err

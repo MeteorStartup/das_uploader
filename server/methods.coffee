@@ -394,12 +394,11 @@ Meteor.methods
     services = CollectionServices.find()
     services.forEach (service) ->
       obj = {}
-      sizeInfo = CollectionSizeInfos.findOne({SERVICE_ID: service.SERVICE_ID})
       obj['SERVICE_ID'] = service.SERVICE_ID
       obj['SERVICE_NAME'] = service.SERVICE_NAME
-      obj['upCnt'] = sizeInfo.업로드용량
-      obj['delCnt'] = sizeInfo.처리용량
-      obj['waitCnt'] = sizeInfo.업로드용량 - sizeInfo.처리용량
+      obj['upCnt'] = service.용량통계.업로드용량
+      obj['delCnt'] = service.용량통계.처리용량
+      obj['waitCnt'] = service.용량통계.업로드용량 - service.용량통계.처리용량
       result.push obj
     cl result
     return result
@@ -452,14 +451,13 @@ Meteor.methods
     waitCnt = 0
     delCnt = 0
     services.forEach (service) ->
-      sizeInfo = CollectionSizeInfos.findOne({SERVICE_ID: service.SERVICE_ID})
-      waitCnt += sizeInfo.업로드용량 - sizeInfo.처리용량
-      delCnt += sizeInfo.처리용량
+      waitCnt += service.용량통계.업로드용량 - service.용량통계.처리용량
+      delCnt += service.용량통계.처리용량
     obj['name'] = '대기현황'
     obj['y'] = waitCnt
     obj2['name'] = '처리현황'
     obj2['y'] = delCnt
     result.push obj
     result.push obj2
-    cl result
+#    cl result
     return result

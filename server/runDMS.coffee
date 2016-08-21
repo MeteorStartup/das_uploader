@@ -43,7 +43,7 @@ Meteor.startup ->
                 BACKUP_PATH: service.백업파일경로
             , (err, rslt) ->
               if err
-#                cl err.toString()
+                cl err.toString()
                 if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
                 else dasInfo.STATUS.push err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error

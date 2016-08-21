@@ -68,9 +68,13 @@ Meteor.startup ->
 
       #      #REQ_DATE / SERVICE_ID / BOARD_ID 이고 STATUS가 'wait'인놈은 DEL_DATE 수정으로 처리
       if (exist = CollectionDasInfos.findOne
-        REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID, STATUS: 'wait')
-        cl exist
-        CollectionDasInfos.update _id: exist._id, dasInfo
+        REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID)
+        if exist.STATUS is 'wait'
+          CollectionDasInfos.update _id: exist._id, dasInfo
+        else  #wait 일때만 업데이트하고 에러 혹은 이미 처리 된 건이라면 들어와서는 안되는 데이터라서 에러
+          dasInfo.STATUS = ['이미 처리 된 건이 수정으로 재 요청 되었습니다. 홈페이지 서버를 확인 해 주세요.']
+          CollectionDasInfos.update _id: exist._id, dasInfo
+
       else
         #      #dasInfo 최종 입력
         CollectionDasInfos.insert dasInfo

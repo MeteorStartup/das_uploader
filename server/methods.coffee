@@ -50,28 +50,38 @@ Meteor.startup ->
       try
         service = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID)
         agent = CollectionAgents.findOne(AGENT_URL: data.AGENT_URL)
-        dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
         dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
         dasInfo.AGENT_URL = agent.AGENT_URL
         dasInfo.AGENT_URL_FROM_AGENT = data.AGENT_URL
         dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
+        unless service
+#          #요청에 해당하는 서비스가 없다면 에러로 처리 및 기록
+          dasInfo.STATUS = ['service not found when inserted']
+        else
+          dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
       catch err
 #        서비스/에이전트 확인 에러 발생 시 status를 미리 결정 짓고 더 이상 처리 하지 않는다
         cl err
-        dasInfo.STATUS = err
+        dasInfo.STATUS = [err_when_inserted: err]
 
+#      #dasInfo 최종 입력
       CollectionDasInfos.insert dasInfo
 
-      #     용량 통계 추가
-      sizeInfo = CollectionSizeInfos.findOne SERVICE_ID: dasInfo.SERVICE_ID
-      if sizeInfo?
-        sizeInfo.업로드용량 += dasInfo.UP_FSIZE
-        CollectionSizeInfos.update _id: sizeInfo._id, sizeInfo
-      else
-        sizeStatus = dataSchema '용량통계'
-        sizeStatus.SERVICE_ID = dasInfo.SERVICE_ID
-        sizeStatus.업로드용량 = dasInfo.UP_FSIZE
-        CollectionSizeInfos.insert sizeStatus
+#      #용량 통계 업데이트
+      service.용량통계.업로드용량 += dasInfo.UP_FSIZE
+      CollectionServices.update _id: service._id, service
+
+#      #     용량 통계 추가
+#      CollectionServices.findOne dasInfo.SERVICE_ID
+#      sizeInfo = CollectionSizeInfos.findOne SERVICE_ID: dasInfo.SERVICE_ID
+#      if sizeInfo?
+#        sizeInfo.업로드용량 += dasInfo.UP_FSIZE
+#        CollectionSizeInfos.update _id: sizeInfo._id, sizeInfo
+#      else
+#        sizeStatus = dataSchema '용량통계'
+#        sizeStatus.SERVICE_ID = dasInfo.SERVICE_ID
+#        sizeStatus.업로드용량 = dasInfo.UP_FSIZE
+#        CollectionSizeInfos.insert sizeStatus
       return 'success'
 
 Meteor.methods

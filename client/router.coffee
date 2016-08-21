@@ -13,6 +13,7 @@ Router.onBeforeAction ->
   unless Meteor.loggingIn()
     if Meteor.userId()?
       Router.go '/'
+      @next()
     else @next()
   else @next()
 ,
@@ -28,3 +29,23 @@ Router.onBeforeAction ->
   else @next()
 ,
   except: ['login']
+
+#admin only page
+Router.onBeforeAction (pause) ->
+  user = Meteor.user()
+  if user?
+    unless user.profile and user.profile['사용권한'] is '관리자'
+      alert '관리자만 사용가능합니다.'
+      Router.go '/'
+      @next()
+    else @next()
+  else @next()
+,
+  only: [
+    'serviceInfoEditing'
+    'serviceInfoWriting'
+    'agentInfoWriting'
+    'agentInfoEditing'
+    'userDetailWriting'
+    'license'
+  ]

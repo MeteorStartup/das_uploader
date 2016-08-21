@@ -6,7 +6,7 @@ Template.userDetail.onCreated ->
   Meteor.call 'getUserInfoById', Router.current().params._id, (err, rslt) ->
     if err then alert err
     else
-      cl rslt
+#      cl rslt
       userRv.set rslt
 
 Template.userDetail.helpers
@@ -15,12 +15,20 @@ Template.userDetail.helpers
 Template.userDetail.events
   'click [name=btnEdit]': (e, tmpl) ->
     e.preventDefault()
-    alert '수정기능은 준비중입니다'
-    return false
+    unless Meteor.user()?.profile.사용권한 is '관리자'
+      alert '관리자만 사용가능합니다.'
+      return
+    else
+      Router.go 'userDetailEditing', _id: Router.current().params._id
+
 
   'click [name=btnDelete]': (e, tmpl) ->
     e.preventDefault()
+    unless Meteor.user().profile.사용권한 is '관리자' then return
     if confirm '삭제하시겠습니까?'
+      #관리자 본인 계정 삭제 금지
+      if Meteor.userId() is Router.current().params._id then alert '본인계정은 삭제가 불가능합니다. 책임 관리자에게 문의하세요.'; return;
+
       Meteor.call 'removeUserById', Router.current().params._id, (err, rslt) ->
         if err then alert err
         else

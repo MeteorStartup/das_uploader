@@ -20,6 +20,11 @@ Template.statCapaView.helpers
   waitCnt: -> jUtils.formatBytes @waitCnt
 
 Template.statCapaView.events
+  'click #btnExcel': (e, tmpl) ->
+    e.preventDefault()
+    alert '업데이트 예정입니다.'
+    return
+
   'change [name=SERVICE_ID]': (e, tmpl) ->
 #    cl $(e.target).val()
     unless $(e.target).val() is 'all'

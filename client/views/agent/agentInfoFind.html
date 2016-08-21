@@ -8,9 +8,11 @@
           <div class="tform01 srch_form">
             <strong class="txt_srch">
               <span>Agent 정보 조회</span>
+              {{#if isAdmin}}
               <a href="{{pathFor 'agentInfoWriting'}}" class="btns btn_inner90 right">
                 <span class="m0">신규 등록</span>
               </a>
+              {{/if}}
             </strong>
           </div>
         </div>

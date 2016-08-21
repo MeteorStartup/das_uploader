@@ -7,10 +7,12 @@
         <div class="section">
           {{#with userInfo}}
           <div class="tform01 srch_form">
+            {{#if isAdminUser}}
             <strong class="txt_list">
               <span>사용자 정보</span>
               <a href="#" class="btns btn_inner90 right" name="btnDelete"><span class="m0">삭제</span></a>
             </strong>
+            {{/if}}
             <table>
               <colgroup>
                 <col style="width:18%">
@@ -55,7 +57,9 @@
         </div>
 
         <div class="btn_area tc mt60">
+          {{#if isAdminUser}}
           <a href="#" class="btns btn_large_ok" name="btnEdit"><span>수정</span></a>
+          {{/if}}
           <a href="{{pathFor 'userList'}}" class="btns btn_large_cncl ml10"><span>취소</span></a>
         </div>
       </div>

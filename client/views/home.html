@@ -46,10 +46,10 @@
             <div class="inner">
               <div class="tab">
                 <ul>
-                  <li class="t01 on"><a href="#" >실시간 현황</a></li>
-                  <li class="t02"><a href="#" >일별 현황</a></li>
-                  <li class="t03"><a href="#" >주별 현황</a></li>
-                  <li class="t04"><a href="#" >월별 현황</a></li>
+                  <li class="t01 on"><a href="#" class="ready" >실시간 현황</a></li>
+                  <li class="t02"><a href="#" class="notReady">일별 현황</a></li>
+                  <li class="t03"><a href="#" class="notReady">주별 현황</a></li>
+                  <li class="t04"><a href="#" class="notReady">월별 현황</a></li>
                 </ul>
                 <a href="{{pathFor 'statAccumView'}}" class="btn_more">더 보기</a>
               </div>
@@ -93,27 +93,54 @@
             <div class="inner">
               <div class="txt_box">
                 <h3 class="tit02">Agent 현황</h3>
-                <div class="agent_result"><p class="on">ON 0</p>	<p>OFF 9</p></div>
+                <div class="agent_result">
+                  <p class="on">ON {{agent사용갯수}}</p>
+                  <p>OFF {{agent미사용갯수}}</p>
+                </div>
               </div>
 
               <div class="agent_list">
                 <div class="inner nano">
                   <ul class="nano-content" id="agent_content" tabindex="0">
+                    {{#each agents}}
+                      <li>
+                        <a href="{{pathFor 'agentInfoFind'}}">
+                          <span class="ml10 {{isUseAgent}}">{{AGENT_NAME}} </span>
+                        </a>
+                      </li>
+                    {{/each}}
                     <li>
-                      <a href="#" class="plus show">
-                        <span class="off_agent">서비스_DEL</span>
-                        <em class="count">(0/1)</em>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
                       </a>
-                      <ul class="sub_list ">
-                        <li>
-                          <a href="#">
-                            <span class="off_agent">Agent1 </span>
-                          </a>
-                        </li>
-                      </ul>
                     </li>
-                    <li><a href="#" class="plus show"><span class="off_agent">서비스_EMPTY</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent2 </span></a></li><li><a href="#"><span class="off_agent">Agent3 </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">123123</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">111 </span></a></li><li><a href="#"><span class="off_agent">comp_agent </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">test</span><em class="count">(0/2)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li><li><a href="#"><span class="off_agent">asdfasd </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">tes</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">asdf </span></a></li></ul></li><li><a href="#" class="plus show"><span class="off_agent">SOFT</span><em class="count">(0/1)</em></a><ul class="sub_list "><li><a href="#"><span class="off_agent">Agent1 </span></a></li></ul></li></ul>
-                  <div class="nano-pane" style="display: block; opacity: 1; visibility: visible;"><div class="nano-slider" style="height: 202px; transform: translate(0px, 0px);"></div></div></div>
+                    <li>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{pathFor 'agentInfoFind'}}">
+                        <span class="ml10 {{isUseAgent}}">asdfasd fasdfasdf </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -146,19 +173,26 @@
                       <th scope="col" class="txt_red">오류</th>
                     </tr>
                     </thead>
-                    <tbody id="error_body"><tr><td class="tl"><a href="#" class="link01">서비스_DEL</a></td><td>96</td><td>48</td><td>38</td><td class="txt_red">10</td></tr><tr><td class="tl"><a href="#" class="link01">서비스_EMPTY</a></td><td>4</td><td>4</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">서비스_COPY</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">123123</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">test</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">tes</a></td><td>0</td><td>0</td><td>0</td><td class="txt_red">0</td></tr><tr><td class="tl"><a href="#" class="link01">SOFT</a></td><td>13</td><td>12</td><td>1</td><td class="txt_red">0</td></tr></tbody>
+                    <tbody id="error_body">
+                    {{#each serviceAccumStats}}
+                    <tr>
+                      <td class="tl"><a href="{{pathFor 'serviceInfoFind'}}" class="link01">{{SERVICE_NAME}}</a></td>
+                      <td>{{upCnt}}</td>
+                      <td>{{delCnt}}</td>
+                      <td>{{waitCnt}}</td>
+                      <td class="txt_red">{{errCnt}}</td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
                   </table>
                 </div>
-                <div class="nano-pane" style="display: block; opacity: 1; visibility: visible;"><div class="nano-slider" style="height: 80px; transform: translate(0px, 0px);"></div></div></div>
-
+              </div>
             </div>
           </div>
           <!-- //error -->
-
         </div>
-
       </div>
-    </div>
 
+    </div>
   </div>
 </template>

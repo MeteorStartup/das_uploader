@@ -7,9 +7,11 @@
           <div class="tform01 srch_form">
             <strong class="txt_srch">
               <span>사용자 정보 조회</span>
+              {{#if isAdminUser}}
               <a href="{{pathFor 'userDetailWriting'}}" class="btns btn_inner90 right">
                 <span class="m0">신규 등록</span>
               </a>
+              {{/if}}
             </strong>
             <table>
               <colgroup>
@@ -88,7 +90,7 @@
           </div>
 
           <!-- paging -->
-          <div class="paging" id="user_page_body"><a href="javascript:make_user_list(1);" class="btn_first">처음 페이지</a><a href="javascript:make_user_list(1);" class="btn_prev">이전 페이지</a><a href="javascript:make_user_list(1);" class="on">1</a><a href="javascript:make_user_list(1);" class="btn_next">다음 페이지</a><a href="javascript:make_user_list(1);" class="btn_last">마지막 페이지</a></div>
+          <div class="paging" id="user_page_body"><a href="#" class="btn_first">처음 페이지</a><a href="#" class="btn_prev">이전 페이지</a><a href="#" class="on">1</a><a href="#" class="btn_next">다음 페이지</a><a href="#" class="btn_last">마지막 페이지</a></div>
           <!-- //paging -->
 
         </div>

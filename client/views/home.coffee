@@ -1,5 +1,7 @@
-lineStatDatas = new ReactiveVar()
-pieStatDatas = new ReactiveVar()
+lineStatDatas = new ReactiveVar() #꺽은선 차트 데이터
+pieStatDatas = new ReactiveVar()  #용량통계 파이 차트 데이터
+agentInfosRv = new ReactiveVar()  #Agent현황 데이터
+serviceAccumStatsRv = new ReactiveVar() #서비스별 처리현황 데이터
 
 Template.home.onRendered ->
   @autorun ->
@@ -59,6 +61,7 @@ Template.home.onRendered ->
       credits:
         enabled: false
 
+  ##차트 최초 로드를 위해서 autorun 밑에서 호출함
   todayObj = libClient.getRealtimeDate()
   Meteor.call 'getSimpleRealTimeStats', todayObj.start, (err, rslt) ->
     if err
@@ -70,6 +73,18 @@ Template.home.onRendered ->
     else
       pieStatDatas.set rslt
 
+  ##Agent 현황 정보
+  Meteor.call 'getAgentInfos', (err, rslt) ->
+    if err then alert err
+    else
+      agentInfosRv.set rslt
+
+  ##서비스별 처리현황
+  Meteor.call 'getAccumStats', (err, rslt) ->
+    if err then alert err
+    else
+      serviceAccumStatsRv.set rslt
+
 
 Template.home.helpers
   누적요청: ->
@@ -80,11 +95,21 @@ Template.home.helpers
     return total
   대기현황: -> jUtils.formatBytes pieStatDatas.get()?[0].y
   처리현황: -> jUtils.formatBytes pieStatDatas.get()?[1].y
+  agents: -> agentInfosRv.get()?.data
+  agent사용갯수: -> agentInfosRv.get()?.사용
+  agent미사용갯수: -> agentInfosRv.get()?.미사용
+  isUseAgent: -> if @STATUS then 'on' else ''
+  serviceAccumStats: -> serviceAccumStatsRv.get()
 
 Template.home.events
   'click #agent_content > li': (e, tmpl) ->
 
   'click .tab > ul': (e, tmpl) ->
-    target = $(e.target).parent()
-    $('.tab > ul > li').removeClass 'on'
-    target.addClass 'on'
+    if $(e.target).hasClass('ready')
+      target = $(e.target).parent()
+      $('.tab > ul > li').removeClass 'on'
+      target.addClass 'on'
+    else
+      alert '업데이트 예정입니다.'
+      e.preventDefault()
+      return false

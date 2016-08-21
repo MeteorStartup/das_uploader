@@ -47,11 +47,13 @@ Meteor.startup ->
 
         if key isnt '' and val isnt ''
           dasInfo[key] = val
+#          #dasInfo was made
+
       try
         service = CollectionServices.findOne(SERVICE_ID: dasInfo.SERVICE_ID)
         agent = CollectionAgents.findOne(AGENT_URL: data.AGENT_URL)
         dasInfo.AGENT_NAME = agent.AGENT_NAME or ''
-        dasInfo.AGENT_URL = agent.AGENT_URL
+        dasInfo.AGENT_URL = agent.AGENT_URL       #Unique value
         dasInfo.AGENT_URL_FROM_AGENT = data.AGENT_URL
         dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
         unless service
@@ -64,12 +66,18 @@ Meteor.startup ->
         cl err
         dasInfo.STATUS = [err_when_inserted: err]
 
-#      #dasInfo 최종 입력
-      CollectionDasInfos.insert dasInfo
+      #      #REQ_DATE / SERVICE_ID / BOARD_ID 이고 STATUS가 'wait'인놈은 DEL_DATE 수정으로 처리
+      if (exist = CollectionDasInfos.findOne
+        REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID, STATUS: 'wait')
+        cl exist
+        CollectionDasInfos.update _id: exist._id, dasInfo
+      else
+        #      #dasInfo 최종 입력
+        CollectionDasInfos.insert dasInfo
 
-#      #용량 통계 업데이트
-      service.용량통계.업로드용량 += dasInfo.UP_FSIZE
-      CollectionServices.update _id: service._id, service
+  #      #용량 통계 업데이트
+        service.용량통계.업로드용량 += dasInfo.UP_FSIZE
+        CollectionServices.update _id: service._id, service
 
 #      #     용량 통계 추가
 #      CollectionServices.findOne dasInfo.SERVICE_ID

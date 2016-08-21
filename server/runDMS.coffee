@@ -18,79 +18,80 @@ Meteor.startup ->
     CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
       unless service
-        dasInfo.STATUS = 'service not found'
+        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['service not found']
         return CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
       if service.상태 is false then return  #해당 서비스의 처리 않함 상태
 
       agents = CollectionAgents.find _id: $in: service.AGENT정보
       if agents.count() is 0
-        dasInfo.STATUS = 'agent not found'
+        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
         return CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
       ## delete files
-      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success
+      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
 
-      if dasInfo.STATUS is 'success'
-        agents.forEach (agent) ->
-          if agent.파일삭제기능
-            try
-              fut = new future()
-              HTTP.post "#{agent.AGENT_URL}/removeFiles",
-                data:
-                  DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
-                  DEL_OPTION: service.파일처리옵션
-                  BACKUP_PATH: service.백업파일경로
-              , (err, rslt) ->
-                if err
-                  cl err.toString()
-                  if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
-                  else dasInfo.STATUS.push err.toString()
+      agents.forEach (agent) ->
+        if agent.파일삭제기능
+          try
+            fut = new future()
+            HTTP.post "#{agent.AGENT_URL}/removeFiles",
+              data:
+                DEL_FILE_LIST: dasInfo.DEL_FILE_LIST
+                DEL_OPTION: service.파일처리옵션
+                BACKUP_PATH: service.백업파일경로
+            , (err, rslt) ->
+              if err
+#                cl err.toString()
+                if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
+                else dasInfo.STATUS.push err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error
-                  dasInfo.STATUS = err
 #                else
 #                  fibers ->
 #                    dasInfo.STATUS = 'success'
 #                    CollectionDasInfos.update _id: dasInfo._id, dasInfo
 #                  .run()
-                else
-                  unless rslt.content is 'success' then dasInfo.STATUS = rslt
-                fut.return()
-              fut.wait()
+              else
+#                #rslt.contents가 success가 아니면 이 역시 실패
+                if rslt.content isnt 'success'
+                  if dasInfo.STATUS is 'success' then dasInfo.STATUS = [rslt]
+                  else dasInfo.STATUS.push rslt
+              fut.return()
+            fut.wait()
 
-            catch err
-              cl dasInfo.STATUS = err.toString()
-              if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
-              else dasInfo.STATUS.push err.toString()
-##      delete query
-      if dasInfo.STATUS is 'success'
-        try
-          mysqlDB = mysql.createConnection service.DB정보.DB접속URL
+          catch err
+            if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
+            else dasInfo.STATUS.push err.toString()
+##    delete query
+      try
+        mysqlDB = mysql.createConnection service.DB정보.DB접속URL
 #            host: 'localhost'
 #            user: 'root'
 #            password: 'Thflskf0'
 #            database: 'test'
-          mysqlDB.connect()
+        mysqlDB.connect()
 #          arr_queries = dasInfo.DEL_DB_QRY.split(';')
 #          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
-  #        arr_queries = [
-  #          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
-  #          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
-  #        ]
-          dasInfo.DEL_DB_QRY.forEach (query) ->
-            mysqlDB.query query, (err, rows, fields) ->
-              if err
-                cl 'delete mysql db'
-                if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
-                else dasInfo.STATUS.push err.toString()
-              else cl 'success!!!!!!!!!'
-          mysqlDB.end()
+#        arr_queries = [
+#          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
+#          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
+#        ]
+        dasInfo.DEL_DB_QRY.forEach (query) ->
+          mysqlDB.query query, (err, rows, fields) ->
+            if err
+              cl 'del_db_qry for each'
+              if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
+              else dasInfo.STATUS.push err.toString()
+            else cl 'success!!!!!!!!!'
+        mysqlDB.end()
 
-        catch err
-          cl 'here'
-          cl dasInfo.STATUS = err.toString()
-          if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
-          else dasInfo.STATUS.push err.toString()
+      catch err
+        cl '####### DB ERROR #######'
+#        cl dasInfo.STATUS = err.toString()
+        if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
+        else
+          cl dasInfo
+          dasInfo.STATUS.push err.toString()
 
 ##      delete url
 #      if dasInfo.STATUS is 'success'

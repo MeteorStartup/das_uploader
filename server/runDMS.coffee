@@ -44,7 +44,8 @@ Meteor.startup ->
               , (err, rslt) ->
                 if err
                   cl err.toString()
-                  cl dasInfo.STATUS = err.toString()
+                  if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
+                  else dasInfo.STATUS.push err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error
                   dasInfo.STATUS = err
 #                else
@@ -59,7 +60,8 @@ Meteor.startup ->
 
             catch err
               cl dasInfo.STATUS = err.toString()
-              dasInfo.STATUS = err
+              if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
+              else dasInfo.STATUS.push err.toString()
 ##      delete query
       if dasInfo.STATUS is 'success'
         try
@@ -79,16 +81,16 @@ Meteor.startup ->
             mysqlDB.query query, (err, rows, fields) ->
               if err
                 cl 'delete mysql db'
-                cl dasInfo.STATUS = err.toString()
-                dasInfo.STATUS = err
+                if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
+                else dasInfo.STATUS.push err.toString()
               else cl 'success!!!!!!!!!'
           mysqlDB.end()
 
         catch err
           cl 'here'
-          cl err
           cl dasInfo.STATUS = err.toString()
-          dasInfo.STATUS = err
+          if dasInfo.STATUS is 'success' then dasInfo.STATUS = [].push err.toString()
+          else dasInfo.STATUS.push err.toString()
 
 ##      delete url
 #      if dasInfo.STATUS is 'success'

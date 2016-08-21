@@ -41,11 +41,24 @@
     arr = _.clone(_arr);
     arr.forEach (_obj) ->
       total += _obj.y
-#    cl total
-    arr.forEach (_obj) ->
-      obj = {}
-      obj['name'] = _obj.name
-      obj['y'] = parseInt(((_obj.y/total)*100).toFixed(2))
-      temps.push obj
+    cl total
+    unless total is 0
+      arr.forEach (_obj) ->
+        obj = {}
+        obj['name'] = _obj.name
+        obj['y'] = parseInt(((_obj.y/total)*100).toFixed(2))
+        temps.push obj
+    else
+      arr.forEach (_obj, idx) ->
+        if idx is 0
+          obj = {}
+          obj['name'] = _obj.name
+          obj['y'] = 100
+          temps.push obj
+        else
+          obj = {}
+          obj['name'] = _obj.name
+          obj['y'] = 0
+          temps.push obj
     return temps
 

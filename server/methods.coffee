@@ -393,3 +393,63 @@ Meteor.methods
       result.push obj
     cl result
     return result
+
+#  result = {
+#    categories: []
+#    series: [
+#      {
+#        name: ''
+#        y: [
+#
+#        ]
+#      }
+#      ...
+#    ]
+#  }
+  getSimpleRealTimeStats: (_today) ->
+    result = {}
+    categories = jDefine.dashBoardDayTimeDiv
+    series = []
+
+    #    point1 = (new Date()).getTime()
+
+    dataUp = []
+    tempObjUp = {}
+    categories.forEach (cate) ->
+      dataUp.push CollectionDasInfos.find({
+        REQ_DATE:
+          $gte: new Date("#{_today} #{cate}:00:00"),
+          $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+      }).count()
+    tempObjUp['name'] = '요청건수'
+    #      tempObj['data'] = dataUp
+    tempObjUp['data'] = dataUp
+    series.push tempObjUp
+
+    #    point2 = (new Date()).getTime()
+    #    cl point2 - point1
+    #    cl series
+    result['categories'] = categories
+    result['series'] = series
+#    cl JSON.stringify result
+    return result
+
+  getSimmpleCapaStats: ->
+    result = []
+    obj = {}
+    obj2 = {}
+    services = CollectionServices.find()
+    waitCnt = 0
+    delCnt = 0
+    services.forEach (service) ->
+      sizeInfo = CollectionSizeInfos.findOne({SERVICE_ID: service.SERVICE_ID})
+      waitCnt += sizeInfo.업로드용량 - sizeInfo.처리용량
+      delCnt += sizeInfo.처리용량
+    obj['name'] = '대기현황'
+    obj['y'] = waitCnt
+    obj2['name'] = '처리현황'
+    obj2['y'] = delCnt
+    result.push obj
+    result.push obj2
+    cl result
+    return result

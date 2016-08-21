@@ -141,7 +141,8 @@ Template.statTotalView.helpers
     total = 0
     delPerErrDatas.get().forEach (obj) ->
       total += obj.y
-    return ((@y/total)*100).toFixed(2)
+    if total is 0 then return 0
+    else return ((@y/total)*100).toFixed(2)
 Template.statTotalView.events
   'change #date01': (e, tmpl) ->
 #    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')

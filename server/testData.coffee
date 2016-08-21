@@ -31,14 +31,3 @@
 #  CollectionDasInfos.insert obj
 #
 #
-#CollectionSizeInfos.insert
-#  createdAt: new Date()
-#  SERVICE_ID: 'SVC00001'
-#  업로드용량: 200139399
-#  처리용량: 342883
-#
-#CollectionSizeInfos.insert
-#  createdAt: new Date()
-#  SERVICE_ID: 'SVC00002'
-#  업로드용량: 4849932
-#  처리용량: 389282

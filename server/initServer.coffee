@@ -26,9 +26,9 @@ Meteor.startup ->
     }
     CollectionServices.insert svcInfo
 
-    statTotal = dataSchema '용량통계'
-    statTotal.SERVICE_ID = 'SVC00001'
-    CollectionSizeInfos.insert statTotal
+#    statTotal = dataSchema '용량통계'
+#    statTotal.SERVICE_ID = 'SVC00001'
+#    CollectionSizeInfos.insert statTotal
 
 
   unless Meteor.users.findOne(username: 'admin')

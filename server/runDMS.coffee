@@ -15,7 +15,11 @@ Meteor.startup ->
 
   @runDMS = ->
     cl 'runDMS'
-    CollectionDasInfos.find(STATUS: 'wait').forEach (dasInfo) ->
+    CollectionDasInfos.find(STATUS: 'wait', DEL_DATE: {$lte: new Date()}).forEach (dasInfo) ->
+      cl dasInfo._id
+      ## delete files
+      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
+
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
       unless service
         if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['service not found']
@@ -27,9 +31,6 @@ Meteor.startup ->
       if agents.count() is 0
         if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
         return CollectionDasInfos.update _id: dasInfo._id, dasInfo
-
-      ## delete files
-      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
 
       agents.forEach (agent) ->
         if agent.파일삭제기능

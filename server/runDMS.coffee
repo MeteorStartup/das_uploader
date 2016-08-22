@@ -67,6 +67,7 @@ Meteor.startup ->
       try
         mysqlDB = mysql.createConnection service.DB정보.DB접속URL
 #            host: 'localhost'
+#             port: ''
 #            user: 'root'
 #            password: 'Thflskf0'
 #            database: 'test'

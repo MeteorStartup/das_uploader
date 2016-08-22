@@ -6,7 +6,7 @@ Template.serviceInfoFind.onCreated ->
   Meteor.call 'getServiceLists', (err, rslt) ->
     if err then alert err
     else
-      cl rslt
+#      cl rslt
       services.set rslt
 
 Template.serviceInfoFind.helpers

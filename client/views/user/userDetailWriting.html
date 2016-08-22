@@ -4,6 +4,7 @@
       <h2 class="tit01">사용자 정보 등록</h2>
       <div class="inner_box">
         <div class="section">
+          {{#with userInfo}}
           <form name="user_insert_form" id="user_insert_form" method="POST">
             <div class="tform01 srch_form">
               <strong class="txt_list"><span>사용자 정보 등록</span></strong>
@@ -16,71 +17,34 @@
                 <tr>
                   <th scope="row" class="bul_txt01 pre"><span>이        름</span></th>
                   <td>
-                    <input type="text" class="ip_txt" style="width:116px" name="mgr_nm" id="mgr_nm">
+                    <input type="text" class="ip_txt" style="width:116px" name="mgr_nm" id="mgr_nm" value="{{profile.이름}}">
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>아   이   디</span></th>
-                  <td style="background-color: rgb(255, 255, 255);">
+                  <th scope="row" class="bul_txt01 pre" ><span>아   이   디</span></th>
+                  <td >
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:116px" name="mgr_id" id="mgr_id">
+                      <input type="text" class="ip_txt" style="width:116px" name="mgr_id" id="mgr_id" value="{{username}}" {{readonly}}>
                       <a href="#" class="btns btn_inner90 ml10" name="btnIdCheck"><span>중복 확인</span></a>
                     </div>
                   </td>
                 </tr>
+                {{#if isWriting}}
                 <tr>
                   <th scope="row" class="bul_txt01 pre"><span>비 밀 번 호</span></th>
                   <td>
                     <div class="form_list">
-                      <input type="password" class="ip_txt" style="width:116px" id="tmp_pswd">
+                      <input type="password" class="ip_txt" style="width:116px" id="tmp_pswd" >
                       <!--<a href="#" class="btns btn_inner120 ml10"><span>임시 비밀번호 발급</span></a>-->
                     </div>
                   </td>
                 </tr>
+                {{/if}}
                 <tr>
-                  <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>이   메   일</span></th>
-                  <td style="background-color: rgb(255, 255, 255);">
+                  <th scope="row" class="bul_txt01 pre" ><span>이   메   일</span></th>
+                  <td >
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:232px " id="email1">
-                      <!--<span class="side_txt">@</span>-->
-                      <!--<input type="text" class="ip_txt" style="width:116px " id="email2">-->
-                      <!--<div class="select ml20">-->
-                        <!--<span>선택하세요.</span>-->
-                        <!--<ul>-->
-                          <!--<li data-val="">선택하세요</li>-->
-                          <!--<li data-val="naver.com">naver.com</li>-->
-                          <!--<li data-val="nate.com">nate.com</li>-->
-                          <!--<li data-val="dreamwiz.com">dreamwiz.com</li>-->
-                          <!--<li data-val="yahoo.co.kr">yahoo.co.kr</li>-->
-                          <!--<li data-val="empal.com">empal.com</li>-->
-                          <!--<li data-val="untel.co.kr">untel.co.kr</li>-->
-                          <!--<li data-val="gmail.com">gmail.com</li>-->
-                          <!--<li data-val="korea.com">korea.com</li>-->
-                          <!--<li data-val="chol.com">chol.com</li>-->
-                          <!--<li data-val="paran.com">paran.com</li>-->
-                          <!--<li data-val="freechal.com">freechal.com</li>-->
-                          <!--<li data-val="hanmail.com">hanmail.com</li>-->
-                          <!--<li data-val="hotmail.com">hotmail.com</li>-->
-                          <!--<li data-val="self">직접입력</li>-->
-                        <!--</ul>-->
-                        <!--<select onchange="change_email(this)" id="select_email">-->
-                          <!--<option value="">선택하세요</option>-->
-                          <!--<option value="naver.com">naver.com</option>-->
-                          <!--<option value="nate.com">nate.com</option>-->
-                          <!--<option value="dreamwiz.com">dreamwiz.com</option>-->
-                          <!--<option value="yahoo.co.kr">yahoo.co.kr</option>-->
-                          <!--<option value="empal.com">empal.com</option>-->
-                          <!--<option value="untel.co.kr">untel.co.kr</option>-->
-                          <!--<option value="gmail.com">gmail.com</option>-->
-                          <!--<option value="korea.com">korea.com</option>-->
-                          <!--<option value="chol.com">chol.com</option>-->
-                          <!--<option value="paran.com">paran.com</option>-->
-                          <!--<option value="freechal.com">freechal.com</option>-->
-                          <!--<option value="hanmail.com">hanmail.com</option>-->
-                          <!--<option value="hotmail.com">hotmail.com</option>-->
-                          <!--<option value="self">직접입력</option>-->
-                        <!--</select>-->
-                      <!--</div>-->
+                      <input type="text" class="ip_txt" style="width:232px " id="email1" value="{{profile.이메일}}">
                     </div>
                   </td>
                 </tr>
@@ -88,13 +52,13 @@
                   <th scope="row" class="bul_txt01 pre"><span>휴   대   폰</span></th>
                   <td>
                     <div class="form_list">
-                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="11">
+                      <input type="text" class="ip_txt" style="width:116px" id="cell_phone3" maxlength="11" value="{{profile.휴대폰}}">
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row" class="bul_txt01 pre" style="background-color: rgb(255, 255, 255);"><span>사 용 권 한</span></th>
-                  <td style="background-color: rgb(255, 255, 255);">
+                  <th scope="row" class="bul_txt01 pre" ><span>사 용 권 한</span></th>
+                  <td >
                     <label class="radio radio_on"><input type="radio" name="use_perm" value="일반" checked="checked">일반 사용자</label>
                     <label class="radio ml20"><input type="radio" name="use_perm" value="관리자">슈퍼 어드민</label>
                   </td>
@@ -109,7 +73,9 @@
                 </tbody>
               </table>
 
-            </div></form>
+            </div>
+          </form>
+          {{/with}}
         </div>
 
         <div class="btn_area tc mt60">

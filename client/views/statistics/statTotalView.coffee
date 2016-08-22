@@ -17,8 +17,8 @@ Template.statTotalView.onCreated ->
 
 Template.statTotalView.onRendered ->
   todayObj = libClient.getRealtimeDate()
-  $('#date01').datepicker({dateFormat: 'yy-mm-dd'})
-  $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
+#  $('#date01').datepicker({dateFormat: 'yy-mm-dd'})
+#  $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
   $('#date01').val(todayObj.start)
   $('#date02').val(todayObj.end)
   @autorun ->
@@ -144,20 +144,28 @@ Template.statTotalView.helpers
     if total is 0 then return 0
     else return ((@y/total)*100).toFixed(2)
 Template.statTotalView.events
-  'change #date01': (e, tmpl) ->
-#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
-    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
-      alert '3달 이내만 조회가 가능합니다.'
-      $('#date01').val(
-        jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
-      )
-  'change #date02': (e, tmpl) ->
-#    cl jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days')
-    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
-      alert '3달 이내만 조회가 가능합니다.'
-      $('#date02').val(
-        jUtils.getStringYMDFromDate(new Date("#{$('#date01').val()}").addDates(90))
-      )
+  'click #btnExcel': (e, tmpl) ->
+    e.preventDefault()
+    alert '업데이트 예정입니다.'
+    return
+
+  ##실시간차트를 위한 임시 코드, 나중에 다른 조회조건도 들어갈떈 조건에 따라 별도처리
+  'click #date01, click #date02': (e, tmpl) ->
+    e.preventDefault()
+    alert '실시간차트는 오늘 날짜만 선택가능합니다.'
+    return false
+#  'change #date01': (e, tmpl) ->
+#    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+#      alert '3달 이내만 조회가 가능합니다.'
+#      $('#date01').val(
+#        jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
+#      )
+#  'change #date02': (e, tmpl) ->
+#    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+#      alert '3달 이내만 조회가 가능합니다.'
+#      $('#date02').val(
+#        jUtils.getStringYMDFromDate(new Date("#{$('#date01').val()}").addDates(90))
+#      )
 
   'click .tab li': (e, tmpl) ->
     $('.tab li').removeClass('on')
@@ -165,9 +173,9 @@ Template.statTotalView.events
     tabId.set target.attr('id')
 
   'click .btn_box .btn_inner': (e, tmpl) ->
-    if $(e.target).text() in ['일별', '주간']
+    if $(e.target).text() in ['일별', '주간', '월간']
       e.preventDefault()
-      alert '준비중입니다.'
+      alert '업데이트 예정입니다.'
       return
     $('.btn_inner').removeClass('on')
     if (target=$(e.target)).hasClass('btn_inner') or (target=target.parent()).hasClass('btn_inner')

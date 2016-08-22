@@ -412,7 +412,7 @@ Meteor.methods
       obj['delCnt'] = service.용량통계.처리용량
       obj['waitCnt'] = service.용량통계.업로드용량 - service.용량통계.처리용량
       result.push obj
-    cl result
+#    cl result
     return result
 
 #  result = {
@@ -473,3 +473,44 @@ Meteor.methods
     result.push obj2
 #    cl result
     return result
+
+#  result = {
+#    사용: num
+#    미사용: num
+#    data: [
+#      agentObj
+#      ..
+#    ]
+#  }
+  getAgentInfos: ->
+    use = 0
+    unUse = 0
+    agents = CollectionAgents.find({},{sort: AGENT_NAME: 1})
+    agents.forEach (agent) ->
+      if agent.STATUS then use += 1
+      else unUse += 1
+    result = {
+      사용: use
+      미사용: unUse
+      data: agents.fetch()
+    }
+
+  editUserInfo: (_obj, _id) ->
+
+    profile = Meteor.users.findOne(_id: _id).profile
+    _.extend profile,
+      이름: _obj.이름
+      이메일: _obj.이메일
+      휴대폰: _obj.휴대폰
+      상태: _obj.상태
+      사용권한: _obj.사용권한
+    Meteor.users.update _id: _id,
+      $set:
+        profile: profile
+
+  checkLoginPermission: (_username) ->
+    user = Meteor.users.findOne username: _username
+    if user.profile.상태 is '사용' then return 'success'
+    else if user.profile.상태 is '사용안함' then return 'denied'
+    else
+      throw new Meteor.Error '로그인 이상. 개발자에게 문의바랍니다.(error log : #loginFailed)'

@@ -17,6 +17,9 @@ Template.agentInfoFind.helpers
 Template.agentInfoFind.events
   'click [name=btnAgentDel]': (e, tmpl) ->
     e.preventDefault()
+    unless Meteor.user()?.profile.사용권한 is '관리자'
+      alert '관리자만 사용가능합니다.'
+      return
     agent_id = $(e.target).attr('id')
     if confirm '해당 Agent를 삭제하시겠습니까? 삭제후에는 복구가 불가능합니다.'
       Meteor.call 'removeAgent', agent_id, (err, rslt) ->

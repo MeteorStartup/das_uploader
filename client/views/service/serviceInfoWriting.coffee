@@ -48,7 +48,10 @@ Template.serviceInfoWriting.helpers
 Template.serviceInfoWriting.events
   'click [name=dbTest]': (e, tmpl) ->
     dbObj =
-      DB접속URL: $('[name=DB접속URL]').val()
+#      DB접속URL: $('[name=DB접속URL]').val()
+      DB_IP: $('[name=DB_IP]').val()
+      DB_PORT: $('[name=DB_PORT]').val()
+      DB_DATABASE: $('[name=DB_DATABASE]').val()
       DBMS종류: $(':radio[name="DBMS종류"]:checked').val()
       DB_ID: $('[name=DB_ID]').val()
       DB_PW: $('[name=DB_PW]').val()
@@ -67,7 +70,10 @@ Template.serviceInfoWriting.events
     AGENT상태전송주기 = $('[name=AGENT상태전송주기]').val()
     상태 = $(':radio[name="상태"]:checked').val()
     DB이름 = $('[name=DB이름]').val()
-    DB접속URL = $('[name=DB접속URL]').val()
+#    DB접속URL = $('[name=DB접속URL]').val()
+    DB_IP = $('[name=DB_IP]').val()
+    DB_PORT = $('[name=DB_PORT]').val()
+    DB_DATABASE = $('[name=DB_DATABASE]').val()
     DBMS종류 = $(':radio[name="DBMS종류"]:checked').val()
     DB_ID = $('[name=DB_ID]').val()
     DB_PW = $('[name=DB_PW]').val()
@@ -79,7 +85,10 @@ Template.serviceInfoWriting.events
     if SERVICE_NAME.length <= 0 then alert '서비스명을 입력하세요.';$('[name=SERVICE_NAME]').focuID를; return;
     if SERVICE_ID.length <= 0 then alert '서비스ID를 입력하세요.';$('[name=SERVICE_ID]').focus(); return;
     if DB이름.length <= 0 then alert 'DB이름을 입력하세요.';$('[name=DB이름]').focus(); return;
-    if DB접속URL.length <= 0 then alert 'DB접속URL을 입력하세요.';$('[name=DB접속URL]').focus(); return;
+#    if DB접속URL.length <= 0 then alert 'DB접속URL을 입력하세요.';$('[name=DB접속URL]').focus(); return;
+    if DB_IP.length <= 0 then alert 'DB_IP을 입력하세요.';$('[name=DB_IP]').focus(); return;
+    if DB_PORT.length <= 0 then alert 'DB_PORT을 입력하세요.';$('[name=DB_PORT]').focus(); return;
+    if DB_DATABASE.length <= 0 then alert 'DB_DATABASE을 입력하세요.';$('[name=DB_DATABASE]').focus(); return;
     if DB_ID.length <= 0 then alert 'DB_ID을 입력하세요.';$('[name=DB_ID]').focus(); return;
     if DB_PW.length <= 0 then alert 'DB_PW을 입력하세요.';$('[name=DB_PW]').focus(); return;
     if 파일처리옵션 is '백업'
@@ -98,8 +107,11 @@ Template.serviceInfoWriting.events
               else return false
       DB정보:       #DB정보 자체가 현재 필요 없음. 일단 UI에 맞춰 만듦
         DB이름: DB이름      #DB 이름
-        DB접속URL: DB접속URL   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
+#        DB접속URL: DB접속URL   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
         DBMS종류: DBMS종류    #MsSQL/MySQL/Oracle
+        DB_IP: DB_IP       #ID
+        DB_PORT: DB_PORT       #ID
+        DB_DATABASE: DB_DATABASE       #ID
         DB_ID: DB_ID       #ID
         DB_PW: DB_PW       #PW
       AGENT정보: AGENT정보     #등록 갯수만큼 _id만

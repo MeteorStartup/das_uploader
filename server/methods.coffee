@@ -25,6 +25,8 @@ Meteor.startup ->
         switch key
           when 'DEL_DB_QRY'
             arr_qry = val.split ';'
+            arr_qry.forEach (qry, i) ->
+              arr_qry[i] = qry.trim()
             arr_qry = arr_qry.filter (str) -> (str.length > 0)
             arr_qry.forEach (qry, i) ->
               arr_qry[i] = qry.trim()
@@ -43,6 +45,8 @@ Meteor.startup ->
             val = new Date(year, month, date, hour, minute, second, mil)
           when 'DEL_FILE_LIST'
             val = val.split(',')
+            val.forEach (path, i) -> return val[i] = path.trim()
+            val = val.filter (str) -> (str.length > 0)
             val.forEach (path, i) -> return val[i] = path.trim()
 
         if key isnt '' and val isnt ''

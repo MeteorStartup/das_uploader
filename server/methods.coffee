@@ -215,7 +215,7 @@ Meteor.methods
 #    categories: []
 #    series: []
 #  }
-  getRealTimeStats: (_today, _serviceId) ->
+  getLineStats: (_today, _serviceId) ->
     result = {}
     categories = jDefine.dayTimeDiv
     seriesUp = []

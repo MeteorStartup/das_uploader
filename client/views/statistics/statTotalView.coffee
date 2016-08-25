@@ -17,8 +17,8 @@ Template.statTotalView.onCreated ->
 
 Template.statTotalView.onRendered ->
   todayObj = libClient.getRealtimeDate()
-#  $('#date01').datepicker({dateFormat: 'yy-mm-dd'})
-#  $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
+  $('#date01').datepicker({dateFormat: 'yy-mm-dd'})
+  $('#date02').datepicker({dateFormat: 'yy-mm-dd'})
   $('#date01').val(todayObj.start)
   $('#date02').val(todayObj.end)
   @autorun ->
@@ -149,23 +149,91 @@ Template.statTotalView.events
     alert '업데이트 예정입니다.'
     return
 
-  ##실시간차트를 위한 임시 코드, 나중에 다른 조회조건도 들어갈떈 조건에 따라 별도처리
-  'click #date01, click #date02': (e, tmpl) ->
-    e.preventDefault()
-    alert '실시간차트는 오늘 날짜만 선택가능합니다.'
-    return false
-#  'change #date01': (e, tmpl) ->
-#    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
-#      alert '3달 이내만 조회가 가능합니다.'
-#      $('#date01').val(
-#        jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
-#      )
-#  'change #date02': (e, tmpl) ->
-#    if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
-#      alert '3달 이내만 조회가 가능합니다.'
-#      $('#date02').val(
-#        jUtils.getStringYMDFromDate(new Date("#{$('#date01').val()}").addDates(90))
-#      )
+#  ##실시간차트를 위한 임시 코드, 나중에 다른 조회조건도 들어갈떈 조건에 따라 별도처리
+#  'click #date01, click #date02': (e, tmpl) ->
+#    e.preventDefault()
+#    alert '실시간차트는 오늘 날짜만 선택가능합니다.'
+#    return false
+  'change #date01': (e, tmpl) ->
+    today = libClient.getRealtimeDate().end
+    unless $('.btn_box > .on').text() is '실시간'
+      if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') < 0
+        alert '조회종료일보다 클수 없습니다.'
+        $('#date01').val(
+          jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(0))
+        )
+    switch $('.btn_box > .on').text()
+      when '실시간'
+        unless $(e.target).val() is today
+          alert '실시간차트는 오늘 날짜만 선택가능합니다.'
+          $(e.target).val(today)
+          return false
+      when '일별'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 31
+          alert '일별조회는 31일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-31))
+          )
+      when '주간'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+          alert '주간조회는 90일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
+          )
+      when '월간'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 365
+          alert '월간조회는 365일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-365))
+          )
+      else
+        alert '기간선택 버튼을 클릭하세요.'
+
+  'change #date02': (e, tmpl) ->
+    #실시간아닌공통1 today-1일 까지  검색할수 있습니다.
+    #실시간아닌공통2 date01 보다 작을 수 없습니다.
+    #실시간 오늘만 선택가능
+    #일별 31일 이내만 선택가능
+    #주간, 3달 이내만 선택가능
+    #월간, 12개월 이내만 가능
+    today = libClient.getRealtimeDate().end
+    unless $('.btn_box > .on').text() is '실시간'
+      if $(e.target).val() >= today
+        alert 'today-1일 까지 검색할수 있습니다.'
+        $(e.target).val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates -1)
+        )
+      if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') < 0
+        alert '조회시작일보다 작을수 없습니다.'
+        $('#date01').val(
+          jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(0))
+        )
+    switch $('.btn_box > .on').text()
+      when '실시간'
+        unless $(e.target).val() is today
+          alert '실시간차트는 오늘 날짜만 선택가능합니다.'
+          $(e.target).val(today)
+          return false
+      when '일별'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 31
+          alert '일별조회는 31일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-31))
+          )
+      when '주간'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 90
+          alert '주간조회는 90일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-90))
+          )
+      when '월간'
+        if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') > 365
+          alert '월간조회는 365일 이내로만 검색이 가능합니다.'
+          $('#date01').val(
+            jUtils.getStringYMDFromDate(new Date("#{$('#date02').val()}").addDates(-365))
+          )
+      else
+        alert '기간선택 버튼을 클릭하세요.'
 
   'click .tab li': (e, tmpl) ->
     $('.tab li').removeClass('on')
@@ -173,33 +241,61 @@ Template.statTotalView.events
     tabId.set target.attr('id')
 
   'click .btn_box .btn_inner': (e, tmpl) ->
-    if $(e.target).text() in ['일별', '주간', '월간']
-      e.preventDefault()
-      alert '업데이트 예정입니다.'
-      return
+#    if $(e.target).text() in ['일별', '주간', '월간']
+#      e.preventDefault()
+#      alert '업데이트 예정입니다.'
+#      return
     $('.btn_inner').removeClass('on')
     if (target=$(e.target)).hasClass('btn_inner') or (target=target.parent()).hasClass('btn_inner')
       target.addClass('on')
+
+    today = libClient.getRealtimeDate().end
+    switch $(e.target).text()
+      when '실시간'
+        $('#date01').val(today)
+        $('#date02').val(today)
+      when '일별' #초기세팅 14일
+        $('#date01').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-15))
+        )
+        $('#date02').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-1))
+        )
+      when '주간' #초기세팅 60일
+        $('#date01').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-61))
+        )
+        $('#date02').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-1))
+        )
+      when '월간' #초기세팅 180개월
+        $('#date01').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-181))
+        )
+        $('#date02').val(
+          jUtils.getStringYMDFromDate(new Date(today).addDates(-1))
+        )
 
   'click [name=btn_search]': (e, tmpl) ->
     startDay = $('#date01').val()
     endDay = $('#date01').val()
     serviceId = $('[name=selectedService]').val()
+    period = $('.btn_box > .on').text() #실시간/일별/주간/월간
     unless searchFlag.get()
       searchFlag.set true
-      Meteor.call 'getRealTimeStats', startDay, serviceId, (err, rslt) ->
+      Meteor.call 'getLineStats', startDay, endDay, serviceId, period, (err, rslt) ->
         if err
           alert err
           searchFlag.set false
         else
           lineStatDatas.set rslt
           searchFlag.set false
-      Meteor.call 'getPeriodStats', startDay, endDay, serviceId, (err, rslt) ->
+      Meteor.call 'getPeriodStats', startDay, endDay, serviceId, period, (err, rslt) ->
         if err
           alert err
         else
           pieStatDatas.set rslt
-      Meteor.call 'getDelPerErrStats', startDay, endDay, serviceId, (err, rslt) ->
+      Meteor.call 'getDelPerErrStats', startDay, endDay, serviceId, period, (err, rslt) ->
         if err
           alert err
         else

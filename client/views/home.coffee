@@ -2,6 +2,7 @@ lineStatDatas = new ReactiveVar() #꺽은선 차트 데이터
 pieStatDatas = new ReactiveVar()  #용량통계 파이 차트 데이터
 agentInfosRv = new ReactiveVar()  #Agent현황 데이터
 serviceAccumStatsRv = new ReactiveVar() #서비스별 처리현황 데이터
+periodRv = new ReactiveVar()  #기간표시 헬퍼만을 위한 ㅂㅅ짓 ㅈㅅ
 
 Template.home.onRendered ->
   @autorun ->
@@ -14,7 +15,7 @@ Template.home.onRendered ->
       #      text: 'Source: WorldClimate.com'
       #      x: -20
       xAxis:
-        title: text: '(시간)'
+        title: text: '' #e.g) '시간'
         categories: lineStatDatas.get()?.categories
       yAxis:
         title: text: '(건)'
@@ -29,7 +30,7 @@ Template.home.onRendered ->
 #        align: 'right'
 #        verticalAlign: 'middle'
 #        borderWidth: 0
-      series: lineStatDatas.get()?.series
+      series: lineStatDatas.get()?.seriesUp
       credits:
         enabled: false
 
@@ -62,8 +63,8 @@ Template.home.onRendered ->
         enabled: false
 
   ##차트 최초 로드를 위해서 autorun 밑에서 호출함
-  todayObj = libClient.getRealtimeDate()
-  Meteor.call 'getSimpleRealTimeStats', todayObj.start, (err, rslt) ->
+  today = jUtils.getStringYMDFromDate(new Date())
+  Meteor.call 'getLineStats', today, today, '실시간', 'all', (err, rslt) ->
     if err
       alert err
     else
@@ -90,8 +91,9 @@ Template.home.helpers
   누적요청: ->
     total = 0
     if lineStatDatas.get()?
-      lineStatDatas.get().series[0].data.forEach (val) ->
-        total += val
+      lineStatDatas.get().seriesUp.forEach (service) ->
+        service.data.forEach (val) ->
+          total += val
     return total
   대기현황: -> jUtils.formatBytes pieStatDatas.get()?[0].y
   처리현황: -> jUtils.formatBytes pieStatDatas.get()?[1].y
@@ -101,15 +103,33 @@ Template.home.helpers
   isUseAgent: -> if @STATUS then 'on' else ''
   serviceAccumStats: -> serviceAccumStatsRv.get()
 
+
 Template.home.events
   'click #agent_content > li': (e, tmpl) ->
 
   'click .tab > ul': (e, tmpl) ->
-    if $(e.target).hasClass('ready')
-      target = $(e.target).parent()
-      $('.tab > ul > li').removeClass 'on'
-      target.addClass 'on'
-    else
-      alert '업데이트 예정입니다.'
-      e.preventDefault()
-      return false
+    target = $(e.target).parent()
+    $('.tab > ul > li').removeClass 'on'
+    target.addClass 'on'
+    period = target.attr('name')
+    start = ''
+    end = ''
+    serviceId = 'all'
+    switch period
+      when '실시간'
+        end = start = jUtils.getStringYMDFromDate(new Date())
+
+      when '일별'
+        start = jUtils.getStringYMDFromDate(new Date().addDates(-15))
+        end = jUtils.getStringYMDFromDate(new Date().addDates(-1))
+        periodRv.set '일자'
+      when '주간'
+        start = jUtils.getStringYMDFromDate(new Date().addDates(-61))
+        end = jUtils.getStringYMDFromDate(new Date().addDates(-1))
+      when '월간'
+        start = jUtils.getStringYMDFromDate(new Date().addDates(-181))
+        end = jUtils.getStringYMDFromDate(new Date().addDates(-1))
+    Meteor.call 'getLineStats', start, end, period, serviceId, (err, rslt) ->
+      if err then alert err
+      else
+        lineStatDatas.set rslt

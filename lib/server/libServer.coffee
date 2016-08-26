@@ -9,14 +9,20 @@
         for i in [0..dayLength]
           categories.push jUtils.getStringYMDFromDate(new Date(_start).addDates(i))
         return categories
-#      when '주간'
-
       when '월간'
         monthLength = jUtils.mydiff _start, _end, 'months'
         for i in [0..monthLength]
           categories.push jUtils.getStringYMDFromDate(new Date(_start).addMonths(i))
         return categories
-
+      when '주간'
+        startWeek = new Date(_start).getDay()
+        weekLength = jUtils.mydiff _start, _end, 'weeks'
+        if startWeek is 0
+          startWeek = 7
+          weekLength += 1
+        for i in [0..weekLength]
+          categories[i] = jUtils.getStringYMDFromDate(new Date(_start).addDates((7-startWeek)+i*7))
+        return categories
 
 #  input : YYYY-MM-DD
 #  output : MM-DD

@@ -223,7 +223,8 @@ Meteor.methods
     serviceIds = []
     categories = libServer.makeLineCategories _start, _end, _period
 
-    cl categories
+    if categories.length is 0 then throw new Meteor.Error '기간선택이 잘못되었습니다. 확인후 조회바랍니다.'
+#    cl categories
 
     ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
     if _serviceId is 'all'
@@ -261,6 +262,9 @@ Meteor.methods
                 date = new Date(cate);
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
                 $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            else if _period is '주간'
+              $gte: new Date("#{cate} 00:00:00").addDates(-7),
+              $lt: new Date("#{cate} 00:00:00")
         }).count()
         dataUp.push count
         dataDel.push CollectionDasInfos.find({
@@ -281,6 +285,9 @@ Meteor.methods
                 date = new Date(cate);
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
                 $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            else if _period is '주간'
+              $gte: new Date("#{cate} 00:00:00").addDates(-7),
+              $lt: new Date("#{cate} 00:00:00")
           STATUS: 'success'
         }).count()
         dataErr.push CollectionDasInfos.find({
@@ -301,6 +308,9 @@ Meteor.methods
                 date = new Date(cate);
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
                 $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            else if _period is '주간'
+              $gte: new Date("#{cate} 00:00:00").addDates(-7),
+              $lt: new Date("#{cate} 00:00:00")
           STATUS: $nin: ['wait', 'success']
         }).count()
       tempObjUp['name'] = tempObjDel['name'] = tempObjErr['name'] = CollectionServices.findOne(SERVICE_ID: serviceId).SERVICE_NAME

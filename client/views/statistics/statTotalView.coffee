@@ -273,7 +273,8 @@ Template.statTotalView.events
         $('#date02').val(
           jUtils.getStringYMDFromDate(new Date(today).addDates(-1))
         )
-      when '월간' #초기세팅 180개월
+
+      when '월간' #초기세팅 180일
         $('#date01').val(
           jUtils.getStringYMDFromDate(new Date(today).addDates(-181))
         )
@@ -281,11 +282,17 @@ Template.statTotalView.events
           jUtils.getStringYMDFromDate(new Date(today).addDates(-1))
         )
 
+
   'click [name=btn_search]': (e, tmpl) ->
     startDay = $('#date01').val()
     endDay = $('#date02').val()
     serviceId = $('[name=selectedService]').val()
     period = $('.btn_box > .on').text() #실시간/일별/주간/월간
+    switch period
+      when '실시간' then $('#select_term_dv').text('실시간(시간별)')
+      when '일별' then $('#select_term_dv').text('일자')
+      when '주간' then $('#select_term_dv').text('주간표시(마지막날짜)')
+      when '실시간' then $('#select_term_dv').text('월')
     unless searchFlag.get()
       searchFlag.set true
       Meteor.call 'getLineStats', startDay, endDay, period, serviceId, (err, rslt) ->

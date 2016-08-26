@@ -155,6 +155,11 @@ Template.statTotalView.events
 #    alert '실시간차트는 오늘 날짜만 선택가능합니다.'
 #    return false
   'change #date01': (e, tmpl) ->
+    #실시간아닌공통1 date02 보다 클 수 없습니다.
+    #실시간 오늘만 선택가능
+    #일별 31일 이내만 선택가능
+    #주간, 3달 이내만 선택가능
+    #월간, 12개월 이내만 가능
     today = libClient.getRealtimeDate().end
     unless $('.btn_box > .on').text() is '실시간'
       if jUtils.mydiff($('#date01').val(), $('#date02').val(), 'days') < 0
@@ -278,24 +283,24 @@ Template.statTotalView.events
 
   'click [name=btn_search]': (e, tmpl) ->
     startDay = $('#date01').val()
-    endDay = $('#date01').val()
+    endDay = $('#date02').val()
     serviceId = $('[name=selectedService]').val()
     period = $('.btn_box > .on').text() #실시간/일별/주간/월간
     unless searchFlag.get()
       searchFlag.set true
-      Meteor.call 'getLineStats', startDay, endDay, serviceId, period, (err, rslt) ->
+      Meteor.call 'getLineStats', startDay, endDay, period, serviceId, (err, rslt) ->
         if err
           alert err
           searchFlag.set false
         else
           lineStatDatas.set rslt
           searchFlag.set false
-      Meteor.call 'getPeriodStats', startDay, endDay, serviceId, period, (err, rslt) ->
+      Meteor.call 'getPeriodStats', startDay, endDay, period, serviceId, (err, rslt) ->
         if err
           alert err
         else
           pieStatDatas.set rslt
-      Meteor.call 'getDelPerErrStats', startDay, endDay, serviceId, period, (err, rslt) ->
+      Meteor.call 'getDelPerErrStats', startDay, endDay, period, serviceId, (err, rslt) ->
         if err
           alert err
         else

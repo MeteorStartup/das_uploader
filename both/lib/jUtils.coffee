@@ -13,9 +13,60 @@
 @Date.prototype.addDates = (d) ->
   @setDate @getDate() + d
   return @
+Date.isLeapYear = (year) ->
+  year % 4 == 0 and year % 100 != 0 or year % 400 == 0
+
+Date.getDaysInMonth = (year, month) ->
+  [
+    31
+    if Date.isLeapYear(year) then 29 else 28
+    31
+    30
+    31
+    30
+    31
+    31
+    30
+    31
+    30
+    31
+  ][month]
+
+@Date.prototype.isLeapYear = ->
+  Date.isLeapYear @getFullYear()
+@Date.prototype.getDaysInMonth = ->
+  Date.getDaysInMonth @getFullYear(), @getMonth()
+@Date.prototype.addMonths = (value) ->
+  n = @getDate()
+  @setDate 1
+  @setMonth @getMonth() + value
+  @setDate Math.min(n, @getDaysInMonth())
+  return @
+
 @Date.prototype.clone = -> return new Date @getTime()
 
 @jUtils =
+  getStringYMDFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatYMD)
+  getStringMDHMFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatMDHM)
+  getStringMDFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatMD)
+  getStringHMSFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatHMS)
+  getStringHFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatH)
+  getStringMFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatM)
+  getStringHMFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatHM)
+  getStringYMDHMSFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormat)
+  getStringYMDHMFromDate: (_date) ->
+    return moment(_date).format(jDefine.timeFormatYMDHM)
+  getDateFromString: (_date) ->
+    return moment(_date, jDefine.timeFormat).toDate()
+
   formatBytes: (bytes, decimals) ->
 #    usage: formatBytes(139328839)
     if(bytes == 0) then return '0 Byte'
@@ -54,24 +105,4 @@
         return Math.floor(timediff / second)
       else
         return undefined
-  getStringYMDFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatYMD)
-  getStringMDHMFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatMDHM)
-  getStringMDFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatMD)
-  getStringHMSFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatHMS)
-  getStringHFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatH)
-  getStringMFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatM)
-  getStringHMFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatHM)
-  getStringYMDHMSFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormat)
-  getStringYMDHMFromDate: (_date) ->
-    return moment(_date).format(jDefine.timeFormatYMDHM)
-  getDateFromString: (_date) ->
-    return moment(_date, jDefine.timeFormat).toDate()
 

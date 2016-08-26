@@ -215,13 +215,15 @@ Meteor.methods
 #    categories: []
 #    series: []
 #  }
-  getLineStats: (_today, _serviceId) ->
+  getLineStats: (_start, _end, _period, _serviceId) ->
     result = {}
-    categories = jDefine.dayTimeDiv
     seriesUp = []
     seriesDel = []
     seriesErr = []
     serviceIds = []
+    categories = libServer.makeLineCategories _start, _end, _period
+
+    cl categories
 
     ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
     if _serviceId is 'all'
@@ -240,25 +242,65 @@ Meteor.methods
       tempObjUp = {}
       tempObjDel = {}
       tempObjErr = {}
-      categories.forEach (cate) ->
-        dataUp.push CollectionDasInfos.find({
+      categories.forEach (cate, idx) ->
+        count = CollectionDasInfos.find({
           SERVICE_ID: serviceId
-          REQ_DATE:
-            $gte: new Date("#{_today} #{cate}:00:00"),
-            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+          REQ_DATE: do ->
+            if _period is '실시간'
+              $gte: new Date("#{_start} #{cate}:00:00"),
+              $lt: new Date("#{_end} #{parseInt(cate)+1}:00:00")
+            else if _period is '일별'
+              $gte: new Date("#{cate} 00:00:00"),
+              $lt: new Date("#{cate} 00:00:00").addDates(1)
+            else if _period is '월간'
+              if idx is 0
+                date = new Date(cate);
+                $gte: new Date("#{cate} 00:00:00"),
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+              else
+                date = new Date(cate);
+                $gte: new Date(date.getFullYear(), date.getMonth(), 1);
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
         }).count()
+        dataUp.push count
         dataDel.push CollectionDasInfos.find({
           SERVICE_ID: serviceId
-          REQ_DATE:
-            $gte: new Date("#{_today} #{cate}:00:00"),
-            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+          REQ_DATE: do ->
+            if _period is '실시간'
+              $gte: new Date("#{_start} #{cate}:00:00"),
+              $lt: new Date("#{_end} #{parseInt(cate)+1}:00:00")
+            else if _period is '일별'
+              $gte: new Date("#{cate} 00:00:00"),
+              $lt: new Date("#{cate} 00:00:00").addDates(1)
+            else if _period is '월간'
+              if idx is 0
+                date = new Date(cate);
+                $gte: new Date("#{cate} 00:00:00"),
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+              else
+                date = new Date(cate);
+                $gte: new Date(date.getFullYear(), date.getMonth(), 1);
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
           STATUS: 'success'
         }).count()
         dataErr.push CollectionDasInfos.find({
           SERVICE_ID: serviceId
-          REQ_DATE:
-            $gte: new Date("#{_today} #{cate}:00:00"),
-            $lt: new Date("#{_today} #{parseInt(cate)+1}:00:00")
+          REQ_DATE: do ->
+            if _period is '실시간'
+              $gte: new Date("#{_start} #{cate}:00:00"),
+              $lt: new Date("#{_end} #{parseInt(cate)+1}:00:00")
+            else if _period is '일별'
+              $gte: new Date("#{cate} 00:00:00"),
+              $lt: new Date("#{cate} 00:00:00").addDates(1)
+            else if _period is '월간'
+              if idx is 0
+                date = new Date(cate);
+                $gte: new Date("#{cate} 00:00:00"),
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+              else
+                date = new Date(cate);
+                $gte: new Date(date.getFullYear(), date.getMonth(), 1);
+                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
           STATUS: $nin: ['wait', 'success']
         }).count()
       tempObjUp['name'] = tempObjDel['name'] = tempObjErr['name'] = CollectionServices.findOne(SERVICE_ID: serviceId).SERVICE_NAME
@@ -266,6 +308,7 @@ Meteor.methods
       tempObjUp['data'] = dataUp
       tempObjDel['data'] = dataDel
       tempObjErr['data'] = dataErr
+#      cl dataUp
       seriesUp.push tempObjUp
       seriesDel.push tempObjDel
       seriesErr.push tempObjErr
@@ -273,7 +316,10 @@ Meteor.methods
 #    point2 = (new Date()).getTime()
 #    cl point2 - point1
 #    cl series
-    result['categories'] = categories
+    result['categories'] = do ->
+      if _period is '실시간' then return categories
+      else if _period is '월간' then libServer.changeYMDtoM categories
+      else libServer.changeYMDtoMD categories
     result['seriesUp'] = seriesUp
     result['seriesDel'] = seriesDel
     result['seriesErr'] = seriesErr
@@ -287,7 +333,7 @@ Meteor.methods
 #    }
 #    ...
 #  ]
-  getPeriodStats: (_start, _end, _serviceId) ->
+  getPeriodStats: (_start, _end, _period, _serviceId) ->
     serviceIds = []
 
     ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
@@ -319,7 +365,7 @@ Meteor.methods
 #    cl (new Date().getTime()) - p1
     return results
 
-  getDelPerErrStats: (_start, _end, _serviceId) ->
+  getDelPerErrStats: (_start, _end, _period, _serviceId) ->
     serviceIds = []
     ## 입력 파라미터는 _id 이지만, SERVICE_ID 로 변경해서 조회 -> DasInfo 에 서비스의 _id 가 없고 SERVICE_ID 만 있다.
     if _serviceId is 'all'

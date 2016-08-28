@@ -27,7 +27,7 @@ Template.history.onCreated ->
     else
       servicesRv.set rslt
   @autorun ->
-    cl 'autorun'
+#    cl 'autorun'
     Meteor.call 'getDasHistory', conditionRv.get(), (err, rslt) ->
       if err then alert err
       else

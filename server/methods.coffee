@@ -108,20 +108,20 @@ Meteor.methods
     runDMS()
   'dbConnectionTest': (_dbObj) ->
     cl _dbObj
-#    service = CollectionServices.findOne SERVICE_ID: _dbObj.SERVICE_ID
-#    mysqlDB = mysql.createConnection
-#      host: service.DB정보.DB_IP
-#      port: service.DB정보.DB_PORT
-#      user: service.DB정보.DB_ID
-#      password: service.DB정보.DB_PW
-#      database: service.DB정보.DB_DATABASE
-#    fut = new future()
-#    mysqlDB.connect (err) ->
-#      fut.return err?.message or 'success'
-#    mysqlDB.query 'select * from TEST_TABLE;', (err, rows, fields) ->
-#      cl err or rows
-#    mysqlDB.end()
-#    return fut.wait()
+    service = CollectionServices.findOne SERVICE_ID: _dbObj.SERVICE_ID
+    mysqlDB = mysql.createConnection
+      host: service.DB정보.DB_IP
+      port: service.DB정보.DB_PORT
+      user: service.DB정보.DB_ID
+      password: service.DB정보.DB_PW
+      database: service.DB정보.DB_DATABASE
+    fut = new future()
+    mysqlDB.connect (err) ->
+      fut.return err?.message or 'success'
+    mysqlDB.query 'select * from TEST_TABLE;', (err, rows, fields) ->
+      cl err or rows
+    mysqlDB.end()
+    return fut.wait()
 
 
 
@@ -604,11 +604,23 @@ Meteor.methods
       throw new Meteor.Error '로그인 이상. 개발자에게 문의바랍니다.(error log : #loginFailed)'
 
   saveSerialNo: (_serialNo) ->
+    unless _serialNo then throw new Meteor.Error '아무것도 입력되지 않았습니다.'
+    decrypted = CryptoJS.AES.decrypt(_serialNo, CLIENT_NAME)
+    startYMD = decrypted.toString(CryptoJS.enc.Utf8)  #YYYY-MM-DD 형태의 string
+#    cl startYMD.length
+#    cl startYMD
+    limitYMD = jUtils.getStringYMDFromDate(new Date(startYMD).addMonths(12))
+
+    unless startYMD.length is 10 then throw new Meteor.Error '올바른 형식의 키가 아닙니다. 확인 후 재입력 바랍니다.'
+
     CollectionSettings.upsert set_key: 'serial',
       {
         set_key: 'serial'
         value: _serialNo
+        시작일: startYMD
+        종료일: limitYMD
       }
+    return 'success'
 
   getLicenceInfo: ->
     CollectionSettings.findOne(set_key: 'serial')

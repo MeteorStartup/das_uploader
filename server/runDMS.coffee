@@ -9,6 +9,7 @@ Meteor.startup ->
     encrypted = CollectionSettings.findOne(set_key: 'serial')?.value #등록일이 포함된 암호화 string
     unless encrypted? and encrypted.length > 0 then return false  #라이센스키가 없거나, value.length <= 0 이면 무조건 false
 
+    #todo CryptoJs.AES.decrypy 가 들어가는곳에는 private key 가 들어가므로 나중에 별도 서버로 이관후 수정해야함
     decrypted = CryptoJS.AES.decrypt(encrypted, CLIENT_NAME)
     startYMD = decrypted.toString(CryptoJS.enc.Utf8)  #YYYY-MM-DD 형태의 string
     if new Date() <= new Date(startYMD).addMonths(12) then return true  #licensed 기간은 1년이므로 12개월을 더한날 09:00시를 기준으로 확인

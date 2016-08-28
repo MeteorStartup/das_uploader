@@ -605,6 +605,8 @@ Meteor.methods
 
   saveSerialNo: (_serialNo) ->
     unless _serialNo then throw new Meteor.Error '아무것도 입력되지 않았습니다.'
+
+    #todo CryptoJs.AES.decrypy 가 들어가는곳에는 private key 가 들어가므로 나중에 별도 서버로 이관후 수정해야함
     decrypted = CryptoJS.AES.decrypt(_serialNo, CLIENT_NAME)
     startYMD = decrypted.toString(CryptoJS.enc.Utf8)  #YYYY-MM-DD 형태의 string
 #    cl startYMD.length

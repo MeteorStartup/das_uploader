@@ -11,12 +11,7 @@ Meteor.startup ->
 
     decrypted = CryptoJS.AES.decrypt(encrypted, CLIENT_NAME)
     startYMD = decrypted.toString(CryptoJS.enc.Utf8)  #YYYY-MM-DD 형태의 string
-    limitYMD = jUtils.getStringYMDFromDate(new Date(startYMD).addMonths(12))
-    CollectionSettings.update set_key: 'serial',  #client 에서는 암호화된 시리얼넘버만 입력하므로 기간을 알수 없다. 여기에서 기간을 추가입력
-      $set:
-        시작일: startYMD
-        종료일: limitYMD
-    if new Date() <= new Date(startYMD).addMonths(12) then return true  #licensed 기간은 1년이므로 12개월을 더한날을 기준으로 확인
+    if new Date() <= new Date(startYMD).addMonths(12) then return true  #licensed 기간은 1년이므로 12개월을 더한날 09:00시를 기준으로 확인
     else return false
 
 #로드되는 시점에 agent가 내려가 있다면 접속을 계속 시도하느라 uploader의 로드가 중단 되기 때문에

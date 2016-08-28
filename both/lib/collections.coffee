@@ -10,3 +10,4 @@ Meteor.startup ->
   if Meteor.isServer
     CollectionDasInfos._ensureIndex({"REQ_DATE": -1, "SERVICE_ID": 1});
     CollectionDasInfos._ensureIndex({"KEEP_PERIOD": 1});
+    CollectionDasInfos._ensureIndex({"BOARD_ID": 1});

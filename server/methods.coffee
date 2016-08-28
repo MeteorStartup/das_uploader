@@ -82,9 +82,13 @@ Meteor.startup ->
         #      #dasInfo 최종 입력
         CollectionDasInfos.insert dasInfo
 
+        #boardID 수집
+        if dasInfo.BOARD_ID?.length > 0 and CollectionServices.find({SERVICE_ID:dasInfo.SERVICE_ID, BOARD_IDS: dasInfo.BOARD_ID}).count() is 0
+          service.BOARD_IDS.push dasInfo.BOARD_ID
   #      #용량 통계 업데이트
         service.용량통계.업로드용량 += dasInfo.UP_FSIZE
         CollectionServices.update _id: service._id, service
+
 
 #      #     용량 통계 추가
 #      CollectionServices.findOne dasInfo.SERVICE_ID
@@ -448,6 +452,30 @@ Meteor.methods
       obj['errCnt'] = CollectionDasInfos.find({SERVICE_ID:service.SERVICE_ID, STATUS: $nin: ['wait', 'success']}).count()
       result.push obj
 #    cl result
+    return result
+
+#  result = [
+#    {
+#      BOARD_ID: ''
+#      upCnt: num
+#      delCnt: num
+#      waitCnt: num
+#      errCnt: num
+#    }
+#    ...
+#  ]
+  getAccumStatsByBoard: (_serviceId) ->
+    result = []
+    boardIds = CollectionServices.findOne(SERVICE_ID: _serviceId).BOARD_IDS.sort()
+    boardIds.forEach (boardId) ->
+      obj = {}
+      obj['BOARD_ID'] = boardId
+      obj['upCnt'] = CollectionDasInfos.find({SERVICE_ID:_serviceId, BOARD_ID: boardId}).count()
+      obj['delCnt'] = CollectionDasInfos.find({SERVICE_ID:_serviceId, BOARD_ID: boardId, STATUS: 'success'}).count()
+      obj['waitCnt'] = CollectionDasInfos.find({SERVICE_ID:_serviceId, BOARD_ID: boardId, STATUS: 'wait'}).count()
+      obj['errCnt'] = CollectionDasInfos.find({SERVICE_ID:_serviceId, BOARD_ID: boardId, STATUS: $nin: ['wait', 'success']}).count()
+      result.push obj
+    #    cl result
     return result
 
 

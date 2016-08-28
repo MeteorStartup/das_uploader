@@ -31,3 +31,12 @@
 #  CollectionDasInfos.insert obj
 #
 #
+#  service = CollectionServices.findOne SERVICE_ID: obj.SERVICE_ID
+#  if obj.BOARD_ID?.length > 0 and CollectionServices.find({SERVICE_ID:obj.SERVICE_ID, BOARD_IDS: obj.BOARD_ID}).count() is 0
+#    cl service.SERVICE_ID
+#    cl obj.BOARD_ID
+#    service.BOARD_IDS.push obj.BOARD_ID
+#    CollectionServices.update _id: service._id, service
+#
+#
+#

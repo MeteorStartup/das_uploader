@@ -21,6 +21,9 @@ Meteor.startup ->
       DB이름: 'TestDB'      #DB 이름
       DB접속URL: 'mysql://localhost:3306/test'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
       DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
+      DB_IP: 'localhost'
+      DB_PORT: '3306'
+      DB_DATABASE: 'test'
       DB_ID: 'TestID'       #ID
       DB_PW: 'TestPW'
     }
@@ -35,6 +38,9 @@ Meteor.startup ->
       DB이름: 'TestDB'      #DB 이름
       DB접속URL: 'mysql://localhost:3306/test'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
       DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
+      DB_IP: 'localhost'
+      DB_PORT: '3306'
+      DB_DATABASE: 'test'
       DB_ID: 'TestID'       #ID
       DB_PW: 'TestPW'
     }

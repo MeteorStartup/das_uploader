@@ -58,7 +58,9 @@
               <tbody id="stat_accum_list">
               {{#each lists}}
               <tr id="{{SERVICE_ID}}">
-                <td class="txt_white pre" >{{SERVICE_NAME}}</td>
+                <td class="txt_white pre" >
+                  <a href="{{pathFor 'statAccumDetail' SERVICE_ID=SERVICE_ID}}">{{SERVICE_NAME}}</a>
+                </td>
                 <td>{{upCnt}}</td>
                 <td>{{delCnt}}</td>
                 <td>{{waitCnt}}</td>

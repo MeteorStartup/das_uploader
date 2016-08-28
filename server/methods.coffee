@@ -574,3 +574,13 @@ Meteor.methods
     else if user.profile.상태 is '사용안함' then return 'denied'
     else
       throw new Meteor.Error '로그인 이상. 개발자에게 문의바랍니다.(error log : #loginFailed)'
+
+  saveSerialNo: (_serialNo) ->
+    CollectionSettings.upsert set_key: 'serial',
+      {
+        set_key: 'serial'
+        value: _serialNo
+      }
+
+  getLicenceInfo: ->
+    CollectionSettings.findOne(set_key: 'serial')

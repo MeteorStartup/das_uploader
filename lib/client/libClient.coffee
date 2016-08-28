@@ -41,7 +41,9 @@
     arr = _.clone(_arr);
     arr.forEach (_obj) ->
       total += _obj.y
-    cl total
+#    cl total
+
+    #total이 0인경우는 그래프가 안그려질수 있으므로, 첫번째값은 100 나머지를 다 0 으로 초기설정
     unless total is 0
       arr.forEach (_obj) ->
         obj = {}

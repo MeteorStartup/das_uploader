@@ -13,9 +13,15 @@
 @Date.prototype.addDates = (d) ->
   @setDate @getDate() + d
   return @
+@Date.prototype.addMonths = (value) ->
+  n = @getDate()
+  @setDate 1
+  @setMonth @getMonth() + value
+  @setDate Math.min(n, @getDaysInMonth())
+  return @
+
 Date.isLeapYear = (year) ->
   year % 4 == 0 and year % 100 != 0 or year % 400 == 0
-
 Date.getDaysInMonth = (year, month) ->
   [
     31
@@ -31,17 +37,11 @@ Date.getDaysInMonth = (year, month) ->
     30
     31
   ][month]
-
 @Date.prototype.isLeapYear = ->
   Date.isLeapYear @getFullYear()
 @Date.prototype.getDaysInMonth = ->
   Date.getDaysInMonth @getFullYear(), @getMonth()
-@Date.prototype.addMonths = (value) ->
-  n = @getDate()
-  @setDate 1
-  @setMonth @getMonth() + value
-  @setDate Math.min(n, @getDaysInMonth())
-  return @
+
 
 @Date.prototype.clone = -> return new Date @getTime()
 

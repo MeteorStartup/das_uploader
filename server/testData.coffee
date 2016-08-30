@@ -25,7 +25,11 @@
 #  obj.DEL_DATE = date.clone().addDates Math.round (rand*100)+1
 #  obj.KEEP_PERIOD = Math.round(Math.abs((obj.DEL_DATE.getTime() - obj.REQ_DATE.getTime())/(24*60*60*1000)));
 #  obj.STATUS = do ->
-#    if rand < 0.1 then 'error test'
+#    if rand < 0.1
+#      if rand < 0.05
+#        ['error test', 'error two']
+#      else
+#        ['error one', 'error two', 'error three']
 #    else if rand > 0.5 then 'wait'
 #    else 'success'
 #  CollectionDasInfos.insert obj

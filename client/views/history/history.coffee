@@ -50,7 +50,7 @@ Template.history.helpers
     switch @STATUS
       when 'success' then return '성공'
       when 'wait' then return '대기'
-      else return '실패'
+      else return @STATUS
   현재페이지: ->
     return (skipRv.get()/10) + 1
   게시물번호: (index) ->

@@ -71,6 +71,9 @@ Meteor.startup ->
                 if rslt.content isnt 'success'
                   if dasInfo.STATUS is 'success' then dasInfo.STATUS = [rslt]
                   else dasInfo.STATUS.push rslt
+                else  #최종성공시 용량통계를 위한 처리용량 누적
+                  CollectionServices.update SERVICE_ID: dasInfo.SERVICE_ID,
+                    $inc: '용량통계.처리용량': dasInfo.UP_FSIZE
               fut.return()
             fut.wait()
 

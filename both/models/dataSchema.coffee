@@ -57,7 +57,7 @@
           DB_ID: ''       #ID
           DB_PW: ''       #PW
 
-        AGENT정보: []     #등록 갯수만큼 _id만
+        AGENT정보: []     #{agent_id: _id, 파일삭제기능: true} 파일삭제기능은 서비스에서 선택가능하게 object로 삽입하기
         용량통계:
           업로드용량: 0      #byte Number 이므로 용량이 커지면 Mbyte Gbyte 등으로 변환. 업로드용량이 bytes단위라서 엄청 커지는 바람에 지수로 표현까지 될테니까 jUtils.formatBytes를 쓰면 단위까지 알아서 나옴. cl jUtils.formatBytes sizeInfo.업로드용량
           처리용량: 0
@@ -67,7 +67,7 @@
           createdAt: new Date()
           AGENT_NAME: ''        #관리자가 입력하는 별칭
           AGENT_URL: ''     #http://localhost:3000 에이전트 URL, PK!!
-          파일삭제기능: true    #해당 서비스가 파일소멸시점에 도달하면 본 기능이 true인 agent에 대해서 삭제 명령을 날림
+#          파일삭제기능: true    #2016.08.30 해당기능은 서비스의 기능으로 이관, 이후 사용 안함
 #          파일소멸절대경로: ''   #해당 정보는 기존 서버의 떨군 파일에 존재. 어떤 에이전트(서버)가 파일 서버 인지는 파일삭제기능이 true 인놈들에게 날림.
           소멸정보전송기능: true  #본 옵션이 true인 agent는 해당 소멸정보절대경로를 참조해서 파일을 polling, dms로 전송
           소멸정보절대경로: ''    #ex> /home/das/das_agent_files (맨끝 '/' 삭제)

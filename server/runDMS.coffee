@@ -41,13 +41,14 @@ Meteor.startup ->
 
       if service.상태 is false then return  #해당 서비스의 처리 않함 상태
 
-      agents = CollectionAgents.find _id: $in: service.AGENT정보
-      if agents.count() is 0
-        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
-        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+#      agents = CollectionAgents.find _id: $in: service.AGENT정보
+#      if agents.count() is 0
+#        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
+#        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
-      agents.forEach (agent) ->
-        if agent.파일삭제기능
+      service.AGENT정보.forEach (agentInfo) ->
+        if agentInfo.파일삭제기능
+          agent = CollectionAgents.findOne _id: agentInfo._id
           try
             fut = new future()
             HTTP.post "#{agent.AGENT_URL}/removeFiles",

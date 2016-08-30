@@ -23,12 +23,14 @@ Template.agentInfoWriting.helpers
     else []
 
 Template.agentInfoWriting.events
+  'click .btn_large_cncl': (e, tmpl) ->
+    Router.go 'agentInfoFind'
   'click [name=btnSave]': (e, tmpl) ->
     AGENT_NAME = $('[name=AGENT_NAME]').val()
     AGENT_URL = $('[name=AGENT_URL]').val()
     소멸정보절대경로 = $('[name=소멸정보절대경로]').val()
     소멸정보전송기능 = $('[name=소멸정보전송기능]').is(':checked')
-    파일삭제기능 = $('[name=파일삭제기능]').is(':checked')
+#    파일삭제기능 = $('[name=파일삭제기능]').is(':checked')
 
     #validation
     if AGENT_NAME.length <= 0 then alert 'AGENT_NAME 필수입력입니다.'; $('[name=AGENT_NAME]').focus();return;
@@ -41,7 +43,7 @@ Template.agentInfoWriting.events
       AGENT_URL: AGENT_URL
       소멸정보절대경로: 소멸정보절대경로
       소멸정보전송기능: 소멸정보전송기능
-      파일삭제기능: 파일삭제기능
+#      파일삭제기능: 파일삭제기능
 
     cl obj
 

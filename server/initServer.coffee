@@ -16,7 +16,7 @@ Meteor.startup ->
     svcInfo.SERVICE_ID = 'SVC00001'
     svcInfo.SERVICE_NAME = 'das서비스1'
     svcInfo.파일처리옵션 = '삭제'
-    svcInfo.AGENT정보.push agent_id
+#    svcInfo.AGENT정보.push agent_id
     svcInfo.DB정보 = {
       DB이름: 'TestDB'      #DB 이름
       DB접속URL: 'mysql://localhost:3306/test'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
@@ -33,7 +33,7 @@ Meteor.startup ->
     svcInfo.SERVICE_ID = 'SVC00002'
     svcInfo.SERVICE_NAME = 'das서비스2'
     svcInfo.파일처리옵션 = '삭제'
-    svcInfo.AGENT정보.push agent_id
+#    svcInfo.AGENT정보.push agent_id
     svcInfo.DB정보 = {
       DB이름: 'TestDB'      #DB 이름
       DB접속URL: 'mysql://localhost:3306/test'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8

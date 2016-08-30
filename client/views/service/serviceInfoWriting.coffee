@@ -35,14 +35,15 @@ Template.serviceInfoWriting.onRendered ->
       $("[value=#{info.DB정보.DBMS종류}]").attr("checked",true)
       $("[value=#{info.DB정보.DBMS종류}]").parent().addClass("radio_on")
       $("[value=#{info.AGENT상태전송주기}]").attr("selected","selected")
-      info.AGENT정보.forEach (_id) ->
-        $("##{_id}").attr('checked', true)
+      info.AGENT정보.forEach (_obj) ->
+        $("##{_obj.agent_id}").attr('checked', true)
+        if _obj.파일삭제기능 then $("[name=#{_obj.agent_id}]").attr('checked', true)
     ,1000
 
 Template.serviceInfoWriting.helpers
   agents: -> agents?.get()
   소멸정보전송기능: -> if @소멸정보전송기능 then '사용' else '미사용'
-  파일삭제기능: -> if @파일삭제기능 then '사용' else '미사용'
+#  파일삭제기능: -> if @파일삭제기능 then '사용' else '미사용'
   service: -> service.get()
 
 Template.serviceInfoWriting.events
@@ -80,7 +81,9 @@ Template.serviceInfoWriting.events
 #    AGENT정보 = $(':checkbox[name="AGENT정보"]:checked').attr('id')
     AGENT정보 = []
     $(':checkbox.AGENT정보:checked').each ->
-      AGENT정보.push $(@).attr('id')
+      agent_id = $(@).attr('id')
+      hasRemove = $("[name=#{$(@).attr('id')}]:checked")[0]?
+      AGENT정보.push {agent_id: agent_id, 파일삭제기능: hasRemove}
     #validation
     if SERVICE_NAME.length <= 0 then alert '서비스명을 입력하세요.';$('[name=SERVICE_NAME]').focuID를; return;
     if SERVICE_ID.length <= 0 then alert '서비스ID를 입력하세요.';$('[name=SERVICE_ID]').focus(); return;
@@ -116,7 +119,7 @@ Template.serviceInfoWriting.events
         DB_PW: DB_PW       #PW
       AGENT정보: AGENT정보     #등록 갯수만큼 _id만
 
-#    cl obj
+    cl obj
     if Router.current().route.getName() is 'serviceInfoWriting'
       Meteor.call 'insertServiceInfo', obj, (err, rslt) ->
         if err then alert err

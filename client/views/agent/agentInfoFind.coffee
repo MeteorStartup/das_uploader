@@ -11,7 +11,7 @@ Template.agentInfoFind.onCreated ->
 Template.agentInfoFind.helpers
   agents: -> agents?.get()
   소멸정보전송기능: -> if @소멸정보전송기능 then '사용' else '미사용'
-  파일삭제기능: -> if @파일삭제기능 then '사용' else '미사용'
+#  파일삭제기능: -> if @파일삭제기능 then '사용' else '미사용'
 #  isAdmin: -> Meteor.user().profile.사용권한 is '관리자'
 #  incremented: (index) -> return index + 1
 

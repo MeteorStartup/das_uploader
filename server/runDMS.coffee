@@ -45,10 +45,9 @@ Meteor.startup ->
 #      if agents.count() is 0
 #        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
 #        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
-
       service.AGENT정보.forEach (agentInfo) ->
         if agentInfo.파일삭제기능
-          agent = CollectionAgents.findOne _id: agentInfo._id
+          agent = CollectionAgents.findOne _id: agentInfo.agent_id
           try
             fut = new future()
             HTTP.post "#{agent.AGENT_URL}/removeFiles",

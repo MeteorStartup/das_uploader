@@ -96,6 +96,7 @@ Meteor.startup ->
 
         #boardID 수집, 처음 보는 BOARD_ID 가 들어오면 services.BOARD_IDS 에 push
         if dasInfo.BOARD_ID?.length > 0 and CollectionServices.find({SERVICE_ID:dasInfo.SERVICE_ID, BOARD_IDS: dasInfo.BOARD_ID}).count() is 0
+          # jwjin/1609200356 board_ids가 최초에 없어도 빈 어레이를 넣을 수 있도록 수정.
           service.BOARD_IDS.push dasInfo.BOARD_ID
   #      #용량 통계 업데이트
         service.용량통계.업로드용량 += dasInfo.UP_FSIZE

@@ -79,7 +79,7 @@ Meteor.startup ->
 
       # 2016.08.30 추가 POST_ID가 있으면 POST_ID로 먼저 동일 파일 검사 없으면 기존대로 처리
       #      #REQ_DATE / SERVICE_ID / BOARD_ID 이고 STATUS가 'wait'인놈은 DEL_DATE 수정으로 처리
-      if (dasInfo.POST_ID? and (exist = CollectionDasInfos.findOne POST_ID: dasInfo.POST_ID)) or (exist = CollectionDasInfos.findOne REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID)
+      if (dasInfo.POST_ID? and (exist = CollectionDasInfos.findOne POST_ID: dasInfo.POST_ID, REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID)) or (exist = CollectionDasInfos.findOne REQ_DATE: dasInfo.REQ_DATE, SERVICE_ID: dasInfo.SERVICE_ID, BOARD_ID: dasInfo.BOARD_ID)
         if exist.STATUS is 'wait'
           CollectionDasInfos.update _id: exist._id, dasInfo
         else  #wait 일때만 업데이트하고 에러 혹은 이미 처리 된 건이라면 들어와서는 안되는 데이터라서 에러

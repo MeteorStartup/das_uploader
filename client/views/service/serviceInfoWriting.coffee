@@ -50,6 +50,7 @@ Template.serviceInfoWriting.events
   'click [name=dbTest]': (e, tmpl) ->
     dbObj =
 #      DB접속URL: $('[name=DB접속URL]').val()
+      SERVICE_ID: $('#svc_id').val()
       DB_IP: $('[name=DB_IP]').val()
       DB_PORT: $('[name=DB_PORT]').val()
       DB_DATABASE: $('[name=DB_DATABASE]').val()

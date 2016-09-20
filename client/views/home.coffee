@@ -68,19 +68,16 @@ Template.home.onRendered ->
     if err
       alert err
     else
-      cl rslt
       lineStatDatas.set rslt
   Meteor.call 'getSimmpleCapaStats', (err, rslt) ->
     if err then alert err
     else
-      cl rslt
       pieStatDatas.set rslt
 
   ##Agent 현황 정보
   Meteor.call 'getAgentInfos', (err, rslt) ->
     if err then alert err
     else
-      cl rslt
       agentInfosRv.set rslt
 
   ##서비스별 처리현황

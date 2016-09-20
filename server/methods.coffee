@@ -351,7 +351,7 @@ Meteor.methods
     result['seriesUp'] = seriesUp
     result['seriesDel'] = seriesDel
     result['seriesErr'] = seriesErr
-#    cl JSON.stringify result
+    cl JSON.stringify result
     return result
 
 #  result = [

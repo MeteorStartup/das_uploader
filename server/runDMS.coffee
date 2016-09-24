@@ -29,7 +29,7 @@ Meteor.startup ->
 
   @runDMS = ->
     cl 'runDMS'
-    CollectionDasInfos.find(STATUS: 'wait', DEL_DATE: {$lte: new Date()}).forEach (dasInfo) ->
+    CollectionDasInfos.find($and: [{"STATUS.0": {$ne: "wait"}} , {STATUS: 'wait'}], DEL_DATE: {$lte: new Date()}).forEach (dasInfo) ->
       cl dasInfo._id
       # 순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
       # jwjin/1609240853 최종적으로 'wait'이 아닐 경우에만 success로 변경

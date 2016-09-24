@@ -19,7 +19,7 @@ Meteor.startup ->
       dasInfo.origin = data.dasInfo
       arrDasInfo =  data.dasInfo.split '\n'
 #      cl arrDasInfo
-      originError = []  #연동파일 검증시 나는 오류를 담아놓는 array
+#      originError = []  #연동파일 검증시 나는 오류를 담아놓는 array ## jwjin/1609250331 지워도 될 듯?
       arrDasInfo.forEach (line) ->
 #      add field to object
         pos = line.indexOf '='
@@ -38,6 +38,7 @@ Meteor.startup ->
           when 'UP_FSIZE'
             val = val-0
           when 'REQ_DATE', 'DEL_DATE'
+            cl val.length
             unless val.length is 17
               unless Array.isArray dasInfo.STATUS
                 dasInfo.STATUS = [dasInfo.STATUS]

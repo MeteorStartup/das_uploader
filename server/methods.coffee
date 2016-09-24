@@ -42,10 +42,10 @@ Meteor.startup ->
           when 'UP_FSIZE'
             val = val-0
           when 'REQ_DATE', 'DEL_DATE'
-            unless val.length > 17
+            unless val.length is 17
               unless Array.isArray dasInfo.STATUS
                 dasInfo.STATUS = [dasInfo.STATUS]
-              dasInfo.STATUS.push [key + ' length is shorter than 17. check your .das file']
+              dasInfo.STATUS.push [key + ' length is not 17. check your .das file']
             val = val.trim()
             year = val.substring(0,4)
             month = val.substring(4,6) - 1

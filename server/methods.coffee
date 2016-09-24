@@ -17,6 +17,7 @@ Meteor.startup ->
       cl data.dasInfo
       dasInfo = dataSchema 'DASInfo'
       dasInfo.origin = data.dasInfo
+
       arrDasInfo =  data.dasInfo.split '\n'
 #      cl arrDasInfo
 #      originError = []  #연동파일 검증시 나는 오류를 담아놓는 array ## jwjin/1609250331 지워도 될 듯?
@@ -25,7 +26,7 @@ Meteor.startup ->
         pos = line.indexOf '='
         key = line.substring 0, pos
         val = line.substring pos + 1
-
+        val = val.trim()
         cl val
         cl val.length
 

@@ -11,6 +11,8 @@ Meteor.startup ->
       catch err
         return throw new Meteor.Error err
       return agent
+    'DASInfo': (data) ->
+      cl data
     'insertDAS': (data) ->
       dasInfo = dataSchema 'DASInfo'
       dasInfo.origin = data.dasInfo
@@ -36,8 +38,9 @@ Meteor.startup ->
             val = val-0
           when 'REQ_DATE', 'DEL_DATE'
             unless val.length is 17
-              if dasInfo.STATUS is 'wait' then dasInfo.STATUS = [key + 'length is not 17. check your .das file']
-              else dasInfo.STATUS.push key + 'length is not 17. check your .das file'
+              unless Array.isArray dasInfo.STATUS
+                dasInfo.STATUS = [dasInfo.STATUS]
+              dasInfo.STATUS.push [key + ' length is not 17. check your .das file']
             val = val.trim()
             year = val.substring(0,4)
             month = val.substring(4,6) - 1
@@ -67,9 +70,9 @@ Meteor.startup ->
         dasInfo.KEEP_PERIOD = Math.round(Math.abs((dasInfo.DEL_DATE.getTime() - dasInfo.REQ_DATE.getTime())/(24*60*60*1000)))
         unless service
 #          #요청에 해당하는 서비스가 없다면 에러로 처리 및 기록
-          if dasInfo.STATUS is 'wait'
-            dasInfo.STATUS = ['service not found when inserted']
-          else dasInfo.STATUS.push 'service not found when inserted'
+          unless Array.isArray dasInfo.STATUS
+            dasInfo.STATUS = [dasInfo.STATUS]
+          dasInfo.STATUS.push 'service not found when inserted'
         else
           dasInfo.SERVICE_NAME = service.SERVICE_NAME or ''
       catch err
@@ -84,9 +87,10 @@ Meteor.startup ->
           CollectionDasInfos.update _id: exist._id, dasInfo
         else  #wait 일때만 업데이트하고 에러 혹은 이미 처리 된 건이라면 들어와서는 안되는 데이터라서 에러
           #이미처리된 건의 상태는 'success' 이거나 오류라면 array []
-          if exist.STATUS is 'success'
-            dasInfo.STATUS = ['이미 처리 된 건이 수정으로 재 요청 되었습니다. 홈페이지 서버를 확인 해 주세요.']
-          else
+          if exist.STATUS is 'success' || Array.isArray exist.STATUS
+            dasInfo.STATUS = exist.STATUS
+            unless Array.isArray dasInfo.STATUS
+              dasInfo.STATUS = [dasInfo.STATUS]
             dasInfo.STATUS.push '이미 처리 된 건이 수정으로 재 요청 되었습니다. 홈페이지 서버를 확인 해 주세요.'
           CollectionDasInfos.update _id: exist._id, dasInfo
 

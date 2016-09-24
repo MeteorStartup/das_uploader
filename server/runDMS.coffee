@@ -58,8 +58,9 @@ Meteor.startup ->
             , (err, rslt) ->
               if err
                 cl err.toString()
-                if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
-                else dasInfo.STATUS.push err.toString()
+                unless Array.isArray dasInfo.STATUS
+                  dasInfo.STATUS = [dasInfo.STATUS]
+                dasInfo.STATUS.push err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error
 #                else
 #                  fibers ->
@@ -69,8 +70,9 @@ Meteor.startup ->
               else
 #                #rslt.contents가 success가 아니면 이 역시 실패
                 if rslt.content isnt 'success'
-                  if dasInfo.STATUS is 'success' then dasInfo.STATUS = [rslt]
-                  else dasInfo.STATUS.push rslt
+                  unless Array.isArray dasInfo.STATUS
+                    dasInfo.STATUS = [dasInfo.STATUS]
+                  dasInfo.STATUS.push rslt
                 else  #최종성공시 용량통계를 위한 처리용량 누적
                   CollectionServices.update SERVICE_ID: dasInfo.SERVICE_ID,
                     $inc: '용량통계.처리용량': dasInfo.UP_FSIZE
@@ -78,8 +80,9 @@ Meteor.startup ->
             fut.wait()
 
           catch err
-            if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
-            else dasInfo.STATUS.push err.toString()
+            unless Array.isArray dasInfo.STATUS
+              dasInfo.STATUS = [dasInfo.STATUS]
+            dasInfo.STATUS.push err.toString()
 ##    delete query
       try
         mysqlDB = mysql.createConnection
@@ -99,19 +102,18 @@ Meteor.startup ->
           mysqlDB.query query, (err, rows, fields) ->
             if err
               cl 'del_db_qry for each'
-              if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
-              else dasInfo.STATUS.push err.toString()
+              unless Array.isArray dasInfo.STATUS
+                dasInfo.STATUS = [dasInfo.STATUS]
+              dasInfo.STATUS.push err.toString()
             else cl 'success!!!!!!!!!'
         mysqlDB.end()
 
       catch err
         cl '####### DB ERROR #######'
 #        cl dasInfo.STATUS = err.toString()
-        if dasInfo.STATUS is 'success' then dasInfo.STATUS = [err.toString()]
-        else
-          cl dasInfo
-          dasInfo.STATUS.push err.toString()
-
+        unless Array.isArray dasInfo.STATUS
+          dasInfo.STATUS = [dasInfo.STATUS]
+        dasInfo.STATUS.push err.toString()
 ##      delete url
 #      if dasInfo.STATUS is 'success'
 #        if dasInfo.DEL_DB_URL? and dasInfo.DEL_DB_URL.length > 0

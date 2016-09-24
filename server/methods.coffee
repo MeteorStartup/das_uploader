@@ -38,6 +38,7 @@ Meteor.startup ->
           when 'UP_FSIZE'
             val = val-0
           when 'REQ_DATE', 'DEL_DATE'
+            cl val
             cl val.length
             unless val.length is 17
               unless Array.isArray dasInfo.STATUS

@@ -61,3 +61,13 @@ Meteor.startup ->
     options.profile['이름'] = '관리자'
     options.profile['상태'] = '사용'
     Accounts.createUser options
+
+#
+    # jwjin/1609240951 agent test
+#  HTTP.post "http://localhost:3000/removeFiles",
+#    data:
+#      DEL_FILE_LIST: 'test'
+#      DEL_OPTION: 0
+#      BACKUP_PATH: true
+#  , (err, rslt) ->
+#    cl err or rslt

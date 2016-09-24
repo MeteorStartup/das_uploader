@@ -31,13 +31,16 @@ Meteor.startup ->
     cl 'runDMS'
     CollectionDasInfos.find(STATUS: 'wait', DEL_DATE: {$lte: new Date()}).forEach (dasInfo) ->
       cl dasInfo._id
-      ## delete files
-      dasInfo.STATUS = 'success'    #순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
+      # 순차적으로 모두 통과해야만 success -> success or []. error를 순차적으로 입력
+      # jwjin/1609240853 최종적으로 'wait'이 아닐 경우에만 success로 변경
+      # error 발생 시 이전 단계인 wait을 array에 추가함으로서 상태 변화를 명확히 함
 
       service = CollectionServices.findOne SERVICE_ID: dasInfo.SERVICE_ID
       unless service
-        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['service not found']
-        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+        unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+        dasInfo.STATUS.push ['service not found']
+        CollectionDasInfos.update _id: dasInfo._id, dasInfo
+        return  #의미 없는 update rslt return을 없앰
 
       if service.상태 is false then return  #해당 서비스의 처리 않함 상태
 
@@ -45,6 +48,8 @@ Meteor.startup ->
 #      if agents.count() is 0
 #        if dasInfo.STATUS is 'success' then dasInfo.STATUS = ['agent not found']
 #        return CollectionDasInfos.update _id: dasInfo._id, dasInfo
+
+      ## delete files
       service.AGENT정보.forEach (agentInfo) ->
         if agentInfo.파일삭제기능
           agent = CollectionAgents.findOne _id: agentInfo.agent_id
@@ -58,8 +63,7 @@ Meteor.startup ->
             , (err, rslt) ->
               if err
                 cl err.toString()
-                unless Array.isArray dasInfo.STATUS
-                  dasInfo.STATUS = [dasInfo.STATUS]
+                unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
                 dasInfo.STATUS.push err.toString()
 #                  Error: connect ECONNREFUSED is the key for agent conn error
 #                else
@@ -70,8 +74,7 @@ Meteor.startup ->
               else
 #                #rslt.contents가 success가 아니면 이 역시 실패
                 if rslt.content isnt 'success'
-                  unless Array.isArray dasInfo.STATUS
-                    dasInfo.STATUS = [dasInfo.STATUS]
+                  unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
                   dasInfo.STATUS.push rslt
                 else  #최종성공시 용량통계를 위한 처리용량 누적
                   CollectionServices.update SERVICE_ID: dasInfo.SERVICE_ID,
@@ -80,8 +83,7 @@ Meteor.startup ->
             fut.wait()
 
           catch err
-            unless Array.isArray dasInfo.STATUS
-              dasInfo.STATUS = [dasInfo.STATUS]
+            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
             dasInfo.STATUS.push err.toString()
 ##    delete query
       try
@@ -102,8 +104,7 @@ Meteor.startup ->
           mysqlDB.query query, (err, rows, fields) ->
             if err
               cl 'del_db_qry for each'
-              unless Array.isArray dasInfo.STATUS
-                dasInfo.STATUS = [dasInfo.STATUS]
+              unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
               dasInfo.STATUS.push err.toString()
             else cl 'success!!!!!!!!!'
         mysqlDB.end()
@@ -111,8 +112,7 @@ Meteor.startup ->
       catch err
         cl '####### DB ERROR #######'
 #        cl dasInfo.STATUS = err.toString()
-        unless Array.isArray dasInfo.STATUS
-          dasInfo.STATUS = [dasInfo.STATUS]
+        unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
         dasInfo.STATUS.push err.toString()
 ##      delete url
 #      if dasInfo.STATUS is 'success'
@@ -131,6 +131,8 @@ Meteor.startup ->
 #  #        fut.wait()
 
       #      최종 dasInfo update
+      # jwjin/1609240855 최종적으로 'wait' 일 경우에만 성공
+      if dasInfo.STATUS is 'wait' then dasInfo.STATUS = 'success'
       CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
 

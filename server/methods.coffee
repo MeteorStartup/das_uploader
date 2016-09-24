@@ -14,6 +14,7 @@ Meteor.startup ->
     'DASInfo': (data) ->
       cl data
     'insertDAS': (data) ->
+      cl data.dasInfo
       dasInfo = dataSchema 'DASInfo'
       dasInfo.origin = data.dasInfo
       arrDasInfo =  data.dasInfo.split '\n'

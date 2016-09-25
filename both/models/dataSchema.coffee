@@ -26,6 +26,9 @@
         KEEP_PERIOD: 1   #date Number type 일수
         STATUS: 'wait'   # wait / success / err_msg => delete error, sql error
         origin: {}      #original file data for debug
+        LOG: ''       #로그가 있으면 노 에러로 처리
+        tmp: []       # 에러 등 내부 로그성 데이터 push
+
     when '용량통계'     #@CollectionSizeInfos 에 업로드 시점 & 처리 시점에 추가
       rslt =
         createdAt: new Date()

@@ -1,5 +1,6 @@
 mysql = require 'mysql'
 future = require 'fibers/future'
+mssql = require 'mssql'
 
 Meteor.startup ->
   cl 'methods'
@@ -134,21 +135,33 @@ Meteor.methods
     runDMS()
   'dbConnectionTest': (_dbObj) ->
     cl _dbObj
-    service = CollectionServices.findOne SERVICE_ID: _dbObj.SERVICE_ID
-    cl service
-    mysqlDB = mysql.createConnection
-      host: _dbObj.DB_IP
-      port: _dbObj.DB_PORT
-      user: _dbObj.DB_ID
-      password: _dbObj.DB_PW
-      database: _dbObj.DB_DATABASE
-    fut = new future()
-    mysqlDB.connect (err) ->
-      fut.return err?.message or 'success'
-    mysqlDB.query 'select * from TEST_TABLE;', (err, rows, fields) ->
-      cl err or rows
-    mysqlDB.end()
-    return fut.wait()
+    switch _dbObj.DBMS종류
+      when 'MsSQL'
+        connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
+        mssql.connect(connectUrl).then ->
+          new mssql.Request().query("").then (recordset) ->
+            mssql.close()
+            return 'success'
+          .catch (err) ->
+            mssql.close()
+            return err.toString()
+        .catch (err) ->
+          mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
+          return err.toString()
+      when 'MySQL'
+        mysqlDB = mysql.createConnection
+          host: _dbObj.DB_IP
+          port: _dbObj.DB_PORT
+          user: _dbObj.DB_ID
+          password: _dbObj.DB_PW
+          database: _dbObj.DB_DATABASE
+        fut = new future()
+        mysqlDB.connect (err) ->
+          fut.return err?.message or 'success'
+        mysqlDB.query 'select * from TEST_TABLE;', (err, rows, fields) ->
+          cl err or rows
+        mysqlDB.end()
+        return fut.wait()
 
 
 

@@ -86,34 +86,48 @@ Meteor.startup ->
             unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
             dasInfo.STATUS.push err.toString()
 ##    delete query
-      try
-        mysqlDB = mysql.createConnection
-            host: service.DB정보.DB_IP
-            port: service.DB정보.DB_PORT
-            user: service.DB정보.DB_ID
-            password: service.DB정보.DB_PW
-            database: service.DB정보.DB_DATABASE
-        mysqlDB.connect()
-#          arr_queries = dasInfo.DEL_DB_QRY.split(';')
-#          arr_queries = arr_queries.filter (str) -> if str.length > 0 then true else false
-#        arr_queries = [
-#          'SET @num = (SELECT count(*) from TEST_TABLE);delete from TEST_TABLE WHERE idTest_TABLE=@num'
-#          'delete from TEST_TABLE WHERE idTest_TABLE=@num'
-#        ]
-        dasInfo.DEL_DB_QRY.forEach (query) ->
-          mysqlDB.query query, (err, rows, fields) ->
-            if err
-              cl 'del_db_qry for each'
-              unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
-              dasInfo.STATUS.push err.toString()
-            else cl 'success!!!!!!!!!'
-        mysqlDB.end()
+      switch service?.DB정보?.DBMS종류
+        when 'MsSQL'
+          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
+          mssql.connect(connectUrl).then ->
+            dasInfo.DEL_DB_QRY.forEach (query) ->
+              new mssql.Request().query(query).then (recordset) ->
+                unless dasInfo.tmp or Array.isArray dasInfo.tmp then dasInfo.tmp = []
+                dasInfo.tmp.push recordset
+              .catch (err) ->
+                unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+                dasInfo.STATUS.push err.toString()
+          .catch (err) ->
+            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+            dasInfo.STATUS.push err.toString()
+            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
 
-      catch err
-        cl '####### DB ERROR #######'
-#        cl dasInfo.STATUS = err.toString()
-        unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
-        dasInfo.STATUS.push err.toString()
+        when 'MySQL'
+          try
+            mysqlDB = mysql.createConnection
+                host: service.DB정보.DB_IP
+                port: service.DB정보.DB_PORT
+                user: service.DB정보.DB_ID
+                password: service.DB정보.DB_PW
+                database: service.DB정보.DB_DATABASE
+            mysqlDB.connect()
+            dasInfo.DEL_DB_QRY.forEach (query) ->
+              mysqlDB.query query, (err, rows, fields) ->
+                if err
+                  cl 'del_db_qry for each'
+                  unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+                  dasInfo.STATUS.push err.toString()
+                else cl 'success!!!!!!!!!'
+            mysqlDB.end()
+
+          catch err
+            cl '####### DB ERROR #######'
+    #        cl dasInfo.STATUS = err.toString()
+            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+            dasInfo.STATUS.push err.toString()
+
+
+
 ##      delete url
 #      if dasInfo.STATUS is 'success'
 #        if dasInfo.DEL_DB_URL? and dasInfo.DEL_DB_URL.length > 0
@@ -136,24 +150,3 @@ Meteor.startup ->
       CollectionDasInfos.update _id: dasInfo._id, dasInfo
 
 
-
-
-
-#  loopDMS = ->
-#    now = new Date();
-#    mils = new Date(now.getFullYear(), now.getMonth(), now.clone().addDates(1).getDate(), 0, 0, 0, 0) - now
-#    #    mils = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()+3, 0) - now
-#    if (mils < 0)
-#      mils += 1000*60*60*24
-#    setTimeout ->
-#      loopDMS()
-#      fiber ->
-#        runDMS()
-#      .run()
-#    , mils
-#
-#  loopDMS()
-#
-
-
-#git remote add multiple test

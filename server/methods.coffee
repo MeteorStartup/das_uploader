@@ -139,7 +139,8 @@ Meteor.methods
       when 'MsSQL'
         connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
         mssql.connect(connectUrl).then ->
-          new mssql.Request().query("").then (recordset) ->
+          new mssql.Request().query("select top 1 * from fbcb_board_file").then (recordset) ->
+            cl recordset
             mssql.close()
             return 'success'
           .catch (err) ->

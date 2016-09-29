@@ -88,19 +88,34 @@ Meteor.startup ->
 ##    delete query
       switch service?.DB정보?.DBMS종류
         when 'MsSQL'
-          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
-          mssql.connect(connectUrl).then ->
-            dasInfo.DEL_DB_QRY.forEach (query) ->
-              new mssql.Request().query(query).then (recordset) ->
-                unless dasInfo.tmp or Array.isArray dasInfo.tmp then dasInfo.tmp = []
-                dasInfo.tmp.push recordset
-              .catch (err) ->
-                unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
-                dasInfo.STATUS.push err.toString()
-          .catch (err) ->
-            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
-            dasInfo.STATUS.push err.toString()
-            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
+          cl "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+          dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+
+          dasInfo.DEL_DB_QRY.forEach (query) ->
+            query = "select * from dasuploader.dasuploader"
+            cp = require 'child_process'
+            fut = new future()
+            cp.exec 'cd /Users/jwjin/WebstormProjects/das_uploader/tests/java-mssql && javac MsSQL.java && java MsSQL "'+ dbInfo + '" "'+ query + '"', (err,stdout,stderr) ->
+              cl err or stderr or stdout
+              fut.return err or stderr or 'success'
+            return fut.wait()
+
+
+
+## jwjin/1609300454 old npm version
+#          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
+#          mssql.connect(connectUrl).then ->
+#            dasInfo.DEL_DB_QRY.forEach (query) ->
+#              new mssql.Request().query(query).then (recordset) ->
+#                unless dasInfo.tmp or Array.isArray dasInfo.tmp then dasInfo.tmp = []
+#                dasInfo.tmp.push recordset
+#              .catch (err) ->
+#                unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+#                dasInfo.STATUS.push err.toString()
+#          .catch (err) ->
+#            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+#            dasInfo.STATUS.push err.toString()
+#            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
 
         when 'MySQL'
           try

@@ -8,8 +8,8 @@ public class MsSQL {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		//System.out.println(args.length);
-		//System.out.println(args[0]);
-		//System.out.println(args[1]);
+		System.out.println(args[0]);
+		System.out.println(args[1]);
 		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		Connection conn = DriverManager.getConnection(args[0]);
 		Statement sta = conn.createStatement();

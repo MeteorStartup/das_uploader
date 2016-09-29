@@ -137,21 +137,35 @@ Meteor.methods
     cl _dbObj
     switch _dbObj.DBMS종류
       when 'MsSQL'
-        cl 'mssql'
-        try
-          connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
-          mssql.connect(connectUrl).then ->
-            new mssql.Request().query("").then (recordset) ->
-              mssql.close()
-              return 'success'
-            .catch (err) ->
-              mssql.close()
-              return err.toString()
-          .catch (err) ->
-            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
-            return err.toString()
-        catch err
-          cl err.toString()
+      #MsSQL Test
+#        dbInfo = "jdbc:sqlserver://52.78.177.44;user=sa;password=mStartup!24;database=dasuploader"
+        cl "jdbc:sqlserver://#{_dbObj.DB_IP}:#{_dbObj.DB_PORT};user=#{_dbObj.DB_ID};password=#{_dbObj.DB_PW};database=#{_dbObj.DB_DATABASE}"
+        dbInfo = "jdbc:sqlserver://#{_dbObj.DB_IP};user=#{_dbObj.DB_ID};password=#{_dbObj.DB_PW};database=#{_dbObj.DB_DATABASE}"
+        query = "select * from dasuploader.dasuploader"
+        cp = require 'child_process'
+        fut = new future()
+        cp.exec 'cd /Users/jwjin/WebstormProjects/das_uploader/tests/java-mssql && javac MsSQL.java && java MsSQL "'+ dbInfo + '" "'+ query + '"', (err,stdout,stderr) ->
+          cl err or stderr or stdout
+          fut.return err or stderr or 'success'
+        return fut.wait()
+
+
+
+
+#        try
+#          connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
+#          mssql.connect(connectUrl).then ->
+#            new mssql.Request().query("").then (recordset) ->
+#              mssql.close()
+#              return 'success'
+#            .catch (err) ->
+#              mssql.close()
+#              return err.toString()
+#          .catch (err) ->
+#            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
+#            return err.toString()
+#        catch err
+#          cl err.toString()
       when 'MySQL'
         mysqlDB = mysql.createConnection
           host: _dbObj.DB_IP

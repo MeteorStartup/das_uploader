@@ -4,18 +4,19 @@ fiber = require 'fibers'
 #  admin 등 기본 셋팅이 들어가야 한다
 
 Meteor.startup ->
-  #MsSQL Test
-  dbInfo = "jdbc:sqlserver://52.78.177.44;user=sa;password=mStartup!24;database=dasuploader"
-  sql = "select * from dasuploader.dasuploader"
-  cp = require 'child_process'
-  cp.exec "", (err, stdout, stderr) ->
-    cl err or stdout or stderr
-  cp.exec 'cd /Users/june/Projects/das_uploader/tests/java-mssql && javac MsSQL.java &&
-java MsSQL "'+ dbInfo + '" "'+ sql + '"', (err,stdout,stderr) ->
-    cl err or stdout or stderr
+
+#  [1...10].forEach (n) ->
+#    cl n
+#    #MsSQL Test
+#    dbInfo = "jdbc:sqlserver://52.78.177.44;user=sa;password=mStartup!24;database=dasuploader"
+#    query = "select * from dasuploader.dasuploader"
+#    cp = require 'child_process'
+#    cl 'cd /Users/jwjin/WebstormProjects/das_uploader/tests/java-mssql && javac MsSQL.java && java MsSQL "'+ dbInfo + '" "'+ query + '"'
+#    cp.exec 'cd /Users/jwjin/WebstormProjects/das_uploader/tests/java-mssql && javac MsSQL.java && java MsSQL "'+ dbInfo + '" "'+ query + '"', (err,stdout,stderr) ->
+#      cl err or stdout or stderr
 
 #  spawn = require('child_process').spawn
-#  ls = spawn('cd /Users/june/Projects/das_uploader/tests/java-mssql/ && java', ['MsSQL'])
+#  ls = spawn('cd /Users/jwjin/WebstormProjects/das_uploader/tests/java-mssql/ && java', ['MsSQL'])
 
 #  ls.stdout.on 'data', (data) =>
 #    console.log("stdout: #{data}")

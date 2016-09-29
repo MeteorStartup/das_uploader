@@ -137,18 +137,21 @@ Meteor.methods
     cl _dbObj
     switch _dbObj.DBMS종류
       when 'MsSQL'
-        connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
-        mssql.connect(connectUrl).then ->
-          new mssql.Request().query("select top 1 * from fbcb_board_file").then (recordset) ->
-            cl recordset
-            mssql.close()
-            return 'success'
+        cl 'mssql'
+        try
+          connectUrl = "mssql://#{_dbObj.DB_ID}:#{_dbObj.DB_PW}@#{_dbObj.DB_IP}:#{_dbObj.DB_PORT}/#{_dbObj.DB_DATABASE}"
+          mssql.connect(connectUrl).then ->
+            new mssql.Request().query("").then (recordset) ->
+              mssql.close()
+              return 'success'
+            .catch (err) ->
+              mssql.close()
+              return err.toString()
           .catch (err) ->
-            mssql.close()
+            mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
             return err.toString()
-        .catch (err) ->
-          mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
-          return err.toString()
+        catch err
+          cl err.toString()
       when 'MySQL'
         mysqlDB = mysql.createConnection
           host: _dbObj.DB_IP

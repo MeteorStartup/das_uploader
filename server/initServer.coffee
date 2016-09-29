@@ -14,7 +14,6 @@ Meteor.startup ->
 java MsSQL "'+ dbInfo + '" "'+ sql + '"', (err,stdout,stderr) ->
     cl err or stdout or stderr
 
-
 #  spawn = require('child_process').spawn
 #  ls = spawn('cd /Users/june/Projects/das_uploader/tests/java-mssql/ && java', ['MsSQL'])
 

@@ -39,21 +39,21 @@ Meteor.startup ->
 
     svcInfo = dataSchema 'Service'
     svcInfo.SERVICE_ID = 'SVC00001'
-    svcInfo.SERVICE_NAME = 'das서비스1'
+    svcInfo.SERVICE_NAME = '인제군청'
     svcInfo.파일처리옵션 = '삭제'
     svcInfo.AGENT정보.push {
       agent_id: agent_id
       파일삭제기능: true
     }
     svcInfo.DB정보 = {
-      DB이름: 'TestDB'      #DB 이름
-      DB접속URL: 'mysql://localhost:3306/test'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
-      DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
-      DB_IP: 'localhost'
-      DB_PORT: '3306'
-      DB_DATABASE: 'test'
-      DB_ID: 'TestID'       #ID
-      DB_PW: 'TestPW'
+      DB이름: 'inje'      #DB 이름
+      DB접속URL: 'mssql://172.10.1.28:1433/inje'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
+      DBMS종류: 'MsSQL'    #MsSQL/MySQL/Oracle
+      DB_IP: '172.10.1.28'
+      DB_PORT: '1433'
+      DB_DATABASE: 'inje'
+      DB_ID: 'dasuser'       #ID
+      DB_PW: 'dasuser1234'
     }
     CollectionServices.insert svcInfo
 

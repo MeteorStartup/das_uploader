@@ -48,7 +48,7 @@ Meteor.startup ->
     svcInfo.DB정보 = {
       DB이름: 'HONGCHEON'      #DB 이름
       DB접속URL: 'mysql://152.99.148.50:3006/HONGCHEON'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
-      DBMS종류: 'MsSQL'    #MsSQL/MySQL/Oracle
+      DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
       DB_IP: '152.99.148.50'
       DB_PORT: '3306'
       DB_DATABASE: 'HONGCHEON'

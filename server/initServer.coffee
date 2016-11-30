@@ -33,27 +33,27 @@ Meteor.startup ->
   unless CollectionServices.findOne()
     agent = dataSchema 'Agent'
     agent.AGENT_NAME = 'dasAgent'
-    agent.AGENT_URL = 'http://152.99.146.1:3000'
-    agent.소멸정보절대경로 = 'd:\das'
+    agent.AGENT_URL = 'http://152.99.144.7:3000'
+    agent.소멸정보절대경로 = '/home/newdh/public_html/das_data/'
     agent_id = CollectionAgents.insert agent
 
     svcInfo = dataSchema 'Service'
-    svcInfo.SERVICE_ID = 'SVC00001'
-    svcInfo.SERVICE_NAME = '속초시청'
+    svcInfo.SERVICE_ID = 'DH00001'
+    svcInfo.SERVICE_NAME = '동해시청'
     svcInfo.파일처리옵션 = '삭제'
     svcInfo.AGENT정보.push {
       agent_id: agent_id
       파일삭제기능: true
     }
     svcInfo.DB정보 = {
-      DB이름: 'HONGCHEON'      #DB 이름
-      DB접속URL: 'oracle://152.99.146.2:1521/ORAUTF8'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
+      DB이름: 'DONGHAE'      #DB 별명
+      DB접속URL: 'mysql://localhost:3306/dh'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
       DBMS종류: 'Oracle'    #MsSQL/MySQL/Oracle
-      DB_IP: '152.99.146.2'
-      DB_PORT: '1521'
-      DB_DATABASE: 'ORAUTF8'
-      DB_ID: 'sokcho_gcms_user'       #ID
-      DB_PW: 'elzb00'
+      DB_IP: 'localhost'
+      DB_PORT: '3306'
+      DB_DATABASE: 'dh'  #DB name (or SID)
+      DB_ID: 'dh'       #ID
+      DB_PW: 'ehdgo170'
     }
     CollectionServices.insert svcInfo
 

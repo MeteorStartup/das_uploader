@@ -5,9 +5,9 @@
   oracle = require('oracle');
 
   connectData = {
-    hostname: 'localhost',
+    hostname: '152.99.176.114',
     port: 15997,
-    database: 'xe',
+    database: 'ORAGS',
     user: 'oracle',
     password: 'oracle'
   };

@@ -1,6 +1,7 @@
 mysql = require 'mysql'
 future = require 'fibers/future'
 mssql = require 'mssql'
+#oracle = require('oracle')
 
 Meteor.startup ->
   cl 'methods'

@@ -33,7 +33,7 @@ Meteor.startup ->
   unless CollectionServices.findOne()
     agent = dataSchema 'Agent'
     agent.AGENT_NAME = 'dasAgent'
-    agent.AGENT_URL = 'http://152.99.144.7:3000'
+    agent.AGENT_URL = 'http://localhost:3000'
     agent.소멸정보절대경로 = '/home/newdh/public_html/das_data/'
     agent_id = CollectionAgents.insert agent
 
@@ -48,7 +48,7 @@ Meteor.startup ->
     svcInfo.DB정보 = {
       DB이름: 'DONGHAE'      #DB 별명
       DB접속URL: 'mysql://localhost:3306/dh'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
-      DBMS종류: 'Oracle'    #MsSQL/MySQL/Oracle
+      DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
       DB_IP: 'localhost'
       DB_PORT: '3306'
       DB_DATABASE: 'dh'  #DB name (or SID)

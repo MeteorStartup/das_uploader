@@ -6,8 +6,8 @@
 
   mssql = require('mssql');
 
-  mssql.connect('mssql://sa:mStartup!24@52.78.177.44:1433/dasuploader').then(function() {
-    return new mssql.Request().query('select * from dasuploader.dasuploader').then(function(recordset) {
+  mssql.connect('mssql://samUser:!@#User@152.99.147.11:1433/samcheok_2009').then(function() {
+    return new mssql.Request().query('select count(*) from DUAL').then(function(recordset) {
       cl('recordset');
       cl(recordset);
       return mssql.close();

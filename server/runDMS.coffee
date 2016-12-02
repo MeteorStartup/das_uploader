@@ -188,6 +188,7 @@ Meteor.startup ->
             dasInfo.STATUS.push err.toString()
 
         when 'Oracle'
+          oracle = require('oracle')
           try
             connectData =
               hostname: '152.99.176.114'

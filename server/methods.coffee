@@ -13,7 +13,21 @@ Meteor.startup ->
         return throw new Meteor.Error err
       return agent
     'DASInfo': (data) ->
-      cl data
+#      cl data
+      bufUTF8 = new Buffer(data, 'utf8');
+      console.log(bufUTF8.toString());
+#      dasInfo = 'REQ_DATE=20160102010101001\nCUR_IP=10.0.0.24\nSERVICE_ID=SVC00001\nBOARD_ID=BRD00001\nPOST_ID=b3899283\nDEL_FILE_LIST=/Users/jwjin/data/images/11.jpg, /Users/jwjin/data/images/2.jpg\nDEL_DB_URL=\nDEL_DB_QRY=delete * from Table where condition;\nDEL_DB_CHECK_QRY=SELECT COUNT(column_name) FROM table_name;\nUP_FSIZE=3038920\nDEL_DATE=20160102000000000\nLOG=\n'
+#      data = {
+#        dasInfo: 'REQ_DATE=20160102010101001\nCUR_IP=10.0.0.24\nSERVICE_ID=SVC00001\nBOARD_ID=BRD00001\nPOST_ID=b3899283\nDEL_FILE_LIST=/Users/jwjin/data/images/11.jpg, /Users/jwjin/data/images/2.jpg\nDEL_DB_URL=\nDEL_DB_QRY=delete * from Table where condition;\nDEL_DB_CHECK_QRY=SELECT COUNT(column_name) FROM table_name;\nUP_FSIZE=3038920\nDEL_DATE=20160102000000000\nLOG=\n',
+#        AGENT_URL: 'http://localhost:3000'
+#      }
+#      cl data
+      HTTP.post "http://localhost:4000/insertDAS",
+        data:
+          dasInfo: bufUTF8.toString()
+          AGENT_URL: 'http://localhost:3000'
+      , (err, rslt) ->
+        console.log err or rslt
     'insertDAS': (data) ->
       cl data.dasInfo
       dasInfo = dataSchema 'DASInfo'
@@ -28,8 +42,8 @@ Meteor.startup ->
         key = line.substring 0, pos
         val = line.substring pos + 1
         val = val.trim()
-        cl val
-        cl val.length
+#        cl val
+#        cl val.length
 
         switch key
           when 'DEL_DB_QRY'

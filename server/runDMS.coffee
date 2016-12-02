@@ -104,10 +104,7 @@ Meteor.startup ->
 
 
 ## jwjin/1609300454 old npm version
-        ### juner83 / 2016-38-02 12:38:03
-         라디오버튼 추가로, mssql- 자바버전과 노드버전 두가지로 분기
-        이미 설치된 정선/인제 두군데도 추후 수정적용되어야 함.
-        ###
+## juner83 / 정선,인제는 수정된 내용으로 추후 변경되어야 함.
         when 'MsSQL_node'
           connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
           mssql.connect(connectUrl).then ->

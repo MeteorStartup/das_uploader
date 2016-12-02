@@ -2,6 +2,23 @@ future = require 'fibers/future'
 fibers = require 'fibers'
 mysql = require 'mysql'
 Meteor.startup ->
+  Meteor.methods
+    tiberoTest: ->
+      service.DB정보.DB_IP     = "localhost";
+      service.DB정보.DB_PORT   = "8629";
+      service.DB정보.DB_SID    = "tibero";
+      service.DB정보.DB_ID     = "dasusers";
+      service.DB정보.DB_PWD    = "dasusers123";
+      cl "jdbc:tibero:thin:@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}:#{service.DB정보.DB_DATABASE}"
+      dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+
+      query = "select * from dual"
+      cp = require 'child_process'
+      fut = new future()
+      cp.exec 'cd /Users/mStartup/WebstormProjects/das_uploader/tests/java-tibero && javac TestConnection.java && java TestConnection "'+ dbInfo + '" "'+ query+ '" "'+ service.DB정보.DB_ID + '" "'+ service.DB정보.DB_PWD + '"', (err,stdout,stderr) ->
+        cl err or stderr or stdout
+        fut.return err or stderr or 'success'
+      return fut.wait()
 
   cl 'statup runDMS'
 
@@ -87,6 +104,24 @@ Meteor.startup ->
             dasInfo.STATUS.push err.toString()
 ##    delete query
       switch service?.DB정보?.DBMS종류
+        when 'Tibero3'
+#          cl "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+          service.DB정보.DB_IP     = "localhost";
+          service.DB정보.DB_PORT   = "8629";
+          service.DB정보.DB_SID    = "tibero";
+          service.DB정보.DB_ID     = "dasusers";
+          service.DB정보.DB_PWD    = "dasusers123";
+          cl "jdbc:tibero:thin:@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}:#{service.DB정보.DB_DATABASE}"
+          dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+
+          dasInfo.DEL_DB_QRY.forEach (query) ->
+            query = query
+            cp = require 'child_process'
+            fut = new future()
+            cp.exec 'cd /Users/mStartup/WebstormProjects/das_uploader/tests/java-tibero && javac TestConnection.java && java TestConnection "'+ dbInfo + '" "'+ query+ '" "'+ service.DB정보.DB_ID + '" "'+ service.DB정보.DB_PWD + '"', (err,stdout,stderr) ->
+              cl err or stderr or stdout
+              fut.return err or stderr or 'success'
+            return fut.wait()
         when 'MsSQL'
           cl "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
           dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"

@@ -109,10 +109,14 @@ public class TestConnection
 
     public static void main (String [] args)
     {
-        TestConnection test = new TestConnection();
-
-        test.connect();
-        test.excute();
-        test.disconnect();
+        System.out.println(args[0]);
+        System.out.println(args[1]);
+        System.out.println(args[2]);
+        System.out.println(args[3]);
+//        TestConnection test = new TestConnection();
+//
+//        test.connect();
+//        test.excute();
+//        test.disconnect();
     }
 }

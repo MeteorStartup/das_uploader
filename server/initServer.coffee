@@ -39,16 +39,16 @@ Meteor.startup ->
 
     svcInfo = dataSchema 'Service'
     svcInfo.SERVICE_ID = 'SVC00001'
-    svcInfo.SERVICE_NAME = '삼척시청'
+    svcInfo.SERVICE_NAME = '영월군청'
     svcInfo.파일처리옵션 = '삭제'
     svcInfo.AGENT정보.push {
       agent_id: agent_id
       파일삭제기능: true
     }
     svcInfo.DB정보 = {
-      DB이름: 'SAMCHEOK'      #DB 별명
+      DB이름: 'YOUNGWOL'      #DB 별명
       DB접속URL: 'mssql://152.99.147.11:1433/samcheok_2009'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
-      DBMS종류: 'MsSQL'    #MsSQL/MySQL/Oracle
+      DBMS종류: 'Tibero3'    #MsSQL/MySQL/Oracle
       DB_IP: '152.99.147.11'
       DB_PORT: '1433'
       DB_DATABASE: 'samcheok_2009'  #DB name (or SID)

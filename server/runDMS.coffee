@@ -70,6 +70,8 @@ Meteor.startup ->
 
       ## delete files
       service.AGENT정보.forEach (agentInfo) ->
+        if service?.DB정보?.DBMS종류 is 'Tibero3' then return   ## jwjin/1612020230 영월군만 현재 skip. 향후엔 tibero도 에이전트가 설치 되면 풀어 줘야 함.
+
         if agentInfo.파일삭제기능
           agent = CollectionAgents.findOne _id: agentInfo.agent_id
           try

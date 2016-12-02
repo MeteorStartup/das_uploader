@@ -142,8 +142,15 @@ Meteor.startup ->
 ## juner83 / 정선,인제는 수정된 내용으로 추후 변경되어야 함.
         when 'MsSQL_node'
           mssql = require 'mssql'
-          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
-          mssql.connect(connectUrl).then ->
+          config = {
+            user: service.DB정보.DB_ID
+            password: service.DB정보.DB_PW
+            server: service.DB정보.DB_IP
+            port: service.DB정보.DB_PORT
+            database: service.DB정보.DB_DATABASE
+          }
+#          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
+          mssql.connect(config).then ->
             dasInfo.DEL_DB_QRY.forEach (query) ->
               new mssql.Request().query(query).then (recordset) ->
                 unless dasInfo.tmp or Array.isArray dasInfo.tmp then dasInfo.tmp = []

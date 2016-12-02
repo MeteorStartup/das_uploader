@@ -141,6 +141,7 @@ Meteor.startup ->
 ## jwjin/1609300454 old npm version
 ## juner83 / 정선,인제는 수정된 내용으로 추후 변경되어야 함.
         when 'MsSQL_node'
+          mssql = require 'mssql'
           connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
           mssql.connect(connectUrl).then ->
             dasInfo.DEL_DB_QRY.forEach (query) ->

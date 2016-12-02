@@ -13,7 +13,7 @@ public class TestConnection
 
 
     //String DB_IP     = "";
-    String DB_IP     = "localhost";
+    String DB_IP     = "152.99.160.22";
     String DB_PORT   = "8629";
     String DB_SID    = "tibero";
     String DB_ID     = "dasusers";
@@ -57,13 +57,13 @@ public class TestConnection
 
 
 
-    public void excute()
+    public void excute(String query)
     {
         try
         {
-            strSQL = "select * from dual";
+            strSQL = "select * from dual";  //test query
             stmt = conn.createStatement();
-            rs = stmt.executeQuery(strSQL);
+            rs = stmt.executeQuery(query);
             System.out.println("=====================================");
             System.out.println("SQL : " + strSQL);
             System.out.println("-------------------------------------");
@@ -109,14 +109,16 @@ public class TestConnection
 
     public static void main (String [] args)
     {
-        System.out.println(args[0]);
-        System.out.println(args[1]);
-        System.out.println(args[2]);
-        System.out.println(args[3]);
-//        TestConnection test = new TestConnection();
-//
-//        test.connect();
-//        test.excute();
-//        test.disconnect();
+        System.out.println(args[0]);    //dbinfo 받아오긴 하지만 일단 하드코딩임
+        System.out.println(args[1]);    // query
+        System.out.println(args[2]);    //ID 받아오긴 하지만 일단 하드코딩임
+        System.out.println(args[3]);    //PW 받아오긴 하지만 일단 하드코딩임
+
+
+        TestConnection test = new TestConnection();
+
+        test.connect();
+        test.excute(args[1]);
+        test.disconnect();
     }
 }

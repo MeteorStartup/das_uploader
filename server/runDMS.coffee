@@ -119,15 +119,21 @@ Meteor.startup ->
 
 #          cl "jdbc:tibero:thin:@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}:#{service.DB정보.DB_DATABASE}"
 #          dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
+          try
+            dasInfo.DEL_DB_QRY.forEach (query) ->
+  #            query = "select * from dual"
+              cp = require 'child_process'
+              fut = new future()
+              cp.exec 'cd /usr/local/src/das_uploader_share/tests/java-tibero && javac TestConnection.java && java -cp .:./tibero3-jdbc.jar TestConnection "'+ dbInfo + '" "'+ query+ '" "'+ service.DB정보.DB_ID + '" "'+ service.DB정보.DB_PWD + '"', (err,stdout,stderr) ->
+                cl err or stderr or stdout
+                fut.return err or stderr or 'success'
+              return fut.wait()
+          catch err
+            cl '####### DB ERROR #######'
+            #        cl dasInfo.STATUS = err.toString()
+            unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+            dasInfo.STATUS.push err.toString()
 
-          dasInfo.DEL_DB_QRY.forEach (query) ->
-#            query = "select * from dual"
-            cp = require 'child_process'
-            fut = new future()
-            cp.exec 'cd /usr/local/src/das_uploader_share/tests/java-tibero && javac TestConnection.java && java -cp .:./tibero3-jdbc.jar TestConnection "'+ dbInfo + '" "'+ query+ '" "'+ service.DB정보.DB_ID + '" "'+ service.DB정보.DB_PWD + '"', (err,stdout,stderr) ->
-              cl err or stderr or stdout
-              fut.return err or stderr or 'success'
-            return fut.wait()
         when 'MsSQL_java'
           cl "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"
           dbInfo = "jdbc:sqlserver://#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT};user=#{service.DB정보.DB_ID};password=#{service.DB정보.DB_PW};database=#{service.DB정보.DB_DATABASE}"

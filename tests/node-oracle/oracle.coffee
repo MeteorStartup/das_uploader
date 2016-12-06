@@ -1,10 +1,10 @@
 oracle = require('oracle')
 connectData =
-  hostname: '152.99.176.114'
-  port: 15997
-  database: 'ORAGS'
-  user: 'oracle'
-  password: 'oracle'
+  hostname: '152.99.146.2'
+  port: 1521
+  database: 'ORAUTF8'
+  user: 'sokcho_gcms_user'
+  password: 'elzb00'
 oracle.connect connectData, (err, connection) ->
   if err
     console.log 'Error connecting to db:', err

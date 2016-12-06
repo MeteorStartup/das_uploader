@@ -199,14 +199,14 @@ Meteor.startup ->
             dasInfo.STATUS.push err.toString()
 
         when 'Oracle'
+          oracle = require('oracle')
           try
             connectData =
-              hostname: '152.99.176.114'
-              port: 15997
-              database: 'ORAGS'
-              user: 'oracle'
-              password: 'oracle'
-
+              hostname: service.DB정보.DB_IP
+              port: service.DB정보.DB_PORT
+              database: service.DB정보.DB_DATABASE
+              user: service.DB정보.DB_ID
+              password: service.DB정보.DB_PW
 
             oracle.connect connectData, (err, connection) ->
               if err

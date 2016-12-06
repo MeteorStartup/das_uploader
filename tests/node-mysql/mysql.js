@@ -7,18 +7,18 @@
   mysql = require('mysql');
 
   mysqlDB = mysql.createConnection({
-    host: 'localhost',
+    host: '152.99.170.178',
     port: '3306',
-    user: 'dh',
-    password: 'ehdgo170',
-    database: 'dh'
+    user: 'root',
+    password: 'happy$700*pc',
+    database: 'RFC3'
   });
 
   mysqlDB.connect(function(err) {
     return cl((err != null ? err.message : void 0) || 'success');
   });
 
-  mysqlDB.query('select * from TEST_TABLE;', function(err, rows, fields) {
+  mysqlDB.query('select 1 from dual;', function(err, rows, fields) {
     return cl(err || rows);
   });
 

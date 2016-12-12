@@ -211,6 +211,8 @@ Meteor.startup ->
             oracle.connect connectData, (err, connection) ->
               if err
                 console.log 'Error connecting to db:', err
+                unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+                dasInfo.STATUS.push err.toString()
                 return
               dasInfo.DEL_DB_QRY.forEach (query) ->
                 connection.execute query, [], (err, results) ->

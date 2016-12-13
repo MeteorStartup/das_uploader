@@ -208,6 +208,8 @@ Meteor.startup ->
               user: service.DB정보.DB_ID
               password: service.DB정보.DB_PW
 
+            cl connectData
+
             oracle.connect connectData, (err, connection) ->
               if err
                 console.log 'Error connecting to db:', err
@@ -228,7 +230,7 @@ Meteor.startup ->
                 return
           catch err
             cl '####### DB ERROR #######'
-    #        cl dasInfo.STATUS = err.toString()
+            cl err.toString()
             unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
             dasInfo.STATUS.push err.toString()
 

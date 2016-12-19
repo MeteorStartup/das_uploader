@@ -160,7 +160,7 @@ Meteor.startup ->
             port: service.DB정보.DB_PORT
             database: service.DB정보.DB_DATABASE
           }
-#          connectUrl = "mssql://#{service.DB정보.DB_ID}:#{service.DB정보.DB_PW}@#{service.DB정보.DB_IP}:#{service.DB정보.DB_PORT}/#{service.DB정보.DB_DATABASE}"
+          cl config
           mssql.connect(config).then ->
             dasInfo.DEL_DB_QRY.forEach (query) ->
               new mssql.Request().query(query).then (recordset) ->
@@ -168,10 +168,12 @@ Meteor.startup ->
                 dasInfo.tmp.push recordset
               .catch (err) ->
                 unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
+                cl err.toString()
                 dasInfo.STATUS.push err.toString()
           .catch (err) ->
             unless Array.isArray dasInfo.STATUS then dasInfo.STATUS = [dasInfo.STATUS]
             dasInfo.STATUS.push err.toString()
+            cl err.toString()
             mssql.close() # close timing이 더럽다. future로 sync로 바꿔얄 듯. 일단은 메모리를 믿자
 
         when 'MySQL'

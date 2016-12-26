@@ -67,7 +67,8 @@ Template.serviceInfoWriting.events
     SERVICE_ID = $('[name=SERVICE_ID]').val()
     SERVICE_NAME = $('[name=SERVICE_NAME]').val()
     SERVICE_INFO = $('[name=SERVICE_INFO]').val()
-    파일처리옵션 = $(':radio[name="파일처리옵션"]:checked').val()
+#    파일처리옵션 = $(':radio[name="파일처리옵션"]:checked').val()
+    파일처리옵션 = '삭제'
     백업파일경로 = $('[name=백업파일경로]').val()
     AGENT상태전송주기 = $('[name=AGENT상태전송주기]').val()
     상태 = $(':radio[name="상태"]:checked').val()

@@ -365,12 +365,15 @@ Meteor.methods
             else if _period is '월간'
               if idx is 0
                 date = new Date(cate);
+                nextMonth = jUtils.getStringYMDFromDate(date.addMonths(1)).split('-')
                 $gte: new Date("#{cate} 00:00:00"),
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
               else
                 date = new Date(cate);
+                nextDate = new Date(cate)
+                nextMonth = jUtils.getStringYMDFromDate(nextDate.addMonths(1)).split('-')
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
             else if _period is '주간'
               $gte: new Date("#{cate} 00:00:00").addDates(-7),
               $lt: new Date("#{cate} 00:00:00")
@@ -388,12 +391,15 @@ Meteor.methods
             else if _period is '월간'
               if idx is 0
                 date = new Date(cate);
+                nextMonth = jUtils.getStringYMDFromDate(date.addMonths(1)).split('-')
                 $gte: new Date("#{cate} 00:00:00"),
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
               else
                 date = new Date(cate);
+                nextDate = new Date(cate)
+                nextMonth = jUtils.getStringYMDFromDate(nextDate.addMonths(1)).split('-')
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
             else if _period is '주간'
               $gte: new Date("#{cate} 00:00:00").addDates(-7),
               $lt: new Date("#{cate} 00:00:00")
@@ -411,12 +417,15 @@ Meteor.methods
             else if _period is '월간'
               if idx is 0
                 date = new Date(cate);
+                nextMonth = jUtils.getStringYMDFromDate(date.addMonths(1)).split('-')
                 $gte: new Date("#{cate} 00:00:00"),
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
               else
                 date = new Date(cate);
+                nextDate = new Date(cate)
+                nextMonth = jUtils.getStringYMDFromDate(nextDate.addMonths(1)).split('-')
                 $gte: new Date(date.getFullYear(), date.getMonth(), 1);
-                $lt: new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                $lt: new Date("#{nextMonth[0]}-#{nextMonth[1]}-01 00:00:00");
             else if _period is '주간'
               $gte: new Date("#{cate} 00:00:00").addDates(-7),
               $lt: new Date("#{cate} 00:00:00")

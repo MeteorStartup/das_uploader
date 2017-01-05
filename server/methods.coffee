@@ -483,8 +483,8 @@ Meteor.methods
           SERVICE_ID: serviceId
           KEEP_PERIOD: cate.period
           REQ_DATE:
-            $gte: new Date(_start)
-            $lt: new Date(_end).addDates(1)
+            $gte: new Date(_start+' 00:00:00')
+            $lt: new Date(_end+' 00:00:00').addDates(2)
         }).count()
       tempObj['name'] = cate.name
       tempObj['y'] = yVal
@@ -524,8 +524,8 @@ Meteor.methods
           SERVICE_ID: serviceId
           STATUS: cate.STATUS
           REQ_DATE:
-            $gte: new Date(_start)
-            $lt: new Date(_end).addDates(1)
+            $gte: new Date(_start+' 00:00:00')
+            $lt: new Date(_end+' 00:00:00').addDates(1)
         }).count()
       tempObj['name'] = cate.name
       tempObj['y'] = yVal

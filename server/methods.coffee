@@ -249,6 +249,8 @@ Meteor.methods
     CollectionServices.insert _service
 
   updateServiceInfo: (_id, _service) ->
+    service = CollectionServices.findOne _id: _id
+    _service.용량통계 = service.용량통계
     CollectionServices.update _id: _id, _service
 
   getServiceInfoById: (_id) ->

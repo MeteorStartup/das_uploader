@@ -34,26 +34,26 @@ Meteor.startup ->
     agent = dataSchema 'Agent'
     agent.AGENT_NAME = 'dasAgent'
     agent.AGENT_URL = 'http://localhost:3000'
-    agent.소멸정보절대경로 = '/usr/local/src'
+    agent.소멸정보절대경로 = '/home/tmax/das/dasFiles'
     agent_id = CollectionAgents.insert agent
 
     svcInfo = dataSchema 'Service'
-    svcInfo.SERVICE_ID = 'SVC00001'
-    svcInfo.SERVICE_NAME = '철원'
+    svcInfo.SERVICE_ID = 'www'
+    svcInfo.SERVICE_NAME = '강릉'
     svcInfo.파일처리옵션 = '삭제'
     svcInfo.AGENT정보.push {
       agent_id: agent_id
       파일삭제기능: true
     }
     svcInfo.DB정보 = {
-      DB이름: 'MySQL'      #DB 별명
-      DB접속URL: 'mysql://152.99.172.12:3306/cwg_wcms'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
-      DBMS종류: 'MySQL'    #MsSQL/MySQL/Oracle
-      DB_IP: '152.99.172.12'
-      DB_PORT: '3306'
-      DB_DATABASE: 'cwg_wcms'  #DB name (or SID)
-      DB_ID: 'cwg_wcms'       #ID
-      DB_PW: 'cwg_wcms'
+      DB이름: 'Oracle'      #DB 별명
+      DB접속URL: 'oracle://152.99.143.198:1521/GNWEB'   #jdbc:mysql://14.63.225.39:3306/das_demo?characterEncoding=UTF8
+      DBMS종류: 'Oracle'    #MsSQL/MySQL/Oracle
+      DB_IP: '152.99.143.198'
+      DB_PORT: '1521'
+      DB_DATABASE: 'GNWEB'  #DB name (or SID)
+      DB_ID: 'DAL'       #ID
+      DB_PW: 'dal'
     }
     CollectionServices.insert svcInfo
 
